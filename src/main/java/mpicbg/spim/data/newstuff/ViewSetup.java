@@ -13,6 +13,9 @@ import org.w3c.dom.Element;
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
+
+// TODO: finals weg und setter (ausser id)
+// alles protected
 public class ViewSetup implements Comparable< ViewSetup >
 {
 	/**
@@ -51,17 +54,22 @@ public class ViewSetup implements Comparable< ViewSetup >
 	private final int depth;
 
 	/**
-	 * width of a pixel in um.
+	 * Unit for pixel calibration
+	 */
+	private final String unit;
+
+	/**
+	 * width of a pixel in {@link #unit}.
 	 */
 	private final double pixelWidth;
 
 	/**
-	 * height of a pixel in um.
+	 * height of a pixel in {@link #unit}.
 	 */
 	private final double pixelHeight;
 
 	/**
-	 * depth of a pixel in um.
+	 * depth of a pixel in {@link #unit}.
 	 */
 	private final double pixelDepth;
 
@@ -74,6 +82,7 @@ public class ViewSetup implements Comparable< ViewSetup >
 		this.width = width;
 		this.height = height;
 		this.depth = depth;
+		this.unit = "um"; // TODO
 		this.pixelWidth = pixelWidth;
 		this.pixelHeight = pixelHeight;
 		this.pixelDepth = pixelDepth;
