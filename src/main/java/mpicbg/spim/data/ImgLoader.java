@@ -22,7 +22,7 @@ public interface ImgLoader
 	public Element toXml( final Document doc, final File basePath );
 
 	/**
-	 * Get {@link FloatType} image normalized to range [0,1].
+	 * Get {@link FloatType} image normalized to the range [0,1].
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
