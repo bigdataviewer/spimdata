@@ -23,13 +23,13 @@ public class SequenceDescription
 	/**
 	 * timepoint id for every timepoint index.
 	 */
-	final public ArrayList< Integer > timepoints;
+	final private ArrayList< Integer > timepoints;
 	// TODO: make protected and use getter
 
 	/**
 	 * angle and illumination setup for every view-setup index.
 	 */
-	final public ArrayList< ViewSetup > setups;
+	final private ArrayList< ViewSetup > setups;
 	// TODO: make protected and use getter
 
 	/**

@@ -21,6 +21,11 @@ public interface ImgLoader
 	 */
 	public Element toXml( final Document doc, final File basePath );
 
+	// TODO: TypedImgLoader
+	// boolean normalized (FloatType)
+	// min max
+	// List of ImgLoader
+
 	/**
 	 * Get {@link FloatType} image normalized to range [0,1].
 	 *
