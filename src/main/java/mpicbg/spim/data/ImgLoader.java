@@ -27,7 +27,7 @@ public interface ImgLoader
 	// List of ImgLoader
 
 	/**
-	 * Get {@link FloatType} image normalized to range [0,1].
+	 * Get {@link FloatType} image normalized to the range [0,1].
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
