@@ -1,5 +1,7 @@
 package mpicbg.spim.data;
 
+import java.util.ArrayList;
+
 import net.imglib2.realtransform.AffineTransform3D;
 
 import org.w3c.dom.Document;
@@ -22,12 +24,51 @@ public class ViewRegistration
 	 * coordinates.
 	 */
 	protected final AffineTransform3D model;
+	
+	protected final ArrayList< AffineTransform3D > transformList;
 
+	/**
+	 * Creates a new {@link ViewRegistration} object using a list of {@link AffineTransform3D}
+	 * 
+	 * @param timepointIndex
+	 * @param setupIndex
+	 * @param models
+	 */
+	public ViewRegistration( final int timepointIndex, final int setupIndex, final ArrayList< AffineTransform3D > models )
+	{
+		this.timepoint = timepointIndex;
+		this.setup = setupIndex;
+		this.model = models.get( 0 ).copy();
+		this.transformList = models;
+		
+		concatenateAffineTransforms();
+	}
+
+	/**
+	 * Creates a new {@link ViewRegistration} object using one {@link AffineTransform3D}
+	 * 
+	 * @param timepointIndex
+	 * @param setupIndex
+	 * @param model
+	 */
 	public ViewRegistration( final int timepointIndex, final int setupIndex, final AffineTransform3D model )
 	{
 		this.timepoint = timepointIndex;
 		this.setup = setupIndex;
 		this.model = model;
+		this.transformList = new ArrayList<AffineTransform3D>();
+		this.transformList.add( model.copy() );
+	}
+
+	/**
+	 * Creates a new {@link ViewRegistration} object using the identity transformation
+	 * 
+	 * @param timepointIndex
+	 * @param setupIndex
+	 */
+	public ViewRegistration( final int timepointIndex, final int setupIndex )
+	{
+		this ( timepointIndex, setupIndex, new AffineTransform3D() );
 	}
 
 	/**
@@ -43,6 +84,35 @@ public class ViewRegistration
 				Integer.parseInt( elem.getElementsByTagName( "setup" ).item( 0 ).getTextContent() ),
 				XmlHelpers.loadAffineTransform3D( ( Element ) elem.getElementsByTagName( "affine" ).item( 0 ) )
 		);
+	}
+	
+	/**
+	 * Computes the resulting {@link AffineTransform3D} when concatenating all transforms from the list
+	 */
+	public void concatenateAffineTransforms()
+	{
+		model.set( transformList.get( 0 ) );
+		
+		for ( int m = 1; m < transformList.size(); ++m )
+			model.concatenate( transformList.get( m ) );
+	}
+	
+	public void concatenateAffineTransform( final AffineTransform3D transform )
+	{
+		transformList.add( transform );
+		model.concatenate( transform );
+	}
+
+	public void preconcatenateAffineTransform( final AffineTransform3D transform )
+	{
+		final ArrayList< AffineTransform3D > tmpList = new ArrayList<AffineTransform3D>();
+		
+		tmpList.addAll( transformList );
+		transformList.clear();
+		transformList.add( transform );
+		transformList.addAll( tmpList );
+		
+		model.preConcatenate( transform );
 	}
 
 	/**
