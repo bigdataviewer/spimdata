@@ -52,6 +52,17 @@ public class XmlHelpers
 		return e;
 	}
 
+	public static int getInt( final Element parent, final String name )
+	{
+		return Integer.parseInt( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
+	}
+
+	public static int getInt( final Element parent, final String name, final int defaultValue )
+	{
+		final NodeList nodes = parent.getElementsByTagName( name );
+		return nodes.getLength() == 0 ? defaultValue : Integer.parseInt( nodes.item( 0 ).getTextContent() );
+	}
+
 	public static Element doubleElement( final Document doc, final String name, final double value )
 	{
 		final Element e = doc.createElement( name );
@@ -59,11 +70,33 @@ public class XmlHelpers
 		return e;
 	}
 
+	public static double getDouble( final Element parent, final String name )
+	{
+		return Double.parseDouble( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
+	}
+
+	public static double getDouble( final Element parent, final String name, final double defaultValue )
+	{
+		final NodeList nodes = parent.getElementsByTagName( name );
+		return nodes.getLength() == 0 ? defaultValue : Double.parseDouble( nodes.item( 0 ).getTextContent() );
+	}
+
 	public static Element textElement( final Document doc, final String name, final String value )
 	{
 		final Element e = doc.createElement( name );
 		e.appendChild( doc.createTextNode( value ) );
 		return e;
+	}
+
+	public static String getText( final Element parent, final String name )
+	{
+		return parent.getElementsByTagName( name ).item( 0 ).getTextContent();
+	}
+
+	public static String getText( final Element parent, final String name, final String defaultValue )
+	{
+		final NodeList nodes = parent.getElementsByTagName( name );
+		return nodes.getLength() == 0 ? defaultValue : nodes.item( 0 ).getTextContent();
 	}
 
 	public static File loadPath( final Element parent, final String name, final String defaultRelativePath, final File basePath ) throws InstantiationException, IllegalAccessException, ClassNotFoundException

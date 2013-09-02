@@ -1,14 +1,18 @@
-package mpicbg.spim.data.newstuff;
+package mpicbg.spim.data.newstuff.sequence;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import mpicbg.spim.data.ImgLoader;
 
 /**
  * A SPIM sequence consisting of a list of timepoints and a list of view setups.
  * Every (timepoint, setup) pair is a view (i.e., an image stack acquired at that time with that setup).
+ *
+ * @param <T>
+ *            {@link TimePoint} type
+ * @param <V>
+ *            {@link ViewSetup} type
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
@@ -19,17 +23,20 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	 */
 	final protected ArrayList< T > timepoints;
 
+	final private List< T > unmodifiableTimepoints;
+
 	/**
 	 * angle and illumination setup for every view-setup index.
 	 */
 	final protected ArrayList< V > setups;
 
-	final protected MissingViews missingViews;
+	final private List< V > unmodifiableSetups;
 
 	/**
-	 * Relative paths in the XML sequence description are interpreted with respect to this.
+	 * TODO
+	 * may be null.
 	 */
-	final protected File basePath;
+	final protected MissingViews missingViews;
 
 	/**
 	 * load images for every view. might be null.
@@ -38,21 +45,27 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 
 	final protected ArrayList< ViewDescription< T, V > > viewDescriptions;
 
-	public SequenceDescription( final List< ? extends T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final File basePath, final ImgLoader imgLoader )
+	public SequenceDescription( final List< ? extends T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final ImgLoader imgLoader )
 	{
 		this.timepoints = new ArrayList< T >( timepoints );
+		this.unmodifiableTimepoints = Collections.unmodifiableList( this.timepoints );
 		this.setups = new ArrayList< V >( setups );
+		this.unmodifiableSetups = Collections.unmodifiableList( this.setups );
 		this.missingViews = missingViews;
-		this.basePath = basePath;
 		this.imgLoader = imgLoader;
 		this.viewDescriptions = createViewDescriptions();
 	}
 
 	protected ArrayList< ViewDescription< T, V > > createViewDescriptions()
 	{
-		final ArrayList< ViewDescription< T, V > > viewDescriptions = new ArrayList< ViewDescription< T, V > >();
-		// TODO: fill viewDescriptions
-		return missingViews.markMissingViews( viewDescriptions );
+		final ArrayList< ViewDescription< T, V > > descs = new ArrayList< ViewDescription< T, V > >();
+		for ( int ti = 0; ti < numTimePoints(); ++ti )
+			for ( int si = 0; si < numViewSetups(); ++si )
+				descs.add( new ViewDescription< T, V >( this, true ) );
+		if ( missingViews != null )
+			return missingViews.markMissingViews( descs );
+		else
+			return descs;
 	}
 
 	/**
@@ -65,6 +78,26 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 		return timepoints.size();
 	}
 
+	final public List< T > getTimePoints()
+	{
+		return unmodifiableTimepoints;
+	}
+
+	public ImgLoader getImgLoader()
+	{
+		return imgLoader;
+	}
+
+	/**
+	 * TODO
+	 * may be null.
+	 * @return
+	 */
+	public MissingViews getMissingViews()
+	{
+		return missingViews;
+	}
+
 	/**
 	 * Get number of view setups in this sequence.
 	 *
@@ -75,19 +108,13 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 		return setups.size();
 	}
 
-	/**
-	 * Get the base path of the sequence. Relative paths in the XML sequence
-	 * description are interpreted with respect to this.
-	 *
-	 * @return the base path of the sequence
-	 */
-	public synchronized File getBasePath()
+	final public List< V > getViewSetups()
 	{
-		return basePath;
+		return unmodifiableSetups;
 	}
 
 	public ViewDescription< T, V > getViewDescription( final int timepoint, final int setup )
 	{
-		return null;
+		return viewDescriptions.get( timepoint * numViewSetups() + setup );
 	}
 }

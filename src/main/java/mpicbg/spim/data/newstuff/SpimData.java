@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import mpicbg.spim.data.SequenceDescription;
 import mpicbg.spim.data.XmlHelpers;
 
 import org.w3c.dom.Document;
@@ -22,6 +21,8 @@ import org.xml.sax.SAXException;
 public class SpimData
 {
 	protected final File xmlFile;
+
+	protected final Element root;
 
 	/**
 	 * The &lt;SpimData&gt; version.
@@ -40,7 +41,7 @@ public class SpimData
 		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder db = dbf.newDocumentBuilder();
 		final Document dom = db.parse( xmlFilename );
-		final Element root = dom.getDocumentElement();
+		root = dom.getDocumentElement();
 
 		if ( root.getNodeName() != SPIMDATA_TAG )
 			throw new RuntimeException( "expected <" + SPIMDATA_TAG + "> root element. wrong file?" );
@@ -48,7 +49,7 @@ public class SpimData
 		final String versionAttr = root.getAttribute( SPIMDATA_VERSION_ATTRIBUTE_NAME );
 		if ( versionAttr.isEmpty() )
 		{
-			System.out.println( "<" + SPIMDATA_TAG + "> has no \"" + SPIMDATA_VERSION_ATTRIBUTE_NAME + "\" attribute specified." );
+			System.out.println( "<" + SPIMDATA_TAG + "> does not specify \"" + SPIMDATA_VERSION_ATTRIBUTE_NAME + "\" attribute." );
 			System.out.println( "assuming \"" + SPIMDATA_VERSION_ATTRIBUTE_DEFAULT + "\"" );
 			version = SPIMDATA_VERSION_ATTRIBUTE_DEFAULT;
 		}
@@ -66,8 +67,15 @@ public class SpimData
 		return XmlHelpers.loadPath( root, BASEPATH_TAG, ".", xmlFileParentDirectory );
 	}
 
-	protected SequenceDescription loadSequenceDescription( final Element root )
+	/**
+	 * Get the base path of the sequence. Relative paths in the XML sequence
+	 * description are interpreted with respect to this.
+	 *
+	 * @return the base path of the sequence
+	 */
+	public File getBasePath()
 	{
-		return null;
+		return basePath;
 	}
+
 }

@@ -1,7 +1,8 @@
-package mpicbg.spim.data;
+package mpicbg.spim.data.newstuff.sequence;
 
 import java.io.File;
 
+import mpicbg.spim.data.View;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 import net.imglib2.type.numeric.real.FloatType;
