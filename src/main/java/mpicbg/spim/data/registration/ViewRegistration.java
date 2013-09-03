@@ -130,4 +130,13 @@ public class ViewRegistration extends ViewId
 		transformList.add( 0, transform );
 		model.preConcatenate( transform.asAffine3D() );
 	}
+	
+	/**
+	 * Reset the {@link ViewRegistration} to the identity transform
+	 */
+	public void identity()
+	{
+		model.identity();
+		transformList.clear();
+	}
 }
