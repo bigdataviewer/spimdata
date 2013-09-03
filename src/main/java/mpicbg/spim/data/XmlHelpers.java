@@ -16,6 +16,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import net.imglib2.realtransform.AffineGet;
 import net.imglib2.realtransform.AffineTransform3D;
 
 import org.w3c.dom.Document;
@@ -184,7 +185,7 @@ public class XmlHelpers
 			return getRelativePath( file, toParent, "../" + relativeInitial );
 	}
 
-	public static Element affineTransform3DElement( final Document doc, final String name, final AffineTransform3D value )
+	public static Element affineTransform3DElement( final Document doc, final String name, final AffineGet value )
 	{
 		final Element e = doc.createElement( name );
 		final double[] v = value.getRowPackedCopy();

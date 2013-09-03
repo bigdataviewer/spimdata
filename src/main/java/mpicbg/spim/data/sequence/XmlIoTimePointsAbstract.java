@@ -1,6 +1,6 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TAG;
 
 import java.util.ArrayList;
 import java.util.List;

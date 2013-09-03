@@ -1,10 +1,10 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_RANGE_FIRST;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_RANGE_LAST;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_RANGE_TYPE;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.TIMEPOINTS_TYPE_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_FIRST;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_LAST;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_TYPE;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TYPE_ATTRIBUTE_NAME;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 			final int last = Integer.parseInt( timepoints.getElementsByTagName( TIMEPOINTS_RANGE_LAST ).item( 0 ).getTextContent() );
 			final ArrayList< TimePoint > tp = new ArrayList< TimePoint >();
 			for ( int t = first; t <= last; ++t )
-				tp.add( new TimePoint( tp.size(), String.format( "%d", t ) ) );
+				tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
 			return tp;
 		}
 		else
@@ -102,14 +102,14 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 			final Iterator< TimePoint > iter = timepoints.iterator();
 			String name = iter.next().getName();
 			final int first = Integer.parseInt( name );
-			if ( !String.format( "%d", first ).equals( name ) )
+			if ( ! Integer.toString( first ).equals( name ) )
 				return null;
 			int last = first;
 			while ( iter.hasNext() )
 			{
 				name = iter.next().getName();
 				last = Integer.parseInt( name );
-				if ( !String.format( "%d", last ).equals( name ) )
+				if ( ! Integer.toString( last ).equals( name ) )
 					return null;
 			}
 

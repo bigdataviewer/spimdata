@@ -1,4 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,18 +1,18 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUPS_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_ANGLE_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_CHANNEL_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_DEPTH_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_HEIGHT_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_ID_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_ILLUMINATION_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_PIXELDEPTH_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_PIXELHEIGHT_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_PIXELWIDTH_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_UNIT_TAG;
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUP_WIDTH_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUPS_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_CHANNEL_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_DEPTH_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_HEIGHT_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ID_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ILLUMINATION_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELDEPTH_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELHEIGHT_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELWIDTH_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_UNIT_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_WIDTH_TAG;
 
 import java.util.ArrayList;
 import java.util.Collections;

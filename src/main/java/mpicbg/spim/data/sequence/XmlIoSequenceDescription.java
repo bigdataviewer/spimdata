@@ -1,6 +1,6 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.SEQUENCEDESCRIPTION_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.SEQUENCEDESCRIPTION_TAG;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,7 +89,8 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 	public Element toXml( final Document doc, final SequenceDescription< T, V > sequenceDescription, final File basePath )
 	{
 		final Element elem = doc.createElement( SEQUENCEDESCRIPTION_TAG );
-		elem.appendChild( xmlImgLoader.toXml( doc, basePath, sequenceDescription.getImgLoader() ) );
+		if ( sequenceDescription.getImgLoader() != null )
+			elem.appendChild( xmlImgLoader.toXml( doc, basePath, sequenceDescription.getImgLoader() ) );
 		elem.appendChild( xmlViewSetups.toXml( doc, sequenceDescription.getViewSetups() ) );
 		elem.appendChild( xmlTimePoints.toXml( doc, sequenceDescription.getTimePoints() ) );
 		elem.appendChild( xmlMissingViews.toXml( doc, sequenceDescription.getMissingViews() ) );

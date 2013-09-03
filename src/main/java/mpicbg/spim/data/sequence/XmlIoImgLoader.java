@@ -1,6 +1,6 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.IMGLOADER_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.IMGLOADER_TAG;
 
 import java.io.File;
 

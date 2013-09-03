@@ -1,4 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
 /**
  * Definition of tag and attribute names.

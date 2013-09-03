@@ -1,4 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
 
 /**
@@ -30,7 +30,7 @@ public class ViewDescription< T extends TimePoint, V extends ViewSetup > extends
 		return present;
 	}
 
-	public T getTimepoint()
+	public T getTimePoint()
 	{
 		return sequenceDescription.getTimePoints().get( timepoint );
 	}

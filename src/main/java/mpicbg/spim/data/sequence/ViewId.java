@@ -1,4 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
 
 /**
@@ -30,7 +30,7 @@ public class ViewId implements Comparable< ViewId >
 	 *
 	 * @return timepoint id
 	 */
-	public int getTimepointId()
+	public int getTimePointId()
 	{
 		return timepoint;
 	}

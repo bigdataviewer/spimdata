@@ -1,7 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
-
-
-import mpicbg.spim.data.SequenceDescription;
+package mpicbg.spim.data.sequence;
 
 /**
  * A collection of parameters describing the setup for a particular view, e.g.

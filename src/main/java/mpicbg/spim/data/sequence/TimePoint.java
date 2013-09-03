@@ -1,4 +1,4 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
 // TODO: getter setter, constructor
 public class TimePoint

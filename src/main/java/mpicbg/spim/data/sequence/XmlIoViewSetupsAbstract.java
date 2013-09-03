@@ -1,6 +1,6 @@
-package mpicbg.spim.data.newstuff.sequence;
+package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.newstuff.sequence.XmlKeys.VIEWSETUPS_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUPS_TAG;
 
 import java.util.ArrayList;
 import java.util.List;
