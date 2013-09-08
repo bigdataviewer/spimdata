@@ -19,6 +19,8 @@ public class XmlKeys
 	public static final String TIMEPOINTS_RANGE_TYPE = "range";
 	public static final String TIMEPOINTS_RANGE_FIRST = "first";
 	public static final String TIMEPOINTS_RANGE_LAST = "last";
+	public static final String TIMEPOINTS_PATTERN_TYPE = "pattern";
+	public static final String TIMEPOINTS_PATTERN_STRING = "integerpattern";
 
 	public static final String MISSINGVIEWS_TAG = "MissingViews";
 	public static final String MISSINGVIEW_TAG = "MissingView";

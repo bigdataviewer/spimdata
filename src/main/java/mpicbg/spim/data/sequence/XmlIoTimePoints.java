@@ -1,11 +1,14 @@
 package mpicbg.spim.data.sequence;
 
 import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_FIRST;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_PATTERN_TYPE;
 import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_LAST;
 import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_TYPE;
 import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TYPE_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_PATTERN_STRING;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +61,25 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 			for ( int t = first; t <= last; ++t )
 				tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
 			return tp;
+		}
+		else if ( TIMEPOINTS_PATTERN_TYPE.equals( type ) )
+		{
+			final String integerPattern = timepoints.getElementsByTagName( TIMEPOINTS_PATTERN_STRING ).item( 0 ).getTextContent();
+			try 
+			{
+				final ArrayList< Integer > ints = IntegerPattern.parseIntegerString( integerPattern );
+				final ArrayList< TimePoint > tp = new ArrayList< TimePoint >();
+				
+				for ( int t : ints )
+					tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
+				
+				return tp;
+				
+			} 
+			catch ( final ParseException e )
+			{
+				throw new RuntimeException( "cannot parse <" + TIMEPOINTS_TAG + "> pattern: " + integerPattern );
+			}
 		}
 		else
 		{
