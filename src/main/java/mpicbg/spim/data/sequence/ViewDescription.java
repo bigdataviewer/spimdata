@@ -32,7 +32,7 @@ public class ViewDescription< T extends TimePoint, V extends ViewSetup > extends
 
 	public T getTimePoint()
 	{
-		return sequenceDescription.getTimePoints().get( timepoint );
+		return sequenceDescription.getTimePoints().getTimePointList().get( timepoint );
 	}
 
 	public V getViewSetup()

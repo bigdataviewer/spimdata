@@ -21,9 +21,9 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	/**
 	 * timepoint id for every timepoint index.
 	 */
-	final protected ArrayList< T > timepoints;
+	final protected TimePoints< T > timepoints;
 
-	final private List< T > unmodifiableTimepoints;
+	final private TimePoints< T > unmodifiableTimepoints;
 
 	/**
 	 * angle and illumination setup for every view-setup index.
@@ -45,10 +45,10 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 
 	final protected ArrayList< ViewDescription< T, V > > viewDescriptions;
 
-	public SequenceDescription( final List< ? extends T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final ImgLoader imgLoader )
+	public SequenceDescription( final TimePoints< T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final ImgLoader imgLoader )
 	{
-		this.timepoints = new ArrayList< T >( timepoints );
-		this.unmodifiableTimepoints = Collections.unmodifiableList( this.timepoints );
+		this.timepoints = timepoints;
+		this.unmodifiableTimepoints = timepoints.getUnmodifiableTimePoints();
 		this.setups = new ArrayList< V >( setups );
 		this.unmodifiableSetups = Collections.unmodifiableList( this.setups );
 		this.missingViews = missingViews;
@@ -75,10 +75,10 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	 */
 	final public int numTimePoints()
 	{
-		return timepoints.size();
+		return timepoints.getTimePointList().size();
 	}
 
-	final public List< T > getTimePoints()
+	final public TimePoints< T > getTimePoints()
 	{
 		return unmodifiableTimepoints;
 	}

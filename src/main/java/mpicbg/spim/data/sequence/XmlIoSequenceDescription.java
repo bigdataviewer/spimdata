@@ -59,7 +59,7 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 		NodeList nodes = sequenceDescription.getElementsByTagName( xmlTimePoints.getTagName() );
 		if ( nodes.getLength() == 0 )
 			throw new IllegalArgumentException( "no <" + xmlTimePoints.getTagName() + "> element found." );
-		final ArrayList< T > timepoints = xmlTimePoints.fromXml( ( Element ) nodes.item( 0 ) );
+		final TimePoints< T > timepoints = xmlTimePoints.fromXml( ( Element ) nodes.item( 0 ) );
 
 		nodes = sequenceDescription.getElementsByTagName( xmlViewSetups.getTagName() );
 		if ( nodes.getLength() == 0 )

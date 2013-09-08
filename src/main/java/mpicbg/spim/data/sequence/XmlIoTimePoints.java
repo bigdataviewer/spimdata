@@ -50,17 +50,18 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 	 * @return list of timepoints loaded from xml.
 	 */
 	@Override
-	public ArrayList< TimePoint > fromXml( final Element timepoints )
+	public TimePoints< TimePoint > fromXml( final Element timepoints )
 	{
 		final String type = timepoints.getAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME );
 		if ( TIMEPOINTS_RANGE_TYPE.equals( type ) )
 		{
 			final int first = Integer.parseInt( timepoints.getElementsByTagName( TIMEPOINTS_RANGE_FIRST ).item( 0 ).getTextContent() );
 			final int last = Integer.parseInt( timepoints.getElementsByTagName( TIMEPOINTS_RANGE_LAST ).item( 0 ).getTextContent() );
+			
 			final ArrayList< TimePoint > tp = new ArrayList< TimePoint >();
 			for ( int t = first; t <= last; ++t )
 				tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
-			return tp;
+			return new TimePoints< TimePoint >( tp );
 		}
 		else if ( TIMEPOINTS_PATTERN_TYPE.equals( type ) )
 		{
@@ -73,7 +74,10 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 				for ( int t : ints )
 					tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
 				
-				return tp;
+				final TimePoints< TimePoint > tps = new TimePoints< TimePoint >( tp );
+				
+				tps.getHashMap().put( TIMEPOINTS_PATTERN_STRING, integerPattern );
+				return tps;
 				
 			} 
 			catch ( final ParseException e )
@@ -95,18 +99,36 @@ public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
 	 * @param sequence
 	 */
 	@Override
-	public Element toXml( final Document doc, final List< TimePoint > timepoints )
+	public Element toXml( final Document doc, final TimePoints< TimePoint > timepoints )
 	{
-		if ( timepoints.size() == 0 )
+		if ( timepoints.getTimePointList().size() == 0 )
 			throw new IllegalArgumentException( "sequence must have at least one timepoint" );
 
-		final Element tp = toXmlTryRange( doc, timepoints );
-		if ( tp == null )
-			throw new RuntimeException( "non-contiguous time-point range not implemented." );
-
+		final Element tp;
+		final String pattern = timepoints.getHashMap().get( TIMEPOINTS_PATTERN_STRING );
+		
+		if ( pattern != null )
+		{
+			tp = toXmlPattern( doc, timepoints.getTimePointList(), pattern );
+		}
+		else
+		{
+			tp = toXmlTryRange( doc, timepoints.getTimePointList() );
+			
+			if ( tp == null )
+				throw new RuntimeException( "non-contiguous time-point range not implemented." );
+		}
+		
 		return tp;
 	}
 
+	protected Element toXmlPattern( final Document doc, final List< TimePoint > timepoint, final String pattern )
+	{
+		final Element tp = doc.createElement( TIMEPOINTS_TAG );
+		tp.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_PATTERN_TYPE );
+		tp.appendChild( XmlHelpers.textElement( doc, TIMEPOINTS_PATTERN_STRING, pattern ) );
+		return tp;
+	}
 
 	/**
 	 * Try to save as {@link TimePoint} list as a range. For this to work,
