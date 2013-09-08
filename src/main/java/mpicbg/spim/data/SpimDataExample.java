@@ -21,12 +21,12 @@ public class SpimDataExample
 	public static void main( final String[] args ) throws Exception
 	{
 		// load SpimData from xml file
-		final String xmlFilename = ClassLoader.getSystemResource( "example.xml" ).getPath();
+		final String xmlFilename = ClassLoader.getSystemResource( "example_timepointpattern.xml" ).getPath();
 		final XmlIoSpimData< TimePoint, ViewSetup > io = XmlIoSpimData.createDefault();
 		final SpimData< TimePoint, ViewSetup > spimData = io.load( xmlFilename );
 
 		// save SpimData to xml file
-		io.save( spimData, "/Users/pietzsch/Desktop/example.xml" );
+		io.save( spimData, "example_new.xml" );
 
 		// write SpimData into a xml Document
 		final Document doc = XmlHelpers.newXmlDocument();
