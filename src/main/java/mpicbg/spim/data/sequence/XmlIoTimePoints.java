@@ -24,26 +24,7 @@ import org.w3c.dom.Element;
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
 public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
-{
-	/*
-	public static enum TimepointsDefType
-	{
-		RANGE( "range" );
-
-		private final String name;
-
-		public String getName()
-		{
-			return name;
-		}
-
-		private TimepointsDefType( final String name )
-		{
-			this.name = name;
-		}
-	}
-	*/
-	
+{	
 	/**
 	 * Load a list of {@link TimePoint}s from the given DOM element.
 	 *
