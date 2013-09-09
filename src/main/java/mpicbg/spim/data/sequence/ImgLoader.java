@@ -22,7 +22,6 @@ public interface ImgLoader
 	public Element toXml( final Document doc, final File basePath );
 
 	// TODO: TypedImgLoader
-	// boolean normalized (FloatType)
 	// min max
 	// List of ImgLoader
 
@@ -31,9 +30,11 @@ public interface ImgLoader
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
-	 * @return {@link FloatType} image normalized to range [0,1]
+	 * @param normalize
+	 * 			  if the image should be normalized to [0,1] or not
+	 * @return {@link FloatType} image
 	 */
-	public RandomAccessibleInterval< FloatType > getImage( ViewDescription< ?, ? > view );
+	public RandomAccessibleInterval< FloatType > getImage( ViewDescription< ?, ? > view, boolean normalize );
 
 	/**
 	 * Get {@link UnsignedShortType} un-normalized image.
