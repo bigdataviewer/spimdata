@@ -112,7 +112,18 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	{
 		return unmodifiableSetups;
 	}
+	
+	/**
+	 * @return All {@link ViewDescription}s, the respective isPresent flag defines if it is available for the respective timepoint
+	 */
+	public ArrayList< ViewDescription< T, V > > getViewDescriptions() { return viewDescriptions; } 
 
+	/**
+	 * @param timepoint
+	 * @param setup
+	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 
+	 * its isPresent flag defines if it is available for this timepoint  
+	 */
 	public ViewDescription< T, V > getViewDescription( final int timepoint, final int setup )
 	{
 		return viewDescriptions.get( timepoint * numViewSetups() + setup );
