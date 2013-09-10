@@ -40,9 +40,9 @@ public class ViewDescription< T extends TimePoint, V extends ViewSetup > extends
 		return sequenceDescription.getViewSetups().get( setup );
 	}
 
-	public ViewDescription( final SequenceDescription< ? extends T, ? extends V > sequenceDescription, final boolean present )
+	public ViewDescription( final SequenceDescription< ? extends T, ? extends V > sequenceDescription, final boolean present, final int timepointId, final int setupId )
 	{
-		super( 0, 0 );
+		super( timepointId, setupId );
 		this.present = present;
 		this.sequenceDescription = sequenceDescription;
 	}

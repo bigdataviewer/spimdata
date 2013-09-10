@@ -61,7 +61,7 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 		final ArrayList< ViewDescription< T, V > > descs = new ArrayList< ViewDescription< T, V > >();
 		for ( int ti = 0; ti < numTimePoints(); ++ti )
 			for ( int si = 0; si < numViewSetups(); ++si )
-				descs.add( new ViewDescription< T, V >( this, true ) );
+				descs.add( new ViewDescription< T, V >( this, true, this.timepoints.getTimePointList().get( ti ).getId(), this.setups.get( si ).getId() ) );
 		if ( missingViews != null )
 			return missingViews.markMissingViews( descs );
 		else
