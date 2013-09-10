@@ -93,7 +93,8 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 			elem.appendChild( xmlImgLoader.toXml( doc, basePath, sequenceDescription.getImgLoader() ) );
 		elem.appendChild( xmlViewSetups.toXml( doc, sequenceDescription.getViewSetups() ) );
 		elem.appendChild( xmlTimePoints.toXml( doc, sequenceDescription.getTimePoints() ) );
-		elem.appendChild( xmlMissingViews.toXml( doc, sequenceDescription.getMissingViews() ) );
+		if ( sequenceDescription.getMissingViews() != null && sequenceDescription.getMissingViews().missingViews.size() > 0 )
+			elem.appendChild( xmlMissingViews.toXml( doc, sequenceDescription.getMissingViews() ) );
 		return elem;
 	}
 }
