@@ -53,6 +53,13 @@ public class XmlHelpers
 		return e;
 	}
 
+	public static Element booleanElement( final Document doc, final String name, final boolean value )
+	{
+		final Element e = doc.createElement( name );
+		e.appendChild( doc.createTextNode( Boolean.toString( value ) ) );
+		return e;
+	}
+
 	public static int getInt( final Element parent, final String name )
 	{
 		return Integer.parseInt( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
@@ -69,6 +76,17 @@ public class XmlHelpers
 		final Element e = doc.createElement( name );
 		e.appendChild( doc.createTextNode( Double.toString( value ) ) );
 		return e;
+	}
+
+	public static boolean getBoolean( final Element parent, final String name )
+	{
+		return Boolean.parseBoolean( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
+	}
+
+	public static boolean getBoolean( final Element parent, final String name, final boolean defaultValue )
+	{
+		final NodeList nodes = parent.getElementsByTagName( name );
+		return nodes.getLength() == 0 ? defaultValue : Boolean.parseBoolean( nodes.item( 0 ).getTextContent() );
 	}
 
 	public static double getDouble( final Element parent, final String name )
