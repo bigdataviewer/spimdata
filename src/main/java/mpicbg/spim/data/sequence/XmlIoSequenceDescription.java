@@ -72,16 +72,16 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 			missingViews = xmlMissingViews.fromXml( ( Element ) nodes.item( 0 ) );
 
 		ImgLoader imgLoader = null;
-		try
-		{
+		//try
+		//{
 			nodes = sequenceDescription.getElementsByTagName( xmlImgLoader.getTagName() );
 			if ( nodes.getLength() > 0 )
 				imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );
-		}
-		catch ( final ClassNotFoundException e )
-		{
-			e.printStackTrace( System.err );
-		}
+		//}
+		//catch ( final ClassNotFoundException e )
+		//{
+		//	e.printStackTrace( System.err );
+		//}
 
 		return new SequenceDescription< T, V >( timepoints, setups, missingViews, imgLoader );
 	}
