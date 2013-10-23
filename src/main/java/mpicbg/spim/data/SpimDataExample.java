@@ -13,6 +13,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import mpicbg.spim.data.sequence.TimePoint;
 import mpicbg.spim.data.sequence.ViewSetup;
+import mpicbg.spim.data.sequence.XmlIoSequenceDescription;
 
 import org.w3c.dom.Document;
 
@@ -20,6 +21,9 @@ public class SpimDataExample
 {
 	public static void main( final String[] args ) throws Exception
 	{
+		// catch the Exception so that we can run the test without having a implementation of ImgLoader
+		XmlIoSequenceDescription.catchClassNotFoundException = true;
+		
 		// load SpimData from xml file
 		final String xmlFilename = ClassLoader.getSystemResource( "example_timepointpattern.xml" ).getPath();
 		final XmlIoSpimData< TimePoint, ViewSetup > io = XmlIoSpimData.createDefault();

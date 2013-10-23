@@ -19,6 +19,9 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 
 	protected final XmlIoImgLoader xmlImgLoader;
 
+	// TODO: this is just so that the code runs for testing if set to true
+	public static boolean catchClassNotFoundException = false;
+	
 	/**
 	 * TODO
 	 */
@@ -72,17 +75,27 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 			missingViews = xmlMissingViews.fromXml( ( Element ) nodes.item( 0 ) );
 
 		ImgLoader imgLoader = null;
-		//try
-		//{
-			nodes = sequenceDescription.getElementsByTagName( xmlImgLoader.getTagName() );
-			if ( nodes.getLength() > 0 )
-				imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );
-		//}
-		//catch ( final ClassNotFoundException e )
-		//{
-		//	e.printStackTrace( System.err );
-		//}
+		nodes = sequenceDescription.getElementsByTagName( xmlImgLoader.getTagName() );
 
+		// TODO: this is really ugly but the only way right now test it without having an ImgLoader implementation
+		if ( catchClassNotFoundException )
+		{
+			try
+			{
+				if ( nodes.getLength() > 0 )
+					imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );
+			}
+			catch ( final ClassNotFoundException e )
+			{
+					e.printStackTrace( System.err );
+			}
+		}
+		else
+		{
+			if ( nodes.getLength() > 0 )
+				imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );			
+		}
+		
 		return new SequenceDescription< T, V >( timepoints, setups, missingViews, imgLoader );
 	}
 
