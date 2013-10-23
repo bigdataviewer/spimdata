@@ -43,7 +43,7 @@ public class Angle implements Comparable< Angle >
 
 	public Angle( final int id, final String name )
 	{
-		this( id, Double.NaN );
+		this( id, name, Double.NaN );
 	}
 
 	public Angle( final int id, final double rotationAngle )
