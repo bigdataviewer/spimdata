@@ -26,9 +26,13 @@
 		<ViewSetups>
 			<ViewSetup>
 				<id>0</id>
-				<angle>0</angle>
-				<illumination>0</illumination>
-				<channel>1</channel>
+				<angleId>0</angleId>
+				<angleName>0</angleName>
+				<angleRotation>0</angleRotation>
+				<angleRotationAxis>1,0,0</angleRotationAxis>
+				<illuminationId>0</illuminationId>
+				<channelId>0</channelId>
+				<channelName>1</channelName>
 				<width>0</width>
 				<height>0</height>
 				<depth>0</depth>
@@ -38,9 +42,13 @@
 			</ViewSetup>
 			<ViewSetup>
 				<id>1</id>
-				<angle>120</angle>
-				<illumination>0</illumination>
-				<channel>1</channel>
+				<angleId>1</angleId>
+				<angleName>120</angleName>
+				<angleRotation>120</angleRotation>
+				<angleRotationAxis>1,0,0</angleRotationAxis>
+				<illuminationId>0</illuminationId>
+				<channelId>0</channelId>
+				<channelName>1</channelName>
 				<width>0</width>
 				<height>0</height>
 				<depth>0</depth>
@@ -50,9 +58,13 @@
 			</ViewSetup>
 			<ViewSetup>
 				<id>2</id>
-				<angle>240</angle>
-				<illumination>0</illumination>
-				<channel>1</channel>
+				<angleId>2</angleId>
+				<angleName>240</angleName>
+				<angleRotation>240</angleRotation>
+				<angleRotationAxis>1,0,0</angleRotationAxis>
+				<illuminationId>0</illuminationId>
+				<channelId>0</channelId>
+				<channelName>1</channelName>
 				<width>0</width>
 				<height>0</height>
 				<depth>0</depth>
@@ -62,9 +74,13 @@
 			</ViewSetup>
 			<ViewSetup>
 				<id>3</id>
-				<angle>0</angle>
-				<illumination>0</illumination>
-				<channel>0</channel>
+				<angleId>0</angleId>
+				<angleName>0</angleName>
+				<angleRotation>0</angleRotation>
+				<angleRotationAxis>1,0,0</angleRotationAxis>
+				<illuminationId>0</illuminationId>
+				<channelId>1</channelId>
+				<channelName>0</channelName>
 				<width>0</width>
 				<height>0</height>
 				<depth>387</depth>
