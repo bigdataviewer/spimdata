@@ -5,7 +5,7 @@ package mpicbg.spim.data.sequence;
  * 
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
  */
-public class Illumination 
+public class Illumination implements Comparable< Illumination >
 {	
 	/**
 	 * The name of this illumination direction, for example used to replace it in filenames when opening
@@ -33,4 +33,7 @@ public class Illumination
 	public void setName( final String name ) { this.name = name; }
 	public String getName() { return name; }
 	public int getId() { return id; }
+
+	@Override
+	public int compareTo( final Illumination illumination ) { return getId() - illumination.getId(); }
 }

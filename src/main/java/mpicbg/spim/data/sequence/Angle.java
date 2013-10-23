@@ -5,7 +5,7 @@ package mpicbg.spim.data.sequence;
  * 
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
  */
-public class Angle 
+public class Angle implements Comparable< Angle >
 {
 	/**
 	 * The approximate rotation axis from the microscope metadata (if available, otherwise null)
@@ -71,4 +71,7 @@ public class Angle
 	public double getRotationAngle() { return rotationAngle; }
 	public String getName() { return name; }
 	public int getId() { return id; }
+
+	@Override
+	public int compareTo( final Angle angle ) { return getId() - angle.getId(); }
 }
