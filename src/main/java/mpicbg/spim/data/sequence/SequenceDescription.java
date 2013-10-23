@@ -2,6 +2,7 @@ package mpicbg.spim.data.sequence;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -128,4 +129,58 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	{
 		return viewDescriptions.get( timepoint * numViewSetups() + setup );
 	}
+	
+	/**
+	 * @return All {@link Channel}s that have a unique id and are part of the ViewSetups
+	 */
+	public ArrayList< Channel > getAllChannels()
+	{
+		final List< V > viewSetups = this.getViewSetups();
+		final HashMap< Integer, Channel > set = new HashMap< Integer, Channel >();
+		
+		for ( final ViewSetup v : viewSetups )
+			set.put( v.getChannel().getId(), v.getChannel() );
+
+		final ArrayList< Channel > channelList = new ArrayList< Channel >();
+		channelList.addAll( set.values() );
+		Collections.sort( channelList );
+		
+		return channelList;
+	}
+	
+	/**
+	 * @return All {@link Angle}s that have a unique id and are part of the ViewSetups
+	 */
+	public ArrayList< Angle > getAllAngles()
+	{
+		final List< V > viewSetups = this.getViewSetups();
+		final HashMap< Integer, Angle > set = new HashMap< Integer, Angle >();
+		
+		for ( final ViewSetup v : viewSetups )
+			set.put( v.getAngle().getId(), v.getAngle() );
+
+		final ArrayList< Angle > angleList = new ArrayList< Angle >();
+		angleList.addAll( set.values() );
+		Collections.sort( angleList );
+
+		return angleList;
+	}
+	
+	/**
+	 * @return All {@link Illumination}s that have a unique id and are part of the ViewSetups
+	 */
+	public ArrayList< Illumination > getAllIlluminations()
+	{
+		final List< V > viewSetups = this.getViewSetups();
+		final HashMap< Integer, Illumination > set = new HashMap< Integer, Illumination >();
+		
+		for ( final ViewSetup v : viewSetups )
+			set.put( v.getIllumination().getId(), v.getIllumination() );
+
+		final ArrayList< Illumination > illuminationList = new ArrayList< Illumination >();
+		illuminationList.addAll( set.values() );
+		Collections.sort( illuminationList );
+		
+		return illuminationList;
+	}	
 }
