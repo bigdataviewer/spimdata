@@ -14,19 +14,19 @@ public class ViewSetup implements Comparable< ViewSetup >
 	private final int id;
 
 	/**
-	 * Angle in degrees.
+	 * The {@link Angle} of this setup.
 	 */
-	private int angle;
+	private Angle angle;
 
 	/**
-	 * Illumination direction index.
+	 * The {@link Illumination} direction of this setup.
 	 */
-	private int illumination;
+	private Illumination illumination;
 
 	/**
-	 * Channel index
+	 * The {@link Channel} of this setup
 	 */
-	private int channel;
+	private Channel channel;
 
 	/**
 	 * width of stack slice in pixels.
@@ -65,9 +65,9 @@ public class ViewSetup implements Comparable< ViewSetup >
 
 	public ViewSetup(
 			final int id,
-			final int angle,
-			final int illumination,
-			final int channel,
+			final Angle angle,
+			final Illumination illumination,
+			final Channel channel,
 			final int width,
 			final int height,
 			final int depth,
@@ -91,9 +91,9 @@ public class ViewSetup implements Comparable< ViewSetup >
 
 	public ViewSetup(
 			final int id,
-			final int angle,
-			final int illumination,
-			final int channel )
+			final Angle angle,
+			final Illumination illumination,
+			final Channel channel )
 	{
 		this( id, angle, illumination, channel, -1, -1, -1, "", 1, 1, 1 );
 	}
@@ -109,64 +109,63 @@ public class ViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
-	 * Get stage rotation angle in degrees.
+	 * Get stage rotation {@link Angle}
 	 *
-	 * @return angle in degrees
+	 * @return The {@link Angle}
 	 */
-	public int getAngle()
+	public Angle getAngle()
 	{
 		return angle;
 	}
 
 	/**
-	 * Set stage rotation angle in degrees.
+	 * Set stage rotation {@link Angle}
 	 *
-	 * @param angle
-	 *            angle in degrees
+	 * @param The {@link Angle}
 	 */
-	public void setAngle( final int angle )
+	public void setAngle( final Angle angle )
 	{
 		this.angle = angle;
 	}
 
 	/**
-	 * Get index of illumination direction.
+	 * Get the {@link Illumination} direction.
 	 *
-	 * @return illumination direction index
+	 * @return {@link Illumination} direction
 	 */
-	public int getIllumination()
+	public Illumination getIllumination()
 	{
 		return illumination;
 	}
 
 	/**
-	 * Set index of illumination direction.
+	 * Set {@link Illumination} direction.
 	 *
 	 * @param illumination
-	 *            illumination direction index
+	 *            {@link Illumination} direction
 	 */
-	public void setIllumination( final int illumination )
+	public void setIllumination( final Illumination illumination )
 	{
 		this.illumination = illumination;
 	}
 
 	/**
-	 * Get channel index.
+	 * Get the {@link Channel}
 	 *
-	 * @return channel index
+	 * @return {@link Channel}
 	 */
-	public int getChannel()
+	public Channel getChannel()
 	{
 		return channel;
 	}
 
 	/**
-	 * Set channel index.
+	 * Set the {@link Channel}
 	 *
 	 * @param channel
-	 *            channel index
+	 *            {@link Channel}
 	 */
-	public void setChannel( final int channel )
+	public void setChannel( final Channel channel )
 	{
 		this.channel = channel;
 	}

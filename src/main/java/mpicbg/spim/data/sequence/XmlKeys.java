@@ -30,9 +30,14 @@ public class XmlKeys
 	public static final String VIEWSETUPS_TAG = "ViewSetups";
 	public static final String VIEWSETUP_TAG = "ViewSetup";
 	public static final String VIEWSETUP_ID_TAG = "id";
-	public static final String VIEWSETUP_ANGLE_TAG = "angle";
-	public static final String VIEWSETUP_ILLUMINATION_TAG = "illumination";
-	public static final String VIEWSETUP_CHANNEL_TAG = "channel";
+	public static final String VIEWSETUP_ANGLE_ID_TAG = "angleId";
+	public static final String VIEWSETUP_ANGLE_NAME_TAG = "angleName";
+	public static final String VIEWSETUP_ANGLE_ROTATION_TAG = "angleRotation";
+	public static final String VIEWSETUP_ANGLE_ROTATIONAXIS_TAG = "angleRotationAxis";
+	public static final String VIEWSETUP_ILLUMINATION_ID_TAG = "illuminationId";
+	public static final String VIEWSETUP_ILLUMINATION_NAME_TAG = "illuminationName";
+	public static final String VIEWSETUP_CHANNEL_ID_TAG = "channelId";
+	public static final String VIEWSETUP_CHANNEL_NAME_TAG = "channelName";
 	public static final String VIEWSETUP_WIDTH_TAG = "width";
 	public static final String VIEWSETUP_HEIGHT_TAG = "height";
 	public static final String VIEWSETUP_DEPTH_TAG = "depth";

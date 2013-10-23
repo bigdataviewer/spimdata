@@ -78,6 +78,24 @@ public class XmlHelpers
 		return e;
 	}
 
+	/**
+	 * Append a double array as comma-separated list of values
+	 * @param doc
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Element doubleArrayElement( final Document doc, final String name, final double[] value )
+	{
+		String valueString = Double.toString( value[ 0 ] );
+		for ( int i = 1; i < value.length; ++i )
+			valueString += "," + value[ i ];
+		
+		final Element e = doc.createElement( name );
+		e.appendChild( doc.createTextNode( valueString ) );
+		return e;
+	}
+
 	public static boolean getBoolean( final Element parent, final String name )
 	{
 		return Boolean.parseBoolean( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
@@ -98,6 +116,31 @@ public class XmlHelpers
 	{
 		final NodeList nodes = parent.getElementsByTagName( name );
 		return nodes.getLength() == 0 ? defaultValue : Double.parseDouble( nodes.item( 0 ).getTextContent() );
+	}
+
+	/**
+	 * @param parent
+	 * @param name
+	 * @param defaultValue
+	 * @return - comma-separated list of double values
+	 */
+	public static double[] getDoubleArray( final Element parent, final String name, final double[] defaultValue )
+	{
+		final NodeList nodes = parent.getElementsByTagName( name );
+		if ( nodes.getLength() == 0 )
+		{
+			return defaultValue;
+		}
+		else
+		{
+			final String[] entries = nodes.item( 0 ).getTextContent().split( "," );
+			final double[] array = new double[ entries.length ];
+			
+			for ( int i = 0; i < entries.length; ++i )
+				array[ i ] = Double.parseDouble( entries[ i ].trim() );
+			
+			return array;
+		}
 	}
 
 	public static Element textElement( final Document doc, final String name, final String value )

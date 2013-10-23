@@ -1,12 +1,17 @@
 package mpicbg.spim.data.sequence;
 
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUPS_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_CHANNEL_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_ID_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_NAME_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_ROTATION_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ANGLE_ROTATIONAXIS_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_CHANNEL_ID_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_CHANNEL_NAME_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_DEPTH_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_HEIGHT_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ID_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ILLUMINATION_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ILLUMINATION_ID_TAG;
+import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_ILLUMINATION_NAME_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELDEPTH_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELHEIGHT_TAG;
 import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUP_PIXELWIDTH_TAG;
@@ -35,9 +40,17 @@ public class XmlIoViewSetups extends XmlIoViewSetupsAbstract< ViewSetup >
 		{
 			final Element elem = ( Element ) nodes.item( i );
 			final int id = XmlHelpers.getInt( elem, VIEWSETUP_ID_TAG );
-			final int angle = XmlHelpers.getInt( elem, VIEWSETUP_ANGLE_TAG );
-			final int illumination = XmlHelpers.getInt( elem, VIEWSETUP_ILLUMINATION_TAG );
-			final int channel = XmlHelpers.getInt( elem, VIEWSETUP_CHANNEL_TAG );
+			
+			final int angleId = XmlHelpers.getInt( elem, VIEWSETUP_ANGLE_ID_TAG );
+			final String angleName = XmlHelpers.getText( elem, VIEWSETUP_ANGLE_NAME_TAG, Integer.toString( angleId ) );
+			final double rotation = XmlHelpers.getDouble( elem, VIEWSETUP_ANGLE_ROTATION_TAG, Double.NaN );
+			final double[] rotationAxis = XmlHelpers.getDoubleArray( elem, VIEWSETUP_ANGLE_ROTATIONAXIS_TAG, null );
+			
+			final int illuminationId = XmlHelpers.getInt( elem, VIEWSETUP_ILLUMINATION_ID_TAG );
+			final String illuminationName = XmlHelpers.getText( elem, VIEWSETUP_ILLUMINATION_NAME_TAG, Integer.toString( illuminationId ) );
+			
+			final int channelId = XmlHelpers.getInt( elem, VIEWSETUP_CHANNEL_ID_TAG );
+			final String channelName = XmlHelpers.getText( elem, VIEWSETUP_CHANNEL_NAME_TAG, Integer.toString( channelId ) );
 
 			final int width = XmlHelpers.getInt( elem, VIEWSETUP_WIDTH_TAG, -1 );
 			final int height = XmlHelpers.getInt( elem, VIEWSETUP_HEIGHT_TAG, -1 );
@@ -47,7 +60,11 @@ public class XmlIoViewSetups extends XmlIoViewSetupsAbstract< ViewSetup >
 			final double pixelHeight = XmlHelpers.getDouble( elem, VIEWSETUP_PIXELHEIGHT_TAG, -1 );
 			final double pixelDepth = XmlHelpers.getDouble( elem, VIEWSETUP_PIXELDEPTH_TAG, -1 );
 
-			setups.add( new ViewSetup( id, angle, illumination, channel, width, height, depth, unit, pixelWidth, pixelHeight, pixelDepth ) );
+			setups.add( new ViewSetup( id, 
+					new Angle( angleId, angleName, rotation, rotationAxis ),
+					new Illumination( illuminationId, illuminationName ),
+					new Channel( channelId, channelName), 
+					width, height, depth, unit, pixelWidth, pixelHeight, pixelDepth ) );
 		}
 		Collections.sort( setups ); // sorts by id
 		return setups;
@@ -61,10 +78,20 @@ public class XmlIoViewSetups extends XmlIoViewSetupsAbstract< ViewSetup >
 		{
 			final Element setup = doc.createElement( VIEWSETUP_TAG );
 			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_ID_TAG, s.getId() ) );
-			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_ANGLE_TAG, s.getAngle() ) );
-			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_ILLUMINATION_TAG, s.getIllumination() ) );
-			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_CHANNEL_TAG, s.getChannel() ) );
-
+			
+			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_ANGLE_ID_TAG, s.getAngle().getId() ) );
+			setup.appendChild( XmlHelpers.textElement( doc, VIEWSETUP_ANGLE_NAME_TAG, s.getAngle().getName() ) );
+			if ( !Double.isNaN( s.getAngle().getRotationAngle() ) )
+				setup.appendChild( XmlHelpers.doubleElement( doc, VIEWSETUP_ANGLE_ROTATION_TAG, s.getAngle().getRotationAngle() ) );
+			if ( s.getAngle().getRotationAxis() != null )
+				setup.appendChild( XmlHelpers.doubleArrayElement( doc, VIEWSETUP_ANGLE_ROTATIONAXIS_TAG, s.getAngle().getRotationAxis() ) );
+			
+			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_ILLUMINATION_ID_TAG, s.getIllumination().getId() ) );
+			setup.appendChild( XmlHelpers.textElement( doc, VIEWSETUP_ILLUMINATION_NAME_TAG, s.getIllumination().getName() ) );
+			
+			setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_CHANNEL_ID_TAG, s.getChannel().getId() ) );
+			setup.appendChild( XmlHelpers.textElement( doc, VIEWSETUP_CHANNEL_NAME_TAG, s.getChannel().getName() ) );
+			
 			if ( s.getWidth() != -1 )
 				setup.appendChild( XmlHelpers.intElement( doc, VIEWSETUP_WIDTH_TAG, s.getWidth() ) );
 			if ( s.getHeight() != -1 )
