@@ -35,4 +35,10 @@ public class TimePoint
 	{
 		this.name = name;
 	}
+	
+	@Override
+	public int hashCode() 
+	{
+		return getId();
+	}
 }

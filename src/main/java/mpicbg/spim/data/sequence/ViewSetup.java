@@ -334,4 +334,10 @@ public class ViewSetup implements Comparable< ViewSetup >
 	{
 		return id - o.id;
 	}
+	
+	@Override
+	public int hashCode() 
+	{
+		return getId();
+	}
 }
