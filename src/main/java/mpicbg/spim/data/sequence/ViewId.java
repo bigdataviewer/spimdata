@@ -53,4 +53,11 @@ public class ViewId implements Comparable< ViewId >
 		else
 			return timepoint - o.timepoint;
 	}
+	
+	@Override
+	public int hashCode() 
+	{
+		// some non-colliding hash assuming we have not more that 100000 viewsetups
+		return getViewSetupId() + getTimePointId() * 100000;
+	}
 }

@@ -45,11 +45,5 @@ public class ViewDescription< T extends TimePoint, V extends ViewSetup > extends
 		super( timepointId, setupId );
 		this.present = present;
 		this.sequenceDescription = sequenceDescription;
-	}
-	
-	@Override
-	public int hashCode() 
-	{
-		return getViewSetupId() + getTimePointId() * sequenceDescription.getViewSetups().size();
-	}
+	}	
 }
