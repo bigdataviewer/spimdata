@@ -46,6 +46,28 @@ public class ViewId implements Comparable< ViewId >
 	}
 
 	@Override
+	public boolean equals( final Object o )
+	{
+		if ( o == null )
+		{
+			return false;
+		}
+		else if ( o instanceof ViewId )
+		{
+			final ViewId i = (ViewId)o;
+			
+			if ( i.getTimePointId() == getTimePointId() && i.getViewSetupId() == getViewSetupId() )
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	@Override
 	public int compareTo( final ViewId o )
 	{
 		if ( timepoint == o.timepoint )
