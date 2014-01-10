@@ -6,6 +6,10 @@ import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TAG;
 import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
+import mpicbg.spim.data.sequence.ViewId;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,18 +46,31 @@ public class XmlIoViewRegistrations
 	 */
 	public ViewRegistrations fromXml( final Element viewRegistrations ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
-		final ArrayList< ViewRegistration > regs = new ArrayList< ViewRegistration >();
+		final HashMap< ViewId, ViewRegistration > regs = new HashMap< ViewId, ViewRegistration >();
 		final NodeList nodes = viewRegistrations.getElementsByTagName( VIEWREGISTRATION_TAG );
 		for ( int i = 0; i < nodes.getLength(); ++i )
-			regs.add( viewRegistrationFromXml( ( Element ) nodes.item( i ) ) );
+		{
+			final ViewRegistration vr = viewRegistrationFromXml( ( Element ) nodes.item( i ) ); 
+			regs.put( vr, vr );
+		}
 		return new ViewRegistrations( regs );
 	}
 
 	public Element toXml( final Document doc, final ViewRegistrations viewRegistrations ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
 		final Element elem = doc.createElement( VIEWREGISTRATIONS_TAG );
-		for ( final ViewRegistration vr : viewRegistrations.getRegistrations() )
+		
+		// sort the ViewRegistration objects so that they can be easily edited manually
+		final ArrayList< ViewRegistration > vrList = new ArrayList< ViewRegistration >();
+		vrList.addAll( viewRegistrations.getRegistrations().values() );
+		Collections.sort( vrList );
+
+		for ( final ViewRegistration vr : vrList )
+		{
+			System.out.println( vr.getTimePointId() + " " + vr.getViewSetupId() );
 			elem.appendChild( viewRegistrationToXml( doc, vr ) );
+		}
+		
 		return elem;
 	}
 
