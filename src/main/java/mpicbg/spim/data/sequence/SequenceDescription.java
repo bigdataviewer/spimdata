@@ -44,7 +44,10 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	 */
 	final protected ImgLoader imgLoader;
 
-	final protected ArrayList< ViewDescription< T, V > > viewDescriptions;
+	/**
+	 * links ViewId to the ViewDescriptions
+	 */
+	final protected HashMap< ViewId, ViewDescription< T, V > > viewDescriptions;
 
 	public SequenceDescription( final TimePoints< T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final ImgLoader imgLoader )
 	{
@@ -57,12 +60,16 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 		this.viewDescriptions = createViewDescriptions();
 	}
 
-	protected ArrayList< ViewDescription< T, V > > createViewDescriptions()
+	protected HashMap< ViewId, ViewDescription< T, V > > createViewDescriptions()
 	{
-		final ArrayList< ViewDescription< T, V > > descs = new ArrayList< ViewDescription< T, V > >();
+		final HashMap< ViewId, ViewDescription< T, V > > descs = new HashMap< ViewId, ViewDescription< T, V > >();
 		for ( int ti = 0; ti < numTimePoints(); ++ti )
 			for ( int si = 0; si < numViewSetups(); ++si )
-				descs.add( new ViewDescription< T, V >( this, true, this.timepoints.getTimePointList().get( ti ).getId(), this.setups.get( si ).getId() ) );
+			{
+				final ViewDescription< T, V > viewDescription = 
+						new ViewDescription< T, V >( this, true, this.timepoints.getTimePointList().get( ti ).getId(), this.setups.get( si ).getId() ); 
+				descs.put( viewDescription, viewDescription );
+			}
 		if ( missingViews != null )
 			return missingViews.markMissingViews( descs );
 		else
@@ -117,19 +124,29 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	/**
 	 * @return All {@link ViewDescription}s, the respective isPresent flag defines if it is available for the respective timepoint
 	 */
-	public ArrayList< ViewDescription< T, V > > getViewDescriptions() { return viewDescriptions; } 
+	public HashMap< ViewId, ViewDescription< T, V > > getViewDescriptions() { return viewDescriptions; } 
 
 	/**
-	 * @param timepoint
-	 * @param setup
+	 * @param timepointId
+	 * @param setupId
 	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 
 	 * its isPresent flag defines if it is available for this timepoint  
 	 */
-	public ViewDescription< T, V > getViewDescription( final int timepoint, final int setup )
+	public ViewDescription< T, V > getViewDescription( final int timepointId, final int setupId )
 	{
-		return viewDescriptions.get( timepoint * numViewSetups() + setup );
+		return getViewDescription( new ViewId( timepointId, setupId ) );
 	}
-	
+
+	/**
+	 * @param ViewId
+	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 
+	 * its isPresent flag defines if it is available for this timepoint  
+	 */
+	public ViewDescription< T, V > getViewDescription( final ViewId viewId )
+	{
+		return viewDescriptions.get( viewId );
+	}
+
 	/**
 	 * @return All {@link Channel}s that have a unique id and are part of the ViewSetups
 	 */

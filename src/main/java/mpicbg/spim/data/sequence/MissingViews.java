@@ -2,7 +2,7 @@ package mpicbg.spim.data.sequence;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 
 public class MissingViews
@@ -19,45 +19,20 @@ public class MissingViews
 	}
 
 	/**
-	 * TODO
-	 * assumed ordered
-	 *
 	 * @param viewDescriptions
 	 * @return ordered
 	 */
-	public < T extends TimePoint, V extends ViewSetup > ArrayList< ViewDescription< T, V > > markMissingViews(
-			final ArrayList< ViewDescription< T, V > > viewDescriptions )
+	public < T extends TimePoint, V extends ViewSetup > HashMap< ViewId, ViewDescription< T, V > > markMissingViews(
+			final HashMap< ViewId, ViewDescription< T, V > > viewDescriptions )
 	{
-		if ( viewDescriptions.isEmpty() || missingViews.isEmpty() )
-			return viewDescriptions;
-		final Iterator< ViewDescription< T, V >> ri = viewDescriptions.iterator();
-		final Iterator< ViewId > mi = missingViews.iterator();
-		ViewDescription< T, V > r = ri.next();
-		ViewId m = mi.next();
-		while ( true )
+		for ( final ViewId viewId : missingViews )
 		{
-			final int m2r = m.compareTo( r );
-			if ( m2r > 0 )
-			{
-				if ( !ri.hasNext() )
-					break;
-				r = ri.next();
-			}
-			else if ( m2r < 0 )
-			{
-				if ( !mi.hasNext() )
-					break;
-				m = mi.next();
-			}
-			else // if ( m2r == 0 )
-			{
-				r.present = false;
-				if ( ( !ri.hasNext() ) || ( !mi.hasNext() ) )
-					break;
-				r = ri.next();
-				m = mi.next();
-			}
+			final ViewDescription< T, V > viewDesc = viewDescriptions.get( viewId );
+			
+			if ( viewDesc != null )
+				viewDesc.present = false;
 		}
+		
 		return viewDescriptions;
 	}
 }
