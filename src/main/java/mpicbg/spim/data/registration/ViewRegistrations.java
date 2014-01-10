@@ -1,5 +1,7 @@
 package mpicbg.spim.data.registration;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import mpicbg.spim.data.sequence.ViewId;
@@ -31,5 +33,13 @@ public class ViewRegistrations
 	public HashMap< ViewId, ViewRegistration > getRegistrations()
 	{
 		return registrations;
+	}
+	
+	public ArrayList< ViewRegistration > getOrderedViewRegistrations()
+	{
+		final ArrayList< ViewRegistration > list = new ArrayList< ViewRegistration >();
+		list.addAll( getRegistrations().values() );
+		Collections.sort( list );
+		return list;
 	}
 }

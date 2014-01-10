@@ -127,6 +127,18 @@ public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
 	public HashMap< ViewId, ViewDescription< T, V > > getViewDescriptions() { return viewDescriptions; } 
 
 	/**
+	 * @return All {@link ViewDescription}s, the respective isPresent flag defines if it is available for the respective timepoint,
+	 * all {@link ViewDescription}s are sorted by ViewId
+	 */
+	public ArrayList< ViewDescription< T, V > > getOrderedViewDescriptions()
+	{
+		final ArrayList< ViewDescription< T, V > > list = new ArrayList< ViewDescription< T,V > >();
+		list.addAll( getViewDescriptions().values() );
+		Collections.sort( list );
+		return list;
+	}
+	
+	/**
 	 * @param timepointId
 	 * @param setupId
 	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 

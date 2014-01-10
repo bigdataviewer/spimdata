@@ -6,7 +6,6 @@ import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TAG;
 import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import mpicbg.spim.data.sequence.ViewId;
@@ -60,12 +59,7 @@ public class XmlIoViewRegistrations
 	{
 		final Element elem = doc.createElement( VIEWREGISTRATIONS_TAG );
 		
-		// sort the ViewRegistration objects so that they can be easily edited manually
-		final ArrayList< ViewRegistration > vrList = new ArrayList< ViewRegistration >();
-		vrList.addAll( viewRegistrations.getRegistrations().values() );
-		Collections.sort( vrList );
-
-		for ( final ViewRegistration vr : vrList )
+		for ( final ViewRegistration vr : viewRegistrations.getOrderedViewRegistrations() )
 			elem.appendChild( viewRegistrationToXml( doc, vr ) );
 		
 		return elem;
