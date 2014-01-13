@@ -95,7 +95,7 @@ public class ViewSetup implements Comparable< ViewSetup >
 			final Illumination illumination,
 			final Channel channel )
 	{
-		this( id, angle, illumination, channel, -1, -1, -1, "", 1, 1, 1 );
+		this( id, angle, illumination, channel, -1, -1, -1, "", -1, -1, -1 );
 	}
 
 	/**

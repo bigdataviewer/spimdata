@@ -26,7 +26,8 @@ public interface ImgLoader
 	// List of ImgLoader
 
 	/**
-	 * Get {@link FloatType} image normalized to the range [0,1].
+	 * Get {@link FloatType} image normalized to the range [0,1]. Also updates the metadata of the ViewSetup if
+	 * calibration and/or dimensions are set to -1 still. 
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
@@ -37,11 +38,22 @@ public interface ImgLoader
 	public RandomAccessibleInterval< FloatType > getImage( ViewDescription< ?, ? > view, boolean normalize );
 
 	/**
-	 * Get {@link UnsignedShortType} un-normalized image.
+	 * Get {@link UnsignedShortType} un-normalized image. Also updates the metadata of the ViewSetup if
+	 * calibration and/or dimensions are set to -1 still. 
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
 	 * @return {@link UnsignedShortType} image.
 	 */
 	public RandomAccessibleInterval< UnsignedShortType > getUnsignedShortImage( ViewDescription< ?, ? > view );
+	
+	/**
+	 * Load only the metadata for this viewdescription and update the viewsetup accordingly. 
+	 * This includes the calibration and dimensions.
+	 * 
+	 * @param view
+	 *            timepoint and setup for which to retrieve the image.
+	 * @return
+	 */
+	public boolean loadMetaData( ViewDescription< ?, ? > view );
 }
