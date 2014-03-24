@@ -1,7 +1,7 @@
 package mpicbg.spim.data.sequence;
 
 // TODO: getter setter, constructor
-public class TimePoint
+public class TimePoint implements Comparable< TimePoint >
 {
 	/**
 	 * This unique id is the index of this {@link TimePoint} in
@@ -37,8 +37,28 @@ public class TimePoint
 	}
 	
 	@Override
-	public int hashCode() 
+	public int hashCode() { return getId(); }
+	
+	@Override
+	public boolean equals( final Object o )
 	{
-		return getId();
+		if ( o == null )
+		{
+			return false;
+		}
+		else if ( o instanceof TimePoint )
+		{
+			if ( ((TimePoint)o).getId() == getId() )
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			return false;
+		}
 	}
+	
+	@Override
+	public int compareTo( final TimePoint o ) { return id - o.getId(); }
 }

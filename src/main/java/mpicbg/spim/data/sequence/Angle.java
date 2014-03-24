@@ -74,4 +74,27 @@ public class Angle implements Comparable< Angle >
 
 	@Override
 	public int compareTo( final Angle angle ) { return getId() - angle.getId(); }
+	
+	@Override
+	public int hashCode() { return getId(); }
+	
+	@Override
+	public boolean equals( final Object o )
+	{
+		if ( o == null )
+		{
+			return false;
+		}
+		else if ( o instanceof Angle )
+		{
+			if ( ((Angle)o).getId() == getId() )
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

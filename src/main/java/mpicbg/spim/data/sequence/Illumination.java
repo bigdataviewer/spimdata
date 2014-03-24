@@ -36,4 +36,27 @@ public class Illumination implements Comparable< Illumination >
 
 	@Override
 	public int compareTo( final Illumination illumination ) { return getId() - illumination.getId(); }
+
+	@Override
+	public int hashCode() { return getId(); }
+	
+	@Override
+	public boolean equals( final Object o )
+	{
+		if ( o == null )
+		{
+			return false;
+		}
+		else if ( o instanceof Illumination )
+		{
+			if ( ((Illumination)o).getId() == getId() )
+				return true;
+			else
+				return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
