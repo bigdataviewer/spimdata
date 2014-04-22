@@ -5,9 +5,7 @@ import static mpicbg.spim.data.sequence.XmlKeys.SEQUENCEDESCRIPTION_TAG;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jdom2.Element;
 
 public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup >
 {
@@ -21,7 +19,7 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 
 	// TODO: this is just so that the code runs for testing if set to true
 	public static boolean catchClassNotFoundException = false;
-	
+
 	/**
 	 * TODO
 	 */
@@ -53,37 +51,37 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 	 * @param element
 	 *            a {@value XmlKeys#SEQUENCEDESCRIPTION_TAG} DOM element.
 	 * @return sequence represented by the specified DOM element.
-	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	public SequenceDescription< T, V > fromXml( final Element sequenceDescription, final File basePath ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
-		NodeList nodes = sequenceDescription.getElementsByTagName( xmlTimePoints.getTagName() );
-		if ( nodes.getLength() == 0 )
+		Element elem = sequenceDescription.getChild( xmlTimePoints.getTagName() );
+		if ( elem == null )
 			throw new IllegalArgumentException( "no <" + xmlTimePoints.getTagName() + "> element found." );
-		final TimePoints< T > timepoints = xmlTimePoints.fromXml( ( Element ) nodes.item( 0 ) );
+		final TimePoints< T > timepoints = xmlTimePoints.fromXml( elem );
 
-		nodes = sequenceDescription.getElementsByTagName( xmlViewSetups.getTagName() );
-		if ( nodes.getLength() == 0 )
+		elem = sequenceDescription.getChild( xmlViewSetups.getTagName() );
+		if ( elem == null )
 			throw new IllegalArgumentException( "no <" + xmlViewSetups.getTagName() + "> element found." );
-		final ArrayList< V > setups = xmlViewSetups.fromXml( ( Element ) nodes.item( 0 ) );
+		final ArrayList< V > setups = xmlViewSetups.fromXml( elem );
 
 		MissingViews missingViews = null;
-		nodes = sequenceDescription.getElementsByTagName( xmlMissingViews.getTagName() );
-		if ( nodes.getLength() > 0 )
-			missingViews = xmlMissingViews.fromXml( ( Element ) nodes.item( 0 ) );
+		elem = sequenceDescription.getChild( xmlMissingViews.getTagName() );
+		if ( elem != null )
+			missingViews = xmlMissingViews.fromXml( elem );
 
 		ImgLoader imgLoader = null;
-		nodes = sequenceDescription.getElementsByTagName( xmlImgLoader.getTagName() );
+		elem = sequenceDescription.getChild( xmlImgLoader.getTagName() );
 
 		// TODO: this is really ugly but the only way right now test it without having an ImgLoader implementation
 		if ( catchClassNotFoundException )
 		{
 			try
 			{
-				if ( nodes.getLength() > 0 )
-					imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );
+				if ( elem != null )
+					imgLoader = xmlImgLoader.fromXml( elem, basePath );
 			}
 			catch ( final ClassNotFoundException e )
 			{
@@ -92,22 +90,22 @@ public class XmlIoSequenceDescription< T extends TimePoint, V extends ViewSetup 
 		}
 		else
 		{
-			if ( nodes.getLength() > 0 )
-				imgLoader = xmlImgLoader.fromXml( ( Element ) nodes.item( 0 ), basePath );			
+			if ( elem != null )
+				imgLoader = xmlImgLoader.fromXml( elem, basePath );
 		}
-		
+
 		return new SequenceDescription< T, V >( timepoints, setups, missingViews, imgLoader );
 	}
 
-	public Element toXml( final Document doc, final SequenceDescription< T, V > sequenceDescription, final File basePath )
+	public Element toXml( final SequenceDescription< T, V > sequenceDescription, final File basePath )
 	{
-		final Element elem = doc.createElement( SEQUENCEDESCRIPTION_TAG );
+		final Element elem = new Element( SEQUENCEDESCRIPTION_TAG );
 		if ( sequenceDescription.getImgLoader() != null )
-			elem.appendChild( xmlImgLoader.toXml( doc, basePath, sequenceDescription.getImgLoader() ) );
-		elem.appendChild( xmlViewSetups.toXml( doc, sequenceDescription.getViewSetups() ) );
-		elem.appendChild( xmlTimePoints.toXml( doc, sequenceDescription.getTimePoints() ) );
+			elem.addContent( xmlImgLoader.toXml( basePath, sequenceDescription.getImgLoader() ) );
+		elem.addContent( xmlViewSetups.toXml( sequenceDescription.getViewSetups() ) );
+		elem.addContent( xmlTimePoints.toXml( sequenceDescription.getTimePoints() ) );
 		if ( sequenceDescription.getMissingViews() != null && sequenceDescription.getMissingViews().missingViews.size() > 0 )
-			elem.appendChild( xmlMissingViews.toXml( doc, sequenceDescription.getMissingViews() ) );
+			elem.addContent( xmlMissingViews.toXml( sequenceDescription.getMissingViews() ) );
 		return elem;
 	}
 }

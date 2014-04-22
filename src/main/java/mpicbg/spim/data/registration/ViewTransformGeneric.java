@@ -1,7 +1,6 @@
 package mpicbg.spim.data.registration;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.jdom2.Element;
 
 public interface ViewTransformGeneric extends ViewTransform
 {
@@ -13,5 +12,5 @@ public interface ViewTransformGeneric extends ViewTransform
 	/**
 	 * create a &lt;{@value XmlKeys#VIEWTRANSFORM_TAG}&gt; DOM element for this {@link ViewTransform}.
 	 */
-	public Element toXml( final Document doc );
+	public Element toXml();
 }

@@ -6,8 +6,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 import net.imglib2.type.numeric.real.FloatType;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.jdom2.Element;
 
 public interface ImgLoader
 {
@@ -19,7 +18,7 @@ public interface ImgLoader
 	/**
 	 * create a &lt;{@value XmlKeys#IMGLOADER_TAG}&gt; DOM element for this loader.
 	 */
-	public Element toXml( final Document doc, final File basePath );
+	public Element toXml( final File basePath );
 
 	// TODO: TypedImgLoader
 	// min max
@@ -27,7 +26,7 @@ public interface ImgLoader
 
 	/**
 	 * Get {@link FloatType} image normalized to the range [0,1]. Also updates the metadata of the ViewSetup if
-	 * calibration and/or dimensions are set to -1 still. 
+	 * calibration and/or dimensions are set to -1 still.
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
@@ -39,18 +38,18 @@ public interface ImgLoader
 
 	/**
 	 * Get {@link UnsignedShortType} un-normalized image. Also updates the metadata of the ViewSetup if
-	 * calibration and/or dimensions are set to -1 still. 
+	 * calibration and/or dimensions are set to -1 still.
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
 	 * @return {@link UnsignedShortType} image.
 	 */
 	public RandomAccessibleInterval< UnsignedShortType > getUnsignedShortImage( ViewDescription< ?, ? > view );
-	
+
 	/**
-	 * Load only the metadata for this viewdescription and update the viewsetup accordingly. 
+	 * Load only the metadata for this viewdescription and update the viewsetup accordingly.
 	 * This includes the calibration and dimensions.
-	 * 
+	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image.
 	 * @return

@@ -5,8 +5,7 @@ import static mpicbg.spim.data.sequence.XmlKeys.VIEWSETUPS_TAG;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.jdom2.Element;
 
 public abstract class XmlIoViewSetupsAbstract< V extends ViewSetup >
 {
@@ -20,6 +19,6 @@ public abstract class XmlIoViewSetupsAbstract< V extends ViewSetup >
 
 	public abstract ArrayList< V > fromXml( final Element viewSetups );
 
-	public abstract Element toXml( final Document doc, final List< V > viewSetups );
+	public abstract Element toXml( final List< V > viewSetups );
 
 }

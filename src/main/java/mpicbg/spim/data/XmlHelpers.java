@@ -1,81 +1,82 @@
 package mpicbg.spim.data;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import net.imglib2.realtransform.AffineGet;
 import net.imglib2.realtransform.AffineTransform3D;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jdom2.Element;
 
 public class XmlHelpers
 {
-	public static Document newXmlDocument() throws ParserConfigurationException
-	{
-		final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		return docBuilder.newDocument();
-	}
+//	public static Document newXmlDocument() throws ParserConfigurationException
+//	{
+//		final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+//		final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+//		return docBuilder.newDocument();
+//	}
+//
+//	public static void writeXmlDocument( final Document doc, final String xmlFilename ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
+//	{
+//		writeXmlDocument( doc, new File( xmlFilename ) );
+//	}
+//
+//	public static void writeXmlDocument( final Document doc, final File xmlFile ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
+//	{
+//		final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//		transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
+//		transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8" );
+//		transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "4" );
+//		transformer.transform( new DOMSource( doc ), new StreamResult( new FileOutputStream( xmlFile ) ) );
+//	}
 
-	public static void writeXmlDocument( final Document doc, final String xmlFilename ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
+	public static Element intElement( final String name, final int value )
 	{
-		writeXmlDocument( doc, new File( xmlFilename ) );
-	}
-
-	public static void writeXmlDocument( final Document doc, final File xmlFile ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
-	{
-		final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
-		transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8" );
-		transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "4" );
-		transformer.transform( new DOMSource( doc ), new StreamResult( new FileOutputStream( xmlFile ) ) );
-	}
-
-	public static Element intElement( final Document doc, final String name, final int value )
-	{
-		final Element e = doc.createElement( name );
-		e.appendChild( doc.createTextNode( Integer.toString( value ) ) );
-		return e;
-	}
-
-	public static Element booleanElement( final Document doc, final String name, final boolean value )
-	{
-		final Element e = doc.createElement( name );
-		e.appendChild( doc.createTextNode( Boolean.toString( value ) ) );
-		return e;
+		return new Element( name ).addContent( Integer.toString( value ) );
 	}
 
 	public static int getInt( final Element parent, final String name )
 	{
-		return Integer.parseInt( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
+		return Integer.parseInt( parent.getChildText( name ) );
 	}
 
 	public static int getInt( final Element parent, final String name, final int defaultValue )
 	{
-		final NodeList nodes = parent.getElementsByTagName( name );
-		return nodes.getLength() == 0 ? defaultValue : Integer.parseInt( nodes.item( 0 ).getTextContent() );
+		final String text = parent.getChildText( name );
+		return text == null ? defaultValue : Integer.parseInt( text );
 	}
 
-	public static Element doubleElement( final Document doc, final String name, final double value )
+	public static Element booleanElement( final String name, final boolean value )
 	{
-		final Element e = doc.createElement( name );
-		e.appendChild( doc.createTextNode( Double.toString( value ) ) );
-		return e;
+		return new Element( name ).addContent( Boolean.toString( value ) );
+	}
+
+	public static boolean getBoolean( final Element parent, final String name )
+	{
+		return Boolean.parseBoolean( parent.getChildText( name ) );
+	}
+
+	public static boolean getBoolean( final Element parent, final String name, final boolean defaultValue )
+	{
+		final String text = parent.getChildText( name );
+		return text == null ? defaultValue : Boolean.parseBoolean( text );
+	}
+
+	public static Element doubleElement( final String name, final double value )
+	{
+		return new Element( name ).addContent( Double.toString( value ) );
+	}
+
+	public static double getDouble( final Element parent, final String name )
+	{
+		return Double.parseDouble( parent.getChildText( name ) );
+	}
+
+	public static double getDouble( final Element parent, final String name, final double defaultValue )
+	{
+		final String text = parent.getChildText( name );
+		return text == null ? defaultValue : Double.parseDouble( text );
 	}
 
 	/**
@@ -85,87 +86,91 @@ public class XmlHelpers
 	 * @param value
 	 * @return
 	 */
-	public static Element doubleArrayElement( final Document doc, final String name, final double[] value )
+	public static Element doubleArrayElement( final String name, final double[] value )
 	{
 		String valueString = Double.toString( value[ 0 ] );
 		for ( int i = 1; i < value.length; ++i )
 			valueString += "," + value[ i ];
-		
-		final Element e = doc.createElement( name );
-		e.appendChild( doc.createTextNode( valueString ) );
-		return e;
-	}
 
-	public static boolean getBoolean( final Element parent, final String name )
-	{
-		return Boolean.parseBoolean( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
-	}
-
-	public static boolean getBoolean( final Element parent, final String name, final boolean defaultValue )
-	{
-		final NodeList nodes = parent.getElementsByTagName( name );
-		return nodes.getLength() == 0 ? defaultValue : Boolean.parseBoolean( nodes.item( 0 ).getTextContent() );
-	}
-
-	public static double getDouble( final Element parent, final String name )
-	{
-		return Double.parseDouble( parent.getElementsByTagName( name ).item( 0 ).getTextContent() );
-	}
-
-	public static double getDouble( final Element parent, final String name, final double defaultValue )
-	{
-		final NodeList nodes = parent.getElementsByTagName( name );
-		return nodes.getLength() == 0 ? defaultValue : Double.parseDouble( nodes.item( 0 ).getTextContent() );
+		return new Element( name ).addContent( valueString );
 	}
 
 	/**
 	 * @param parent
 	 * @param name
 	 * @param defaultValue
-	 * @return - comma-separated list of double values
+	 * @return comma-separated list of double values
 	 */
 	public static double[] getDoubleArray( final Element parent, final String name, final double[] defaultValue )
 	{
-		final NodeList nodes = parent.getElementsByTagName( name );
-		if ( nodes.getLength() == 0 )
+		final String text = parent.getChildText( name );
+		if ( text == null )
 		{
 			return defaultValue;
 		}
 		else
 		{
-			final String[] entries = nodes.item( 0 ).getTextContent().split( "," );
+			final String[] entries = text.split( "," );
 			final double[] array = new double[ entries.length ];
-			
+
 			for ( int i = 0; i < entries.length; ++i )
 				array[ i ] = Double.parseDouble( entries[ i ].trim() );
-			
+
 			return array;
 		}
 	}
 
-	public static Element textElement( final Document doc, final String name, final String value )
+	public static Element textElement( final String name, final String text )
 	{
-		final Element e = doc.createElement( name );
-		e.appendChild( doc.createTextNode( value ) );
-		return e;
+		return new Element( name ).addContent( text );
 	}
 
+	// TODO: REMOVE
 	public static String getText( final Element parent, final String name )
 	{
-		return parent.getElementsByTagName( name ).item( 0 ).getTextContent();
+		return parent.getChildText( name );
 	}
 
 	public static String getText( final Element parent, final String name, final String defaultValue )
 	{
-		final NodeList nodes = parent.getElementsByTagName( name );
-		return nodes.getLength() == 0 ? defaultValue : nodes.item( 0 ).getTextContent();
+		final String text = parent.getChildText( name );
+		return text == null ? defaultValue : text;
 	}
 
-	public static File loadPath( final Element parent, final String name, final String defaultRelativePath, final File basePath ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	public static Element affineTransform3DElement( final String name, final AffineGet value )
 	{
-		final NodeList nd = parent.getElementsByTagName( name );
-		final String path = nd.getLength() > 0 ? nd.item( 0 ).getTextContent() : defaultRelativePath;
-		final boolean isRelative = nd.getLength() > 0 ? ( ( Element ) nd.item( 0 ) ).getAttribute( "type" ).equals( "relative" ) : true;
+		final Element e = new Element( name );
+		final double[] v = value.getRowPackedCopy();
+		final String text =
+				v[0] + " " + v[1] + " " + v[2] + " " + v[3] + " " +
+				v[4] + " " + v[5] + " " + v[6] + " " + v[7] + " " +
+				v[8] + " " + v[9] + " " + v[10] + " " + v[11];
+		e.setText( text );
+		return e;
+	}
+
+	public static AffineTransform3D loadAffineTransform3D( final Element elem )
+	{
+		final String data = elem.getText();
+		final String[] fields = data.split( "\\s+" );
+		if ( fields.length == 12 )
+		{
+			final double[] values = new double[ 12 ];
+			for ( int i = 0; i < 12; ++i )
+				values[ i ] = Double.parseDouble( fields[ i ] );
+			final AffineTransform3D a = new AffineTransform3D();
+			a.set( values );
+			return a;
+		}
+		else
+			throw new NumberFormatException( "Inappropriate parameters for " + AffineTransform3D.class.getCanonicalName() );
+	}
+
+	public static File loadPath( final Element parent, final String name, final String defaultRelativePath, final File basePath )
+	{
+		final Element elem = parent.getChild( name );
+		final String path = ( elem == null ) ? defaultRelativePath : elem.getText();
+		final boolean isRelative = ( elem == null ) ? true : elem.getAttributeValue( "type" ).equals( "relative" );
 		if ( isRelative )
 		{
 			if ( basePath == null )
@@ -177,13 +182,13 @@ public class XmlHelpers
 			return new File( path );
 	}
 
-	public static File loadPath( final Element parent, final String name, final File basePath ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	public static File loadPath( final Element parent, final String name, final File basePath )
 	{
-		final NodeList nd = parent.getElementsByTagName( name );
-		if ( nd.getLength() == 0 )
+		final Element elem = parent.getChild( name );
+		if ( elem == null )
 			return null;
-		final String path =  nd.item( 0 ).getTextContent();
-		final boolean isRelative = ( ( Element ) nd.item( 0 ) ).getAttribute( "type" ).equals( "relative" );
+		final String path = elem.getText();
+		final boolean isRelative = elem.getAttributeValue( "type" ).equals( "relative" );
 		if ( isRelative )
 		{
 			if ( basePath == null )
@@ -198,16 +203,16 @@ public class XmlHelpers
 	/**
 	 * @param basePath if null put the absolute path, otherwise relative to this
 	 */
-	public static Element pathElement( final Document doc, final String name, final File path, final File basePath )
+	public static Element pathElement( final String name, final File path, final File basePath )
 	{
-		final Element e = doc.createElement( name );
+		final Element e = new Element( name );
 
 		if ( basePath == null )
-			e.appendChild( doc.createTextNode( path.getAbsolutePath() ) );
+			e.setText( path.getAbsolutePath() );
 		else
 		{
 			e.setAttribute( "type", "relative" );
-			e.appendChild( doc.createTextNode( getRelativePath( path, basePath ).getPath() ) );
+			e.setText( getRelativePath( path, basePath ).getPath() );
 		}
 
 		return e;
@@ -244,34 +249,5 @@ public class XmlHelpers
 			return null;
 		else
 			return getRelativePath( file, toParent, "../" + relativeInitial );
-	}
-
-	public static Element affineTransform3DElement( final Document doc, final String name, final AffineGet value )
-	{
-		final Element e = doc.createElement( name );
-		final double[] v = value.getRowPackedCopy();
-		final String text =
-				v[0] + " " + v[1] + " " + v[2] + " " + v[3] + " " +
-				v[4] + " " + v[5] + " " + v[6] + " " + v[7] + " " +
-				v[8] + " " + v[9] + " " + v[10] + " " + v[11];
-		e.appendChild( doc.createTextNode( text ) );
-		return e;
-	}
-
-	public static AffineTransform3D loadAffineTransform3D( final Element elem )
-	{
-		final String data = elem.getTextContent();
-		final String[] fields = data.split( "\\s+" );
-		if ( fields.length == 12 )
-		{
-			final double[] values = new double[ 12 ];
-			for ( int i = 0; i < 12; ++i )
-				values[ i ] = Double.parseDouble( fields[ i ] );
-			final AffineTransform3D a = new AffineTransform3D();
-			a.set( values );
-			return a;
-		}
-		else
-			throw new NumberFormatException( "Inappropriate parameters for " + AffineTransform3D.class.getCanonicalName() );
 	}
 }

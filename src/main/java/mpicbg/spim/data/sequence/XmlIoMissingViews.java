@@ -7,9 +7,7 @@ import static mpicbg.spim.data.sequence.XmlKeys.MISSINGVIEW_TIMEPOINT_ATTRIBUTE_
 
 import java.util.ArrayList;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jdom2.Element;
 
 /**
  * TODO
@@ -35,24 +33,23 @@ public class XmlIoMissingViews
 	public MissingViews fromXml( final Element missingViews )
 	{
 		final ArrayList< ViewId > missing = new ArrayList< ViewId >();
-		final NodeList nodes = missingViews.getElementsByTagName( MISSINGVIEW_TAG );
-		for ( int i = 0; i < nodes.getLength(); ++i )
-			missing.add( viewIdFromXml( ( Element ) nodes.item( i ) ) );
+		for ( final Element elem : missingViews.getChildren( MISSINGVIEW_TAG ) )
+			missing.add( viewIdFromXml( elem ) );
 		final MissingViews mvs = new MissingViews( missing );
 		return mvs;
 	}
 
-	public Element toXml( final Document doc, final MissingViews missingViews )
+	public Element toXml( final MissingViews missingViews )
 	{
-		final Element mvs = doc.createElement( MISSINGVIEWS_TAG );
+		final Element mvs = new Element( MISSINGVIEWS_TAG );
 		for ( final ViewId viewId : missingViews.missingViews )
-			mvs.appendChild( viewIdToXml( doc, viewId ) );
+			mvs.addContent( viewIdToXml( viewId ) );
 		return mvs;
 	}
 
-	protected Element viewIdToXml( final Document doc, final ViewId viewId )
+	protected Element viewIdToXml( final ViewId viewId )
 	{
-		final Element mv = doc.createElement( MISSINGVIEW_TAG );
+		final Element mv = new Element( MISSINGVIEW_TAG );
 		mv.setAttribute( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME, Integer.toString( viewId.getTimePointId() ) );
 		mv.setAttribute( MISSINGVIEW_SETUP_ATTRIBUTE_NAME, Integer.toString( viewId.getViewSetupId() ) );
 		return mv;
@@ -60,8 +57,8 @@ public class XmlIoMissingViews
 
 	protected ViewId viewIdFromXml( final Element missingView )
 	{
-		final int timepointId = Integer.parseInt( missingView.getAttribute( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME ) );
-		final int setupId = Integer.parseInt( missingView.getAttribute( MISSINGVIEW_SETUP_ATTRIBUTE_NAME ) );
+		final int timepointId = Integer.parseInt( missingView.getAttributeValue( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME ) );
+		final int setupId = Integer.parseInt( missingView.getAttributeValue( MISSINGVIEW_SETUP_ATTRIBUTE_NAME ) );
 		return new ViewId( timepointId, setupId );
 	}
 }

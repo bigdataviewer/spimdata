@@ -4,16 +4,14 @@ import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATIONS_TAG;
 import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME;
 import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TAG;
 import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TAG;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import mpicbg.spim.data.sequence.ViewId;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
+import org.jdom2.Element;
 
 public class XmlIoViewRegistrations
 {
@@ -43,49 +41,45 @@ public class XmlIoViewRegistrations
 	 * @param element
 	 *            a {@value XmlKeys#VIEWREGISTRATIONS_TAG} DOM element.
 	 */
-	public ViewRegistrations fromXml( final Element viewRegistrations ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	public ViewRegistrations fromXml( final Element viewRegistrations )
 	{
 		final HashMap< ViewId, ViewRegistration > regs = new HashMap< ViewId, ViewRegistration >();
-		final NodeList nodes = viewRegistrations.getElementsByTagName( VIEWREGISTRATION_TAG );
-		for ( int i = 0; i < nodes.getLength(); ++i )
+		for ( final Element reg : viewRegistrations.getChildren( VIEWREGISTRATION_TAG ) )
 		{
-			final ViewRegistration vr = viewRegistrationFromXml( ( Element ) nodes.item( i ) ); 
+			final ViewRegistration vr = viewRegistrationFromXml( reg );
 			regs.put( vr, vr );
 		}
 		return new ViewRegistrations( regs );
 	}
 
-	public Element toXml( final Document doc, final ViewRegistrations viewRegistrations ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	public Element toXml( final ViewRegistrations viewRegistrations )
 	{
-		final Element elem = doc.createElement( VIEWREGISTRATIONS_TAG );
-		
+		final Element elem = new Element( VIEWREGISTRATIONS_TAG );
 		for ( final ViewRegistration vr : viewRegistrations.getOrderedViewRegistrations() )
-			elem.appendChild( viewRegistrationToXml( doc, vr ) );
-		
+			elem.addContent( viewRegistrationToXml( vr ) );
 		return elem;
 	}
 
-	protected ViewRegistration viewRegistrationFromXml( final Element viewRegistration ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	protected ViewRegistration viewRegistrationFromXml( final Element viewRegistration )
 	{
-		final int timepointId = Integer.parseInt( viewRegistration.getAttribute( VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME ) );
-		final int setupId = Integer.parseInt( viewRegistration.getAttribute( VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME ) );
-		final NodeList nodes = viewRegistration.getElementsByTagName( XmlKeys.VIEWTRANSFORM_TAG );
+		final int timepointId = Integer.parseInt( viewRegistration.getAttributeValue( VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME ) );
+		final int setupId = Integer.parseInt( viewRegistration.getAttributeValue( VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME ) );
 		final ArrayList< ViewTransform > transforms = new ArrayList< ViewTransform >();
-		for ( int i = 0; i < nodes.getLength(); ++i )
-			transforms.add( xmlViewTransform.fromXml( ( Element ) nodes.item( i ) ) );
+		for ( final Element t : viewRegistration.getChildren( VIEWTRANSFORM_TAG ) )
+			transforms.add( xmlViewTransform.fromXml( t ) );
 		return new ViewRegistration( timepointId, setupId, transforms );
 	}
 
-	protected Element viewRegistrationToXml( final Document doc, final ViewRegistration viewRegistration ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	protected Element viewRegistrationToXml( final ViewRegistration viewRegistration )
 	{
-		final Element elem = doc.createElement( VIEWREGISTRATION_TAG );
+		final Element elem = new Element( VIEWREGISTRATION_TAG );
 		elem.setAttribute( VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME, Integer.toString( viewRegistration.getTimePointId() ) );
 		elem.setAttribute( VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME, Integer.toString( viewRegistration.getViewSetupId() ) );
 		final ArrayList< ViewTransform > transforms = new ArrayList< ViewTransform >( viewRegistration.getTransformList() );
 		if ( transforms.isEmpty() )
 			transforms.add( new ViewTransformAffine( null, viewRegistration.getModel() ) );
 		for ( final ViewTransform t : transforms )
-			elem.appendChild( xmlViewTransform.toXml( doc, t ) );
+			elem.addContent( xmlViewTransform.toXml( t ) );
 		return elem;
 	}
 }
