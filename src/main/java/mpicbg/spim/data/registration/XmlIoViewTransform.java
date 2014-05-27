@@ -1,13 +1,15 @@
 package mpicbg.spim.data.registration;
 
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_AFFINE_TAG;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_CLASS_ATTRIBUTE_NAME;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_NAME_TAG;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TAG;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TYPE_ATTRIBUTE_NAME;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TYPE_VALUE_AFFINE;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TYPE_VALUE_GENERIC;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_AFFINE_TAG;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_CLASS_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_NAME_TAG;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_TAG;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_TYPE_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_TYPE_VALUE_AFFINE;
+import static mpicbg.spim.data.XmlKeys.VIEWTRANSFORM_TYPE_VALUE_GENERIC;
+import mpicbg.spim.data.SpimDataInstantiationException;
 import mpicbg.spim.data.XmlHelpers;
+import mpicbg.spim.data.XmlKeys;
 import net.imglib2.realtransform.AffineTransform3D;
 
 import org.jdom2.Element;
@@ -15,9 +17,11 @@ import org.jdom2.Element;
 public class XmlIoViewTransform
 {
 	/**
-	 * TODO
+	 * Get the tag name of the XML element that is written by this class.
+	 *
+	 * @return the tag name of the XML elements that is written.
 	 */
-	public String getTagName()
+	public String getTag()
 	{
 		return VIEWTRANSFORM_TAG;
 	}
@@ -27,27 +31,17 @@ public class XmlIoViewTransform
 	 *
 	 * @param element
 	 *            a {@value XmlKeys#VIEWTRANSFORM_TAG} DOM element.
+	 * @throws SpimDataInstantiationException
 	 */
-	public ViewTransform fromXml( final Element viewTransform )
+	public ViewTransform fromXml( final Element viewTransform ) throws SpimDataInstantiationException
 	{
 		final String type = viewTransform.getAttributeValue( VIEWTRANSFORM_TYPE_ATTRIBUTE_NAME );
 		if ( VIEWTRANSFORM_TYPE_VALUE_AFFINE.equals( type ) )
-		{
 			return fromXmlAffine( viewTransform );
-		}
 		else if ( VIEWTRANSFORM_TYPE_VALUE_GENERIC.equals( type ) )
-		{
-			try
-			{
-				return fromXmlGeneric( viewTransform );
-			}
-			catch ( final Exception e )
-			{
-				throw new RuntimeException( e );
-			}
-		}
+			return fromXmlGeneric( viewTransform );
 		else
-			throw new RuntimeException( "unknown <" + VIEWTRANSFORM_TAG + "> type: " + type );
+			throw new IllegalArgumentException( "unknown <" + VIEWTRANSFORM_TAG + "> type: " + type );
 	}
 
 	public Element toXml( final ViewTransform viewTransform )
@@ -62,10 +56,8 @@ public class XmlIoViewTransform
 
 	protected ViewTransformAffine fromXmlAffine( final Element viewTransform )
 	{
-		// TODO: Is it okay, to use null as default here?
-		// would be: final String name = viewTransform.getChildText( VIEWTRANSFORM_NAME_TAG );
-		final String name = XmlHelpers.getText( viewTransform, VIEWTRANSFORM_NAME_TAG, "" );
-		final AffineTransform3D affine = XmlHelpers.loadAffineTransform3D( viewTransform.getChild( VIEWTRANSFORM_AFFINE_TAG ) );
+		final String name = XmlHelpers.getText( viewTransform, VIEWTRANSFORM_NAME_TAG, null );
+		final AffineTransform3D affine = XmlHelpers.getAffineTransform3D( viewTransform, VIEWTRANSFORM_AFFINE_TAG );
 		return new ViewTransformAffine( name, affine );
 	}
 
@@ -73,23 +65,29 @@ public class XmlIoViewTransform
 	{
 		final Element elem = new Element( VIEWTRANSFORM_TAG );
 		elem.setAttribute( VIEWTRANSFORM_TYPE_ATTRIBUTE_NAME, VIEWTRANSFORM_TYPE_VALUE_AFFINE );
-		final String name = viewTransform.getName();
-		if ( name != null && !name.isEmpty() )
-			elem.addContent( new Element( VIEWTRANSFORM_NAME_TAG ).setText( name ) );
+		if ( viewTransform.hasName() )
+			elem.addContent( XmlHelpers.textElement( VIEWTRANSFORM_NAME_TAG, viewTransform.getName() ) );
 		elem.addContent( XmlHelpers.affineTransform3DElement( VIEWTRANSFORM_AFFINE_TAG, viewTransform.asAffine3D() ) );
 		return elem;
 	}
 
-	protected ViewTransformGeneric fromXmlGeneric( final Element viewTransform ) throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	protected ViewTransformGeneric fromXmlGeneric( final Element viewTransform ) throws SpimDataInstantiationException
 	{
-		final ViewTransformGeneric t = ( ViewTransformGeneric ) Class.forName( viewTransform.getAttributeValue( VIEWTRANSFORM_CLASS_ATTRIBUTE_NAME  ) ).newInstance();
-		t.init( viewTransform );
-		return t;
+		final String attributeClassName = viewTransform.getAttributeValue( VIEWTRANSFORM_CLASS_ATTRIBUTE_NAME );
+		try
+		{
+			final ViewTransformGeneric t = ( ViewTransformGeneric ) Class.forName( attributeClassName ).newInstance();
+			t.init( viewTransform );
+			return t;
+		}
+		catch( final Exception e )
+		{
+			throw new SpimDataInstantiationException( "could not instantiate " + ViewTransformGeneric.class.getSimpleName() + " instance " + attributeClassName, e );
+		}
 	}
 
 	protected Element toXmlGeneric( final ViewTransformGeneric viewTransform )
 	{
 		return viewTransform.toXml();
 	}
-
 }

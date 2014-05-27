@@ -1,157 +1,196 @@
 package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_PATTERN_STRING;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_PATTERN_TYPE;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_FIRST;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_LAST;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_RANGE_TYPE;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.TIMEPOINTS_TYPE_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_LIST_TYPE;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_PATTERN_TAG;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_PATTERN_TYPE;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_RANGE_FIRST;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_RANGE_LAST;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_RANGE_TYPE;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_TAG;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_TIMEPOINT_TAG;
+import static mpicbg.spim.data.XmlKeys.TIMEPOINTS_TYPE_ATTRIBUTE_NAME;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
+import mpicbg.spim.data.SpimDataException;
+import mpicbg.spim.data.SpimDataIOException;
 import mpicbg.spim.data.XmlHelpers;
+import mpicbg.spim.data.XmlKeys;
+import mpicbg.spim.data.generic.base.Entity;
+import mpicbg.spim.data.generic.base.XmlIoEntity;
+import mpicbg.spim.data.generic.base.XmlIoSingleton;
 
 import org.jdom2.Element;
 
-/**
- * TODO
- *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
- */
-public class XmlIoTimePoints extends XmlIoTimePointsAbstract< TimePoint >
+public class XmlIoTimePoints extends XmlIoSingleton< TimePoints >
 {
-	/**
-	 * Load a list of {@link TimePoint}s from the given DOM element.
-	 *
-	 * @param element
-	 *            a {@value XmlKeys#TIMEPOINTS_TAG} DOM element.
-	 * @return list of timepoints loaded from xml.
-	 */
-	@Override
-	public TimePoints< TimePoint > fromXml( final Element timepoints )
+	public XmlIoTimePoints()
 	{
-		final String type = timepoints.getAttributeValue( TIMEPOINTS_TYPE_ATTRIBUTE_NAME );
-		if ( TIMEPOINTS_RANGE_TYPE.equals( type ) )
+		super( TIMEPOINTS_TAG, TimePoints.class );
+		handledTags.add( TIMEPOINTS_TIMEPOINT_TAG );
+		handledTags.add( TIMEPOINTS_RANGE_FIRST );
+		handledTags.add( TIMEPOINTS_RANGE_LAST );
+		handledTags.add( TIMEPOINTS_PATTERN_TAG );
+	}
+
+	public Element toXml( final TimePoints timepoints )
+	{
+		final Element elem = super.toXml();
+
+		if ( timepoints instanceof TimePointsPattern )
 		{
-			final int first = XmlHelpers.getInt( timepoints, TIMEPOINTS_RANGE_FIRST );
-			final int last = XmlHelpers.getInt( timepoints, TIMEPOINTS_RANGE_LAST );
-
-			final ArrayList< TimePoint > tp = new ArrayList< TimePoint >();
-			for ( int t = first; t <= last; ++t )
-				tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
-			return new TimePoints< TimePoint >( tp );
-		}
-		else if ( TIMEPOINTS_PATTERN_TYPE.equals( type ) )
-		{
-			final String integerPattern = XmlHelpers.getText( timepoints, TIMEPOINTS_PATTERN_STRING );
-			try
-			{
-				final ArrayList< Integer > ints = IntegerPattern.parseIntegerString( integerPattern );
-				final ArrayList< TimePoint > tp = new ArrayList< TimePoint >();
-
-				for ( final int t : ints )
-					tp.add( new TimePoint( tp.size(), Integer.toString( t ) ) );
-
-				final TimePoints< TimePoint > tps = new TimePoints< TimePoint >( tp );
-
-				tps.getHashMap().put( TIMEPOINTS_PATTERN_STRING, integerPattern );
-				return tps;
-
-			}
-			catch ( final ParseException e )
-			{
-				throw new RuntimeException( "cannot parse <" + TIMEPOINTS_TAG + "> pattern: " + integerPattern );
-			}
+			toXmlPattern( ( TimePointsPattern ) timepoints, elem );
 		}
 		else
 		{
-			throw new RuntimeException( "unknown <" + TIMEPOINTS_TAG + "> type: " + type );
+			if ( !toXmlTryRange( timepoints, elem ) )
+				toXmlList( timepoints, elem );
 		}
+
+		return elem;
 	}
 
-	/**
-	 * TODO: Add support for non-contiguous range of time-points. (Timepoints
-	 * type="list")
-	 *
-	 * @param doc
-	 * @param sequence
-	 */
 	@Override
-	public Element toXml( final TimePoints< TimePoint > timepoints )
+	public TimePoints fromXml( final Element elem ) throws SpimDataException
 	{
-		if ( timepoints.getTimePointList().size() == 0 )
-			throw new IllegalArgumentException( "sequence must have at least one timepoint" );
+		final TimePoints timepoints = super.fromXml( elem );
 
-		final Element tp;
-		final String pattern = timepoints.getHashMap().get( TIMEPOINTS_PATTERN_STRING );
-
-		if ( pattern != null )
-		{
-			tp = toXmlPattern( timepoints.getTimePointList(), pattern );
-		}
+		final String type = elem.getAttributeValue( TIMEPOINTS_TYPE_ATTRIBUTE_NAME );
+		if ( TIMEPOINTS_PATTERN_TYPE.equals( type ) )
+			return fromXmlPattern( elem );
+		else if ( TIMEPOINTS_RANGE_TYPE.equals( type ) )
+			fromXmlRange( timepoints, elem );
+		else if ( TIMEPOINTS_LIST_TYPE.equals( type ) )
+			fromXmlList( timepoints, elem );
 		else
-		{
-			tp = toXmlTryRange( timepoints.getTimePointList() );
+			throw new IllegalArgumentException( "unknown " + TIMEPOINTS_TAG + " type " + type );
 
-			if ( tp == null )
-				throw new RuntimeException( "non-contiguous time-point range not implemented." );
-		}
-
-		return tp;
-	}
-
-	protected Element toXmlPattern( final List< TimePoint > timepoint, final String pattern )
-	{
-		final Element tp = new Element( TIMEPOINTS_TAG );
-		tp.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_PATTERN_TYPE );
-		tp.addContent( XmlHelpers.textElement( TIMEPOINTS_PATTERN_STRING, pattern ) );
-		return tp;
+		return timepoints;
 	}
 
 	/**
-	 * Try to save as {@link TimePoint} list as a range. For this to work,
-	 * time-point {@link TimePoint#getName() names} must form a contiguous range
-	 * of integers.
+	 * Save {@link TimePointsPattern}.
+	 */
+	protected void toXmlPattern( final TimePointsPattern timepoints, final Element elem )
+	{
+		elem.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_PATTERN_TYPE );
+		elem.addContent( XmlHelpers.textElement( TIMEPOINTS_PATTERN_TAG, timepoints.getPattern() ) );
+	}
+
+	/**
+	 * Create {@link TimePointsPattern} from &lt;{@value XmlKeys#TIMEPOINTS_TAG}
+	 * &gt; element of type {@value XmlKeys#TIMEPOINTS_PATTERN_TYPE}
+	 */
+	protected TimePointsPattern fromXmlPattern( final Element elem ) throws SpimDataIOException
+	{
+		final String integerPattern = XmlHelpers.getText( elem, TIMEPOINTS_PATTERN_TAG );
+		try
+		{
+			return new TimePointsPattern( integerPattern );
+		}
+		catch ( final ParseException e )
+		{
+			throw new SpimDataIOException( "cannot parse <" + TIMEPOINTS_TAG + "> pattern: " + integerPattern, e );
+		}
+	}
+
+	/**
+	 * Try to save a {@link TimePoints} list as a range. For this to work,
+	 * time-point {@link TimePoint#getId() ids} must form a contiguous range of
+	 * integers and the time-point {@link TimePoint#getName() names} must equal
+	 * the ids {@link Integer#toString(int) represented }as strings.
 	 *
-	 * @param doc
 	 * @param timepoints
-	 * @return
+	 * @param elem
+	 * @return <code>true</code>, if timepoints could be saved,
+	 *         <code>false</code> otherwise. If <code>false</code> is returned,
+	 *         elem is not modified.
 	 */
-	protected Element toXmlTryRange( final List< TimePoint > timepoints )
+	protected boolean toXmlTryRange( final TimePoints timepoints, final Element elem )
 	{
 		try
 		{
-			final Iterator< TimePoint > iter = timepoints.iterator();
-			String name = iter.next().getName();
+			final ArrayList< TimePoint > tps = new ArrayList< TimePoint >( timepoints.getTimePoints().values() );
+			Entity.sortById( tps );
+
+			final Iterator< TimePoint > iter = tps.iterator();
+			TimePoint tp = iter.next();
+			String name = tp.getName();
 			final int first = Integer.parseInt( name );
-			if ( ! Integer.toString( first ).equals( name ) )
-				return null;
+			if ( !( Integer.toString( first ).equals( name ) && first == tp.getId() ) )
+				return false;
+			int previous = first;
 			int last = first;
 			while ( iter.hasNext() )
 			{
-				name = iter.next().getName();
+				tp = iter.next();
+				name = tp.getName();
 				last = Integer.parseInt( name );
-				if ( ! Integer.toString( last ).equals( name ) )
-					return null;
+				if ( !( Integer.toString( last ).equals( name ) && last == tp.getId() && last == previous + 1 ) )
+					return false;
+				previous = last;
 			}
 
 			// time-point names form a contiguous range from first to last
 			// create <TimePoints> element
-			final Element tp = new Element( TIMEPOINTS_TAG );
-			tp.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_RANGE_TYPE );
-			tp.addContent( XmlHelpers.intElement( TIMEPOINTS_RANGE_FIRST, first ) );
-			tp.addContent( XmlHelpers.intElement( TIMEPOINTS_RANGE_LAST, last ) );
-			return tp;
+			elem.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_RANGE_TYPE );
+			elem.addContent( XmlHelpers.intElement( TIMEPOINTS_RANGE_FIRST, first ) );
+			elem.addContent( XmlHelpers.intElement( TIMEPOINTS_RANGE_LAST, last ) );
+			return true;
 		}
 		catch ( final NumberFormatException e )
 		{
 			// some timepoint name doesn't match. cannot save as "range".
-			return null;
+			return false;
 		}
 	}
-}
 
+	/**
+	 * Create {@link TimePointsPattern} from &lt;{@value XmlKeys#TIMEPOINTS_TAG}
+	 * &gt; element of type {@value XmlKeys#TIMEPOINTS_RANGE_TYPE}
+	 */
+	protected void fromXmlRange( final TimePoints timepoints, final Element elem )
+	{
+		final int first = XmlHelpers.getInt( elem, TIMEPOINTS_RANGE_FIRST );
+		final int last = XmlHelpers.getInt( elem, TIMEPOINTS_RANGE_LAST );
+		final HashMap< Integer, TimePoint > map = new HashMap< Integer, TimePoint >();
+		for ( int t = first; t <= last; ++t )
+			map.put( t, new TimePoint( t ) );
+		timepoints.setTimePoints( map );
+	}
+
+	/**
+	 * Save {@link TimePoints} as a list of {@link TimePoint}.
+	 *
+	 * @param timepoints
+	 * @param elem
+	 */
+	protected void toXmlList( final TimePoints timepoints, final Element elem )
+	{
+		elem.setAttribute( TIMEPOINTS_TYPE_ATTRIBUTE_NAME, TIMEPOINTS_LIST_TYPE );
+		final XmlIoEntity< TimePoint > io = new XmlIoEntity< TimePoint >( TIMEPOINTS_TIMEPOINT_TAG, TimePoint.class );
+		final ArrayList< TimePoint > tps = new ArrayList< TimePoint >( timepoints.getTimePoints().values() );
+		Entity.sortById( tps );
+		for ( final TimePoint tp : tps )
+			elem.addContent( io.toXml( tp ) );
+	}
+
+	/**
+	 * Create {@link TimePointsPattern} from &lt;{@value XmlKeys#TIMEPOINTS_TAG}
+	 * &gt; element of type {@value XmlKeys#TIMEPOINTS_LIST_TYPE}
+	 */
+	protected void fromXmlList( final TimePoints timepoints, final Element elem ) throws SpimDataException
+	{
+		final XmlIoEntity< TimePoint > io = new XmlIoEntity< TimePoint >( TIMEPOINTS_TIMEPOINT_TAG, TimePoint.class );
+		final HashMap< Integer, TimePoint > map = new HashMap< Integer, TimePoint >();
+		for ( final Element c : elem.getChildren( TIMEPOINTS_TIMEPOINT_TAG ) )
+		{
+			final TimePoint tp = io.fromXml( c );
+			map.put( tp.getId(), tp );
+		}
+		timepoints.setTimePoints( map );
+	}
+}

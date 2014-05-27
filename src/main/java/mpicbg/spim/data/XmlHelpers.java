@@ -3,6 +3,8 @@ package mpicbg.spim.data;
 import java.io.File;
 import java.io.IOException;
 
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.realtransform.AffineGet;
 import net.imglib2.realtransform.AffineTransform3D;
 
@@ -10,26 +12,21 @@ import org.jdom2.Element;
 
 public class XmlHelpers
 {
-//	public static Document newXmlDocument() throws ParserConfigurationException
-//	{
-//		final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-//		final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-//		return docBuilder.newDocument();
-//	}
-//
-//	public static void writeXmlDocument( final Document doc, final String xmlFilename ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
-//	{
-//		writeXmlDocument( doc, new File( xmlFilename ) );
-//	}
-//
-//	public static void writeXmlDocument( final Document doc, final File xmlFile ) throws TransformerFactoryConfigurationError, TransformerException, FileNotFoundException
-//	{
-//		final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//		transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
-//		transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8" );
-//		transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "4" );
-//		transformer.transform( new DOMSource( doc ), new StreamResult( new FileOutputStream( xmlFile ) ) );
-//	}
+	public static Element textElement( final String name, final String text )
+	{
+		return new Element( name ).addContent( text );
+	}
+
+	public static String getText( final Element parent, final String name )
+	{
+		return parent.getChildText( name );
+	}
+
+	public static String getText( final Element parent, final String name, final String defaultValue )
+	{
+		final String text = parent.getChildText( name );
+		return text == null ? defaultValue : text;
+	}
 
 	public static Element intElement( final String name, final int value )
 	{
@@ -80,84 +77,130 @@ public class XmlHelpers
 	}
 
 	/**
-	 * Append a double array as comma-separated list of values
-	 * @param doc
-	 * @param name
-	 * @param value
-	 * @return
+	 * Append a double array as space-separated list of values
 	 */
 	public static Element doubleArrayElement( final String name, final double[] value )
 	{
-		String valueString = Double.toString( value[ 0 ] );
+		final StringBuffer valueString = new StringBuffer();
+		valueString.append( value[ 0 ] );
 		for ( int i = 1; i < value.length; ++i )
-			valueString += "," + value[ i ];
+		{
+			valueString.append( " " );
+			valueString.append( value[ i ] );
+		}
 
-		return new Element( name ).addContent( valueString );
+		return new Element( name ).addContent( valueString.toString() );
 	}
 
-	/**
-	 * @param parent
-	 * @param name
-	 * @param defaultValue
-	 * @return comma-separated list of double values
-	 */
+	public static double[] getDoubleArray( final Element parent, final String name )
+	{
+		final String text = parent.getChildText( name );
+		final String[] entries = text.split( "\\s+" );
+		final double[] array = new double[ entries.length ];
+		for ( int i = 0; i < entries.length; ++i )
+			array[ i ] = Double.parseDouble( entries[ i ] );
+		return array;
+	}
+
 	public static double[] getDoubleArray( final Element parent, final String name, final double[] defaultValue )
 	{
-		final String text = parent.getChildText( name );
-		if ( text == null )
-		{
-			return defaultValue;
-		}
-		else
-		{
-			final String[] entries = text.split( "," );
-			final double[] array = new double[ entries.length ];
-
-			for ( int i = 0; i < entries.length; ++i )
-				array[ i ] = Double.parseDouble( entries[ i ].trim() );
-
-			return array;
-		}
+		return parent.getChild( name ) == null ? defaultValue : getDoubleArray( parent, name );
 	}
 
-	public static Element textElement( final String name, final String text )
+	public static Element intArrayElement( final String name, final int[] value )
 	{
-		return new Element( name ).addContent( text );
+		final StringBuffer valueString = new StringBuffer();
+		valueString.append( value[ 0 ] );
+		for ( int i = 1; i < value.length; ++i )
+		{
+			valueString.append( " " );
+			valueString.append( value[ i ] );
+		}
+
+		return new Element( name ).addContent( valueString.toString() );
 	}
 
-	// TODO: REMOVE
-	public static String getText( final Element parent, final String name )
-	{
-		return parent.getChildText( name );
-	}
-
-	public static String getText( final Element parent, final String name, final String defaultValue )
+	public static int[] getIntArray( final Element parent, final String name )
 	{
 		final String text = parent.getChildText( name );
-		return text == null ? defaultValue : text;
+		final String[] entries = text.split( "\\s+" );
+		final int[] array = new int[ entries.length ];
+		for ( int i = 0; i < entries.length; ++i )
+			array[ i ] = Integer.parseInt( entries[ i ] );
+		return array;
+	}
+
+	public static int[] getIntArray( final Element parent, final String name, final int[] defaultValue )
+	{
+		return parent.getChild( name ) == null ? defaultValue : getIntArray( parent, name );
+	}
+
+	public static Element longArrayElement( final String name, final long[] value )
+	{
+		final StringBuffer valueString = new StringBuffer();
+		valueString.append( value[ 0 ] );
+		for ( int i = 1; i < value.length; ++i )
+		{
+			valueString.append( " " );
+			valueString.append( value[ i ] );
+		}
+
+		return new Element( name ).addContent( valueString.toString() );
+	}
+
+	public static long[] getLongArray( final Element parent, final String name )
+	{
+		final String text = parent.getChildText( name );
+		final String[] entries = text.split( "\\s+" );
+		final long[] array = new long[ entries.length ];
+		for ( int i = 0; i < entries.length; ++i )
+			array[ i ] = Long.parseLong( entries[ i ] );
+		return array;
+	}
+
+	public static long[] getLongArray( final Element parent, final String name, final long[] defaultValue )
+	{
+		return parent.getChild( name ) == null ? defaultValue : getLongArray( parent, name );
+	}
+
+	public static Element dimensionsElement( final String name, final Dimensions size )
+	{
+		final long[] array = new long[ size.numDimensions() ];
+		size.dimensions( array );
+		return longArrayElement( name, array );
+	}
+
+	public static Dimensions getDimensions( final Element parent, final String name )
+	{
+		return FinalDimensions.wrap( getLongArray( parent, name ) );
+	}
+
+	public static Dimensions getDimensions( final Element parent, final String name, final Dimensions defaultValue )
+	{
+		return parent.getChild( name ) == null ? defaultValue : getDimensions( parent, name );
 	}
 
 	public static Element affineTransform3DElement( final String name, final AffineGet value )
 	{
-		final Element e = new Element( name );
+		assert value.numDimensions() == 3;
 		final double[] v = value.getRowPackedCopy();
-		final String text =
-				v[0] + " " + v[1] + " " + v[2] + " " + v[3] + " " +
-				v[4] + " " + v[5] + " " + v[6] + " " + v[7] + " " +
-				v[8] + " " + v[9] + " " + v[10] + " " + v[11];
-		e.setText( text );
-		return e;
+		return doubleArrayElement( name, v );
 	}
 
-	public static AffineTransform3D loadAffineTransform3D( final Element elem )
+	public static AffineTransform3D getAffineTransform3D( final Element parent, final String name )
 	{
-		final String data = elem.getText();
-		final String[] fields = data.split( "\\s+" );
-		if ( fields.length == 12 )
+		return getAffineTransform3D( parent, name, null );
+	}
+
+	public static AffineTransform3D getAffineTransform3D( final Element parent, final String name, final AffineTransform3D defaultValue )
+	{
+		final double[] values = getDoubleArray( parent, name, null );
+		if ( values == null )
 		{
-			final double[] values = new double[ 12 ];
-			for ( int i = 0; i < 12; ++i )
-				values[ i ] = Double.parseDouble( fields[ i ] );
+			return defaultValue;
+		}
+		else if ( values.length == 12 )
+		{
 			final AffineTransform3D a = new AffineTransform3D();
 			a.set( values );
 			return a;

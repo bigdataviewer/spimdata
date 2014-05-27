@@ -1,35 +1,65 @@
 package mpicbg.spim.data.sequence;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Holds a list of {@link TimePoint} and additional descriptions like the
- * integer pattern it was created from so that it can be saved the same way
- * as it was loaded
- *
- * @author Stephan Preibisch (stephan.preibisch@gmx.de)
- *
- */
-public class TimePoints< T extends TimePoint >
+import mpicbg.spim.data.generic.base.Entity;
+
+public class TimePoints
 {
-	final protected List< T > timepoints;
-	protected HashMap< String, String > descriptionTags;
+	private Map< Integer, TimePoint > timepoints;
 
-	public TimePoints( final List< T > timepoints )
+	private List< TimePoint > timepointsOrdered;
+
+	public TimePoints( final Map< Integer, TimePoint > timepoints )
 	{
-		this.timepoints = timepoints;
-		this.descriptionTags = new HashMap< String, String >();
+		setTimePoints( timepoints );
 	}
 
-	public List< T > getTimePointList() { return timepoints; }
-	public HashMap< String, String > getHashMap() { return descriptionTags; } // TODO: rename to getDescriptionTags()
-
-	public TimePoints< T > getUnmodifiableTimePoints()
+	public TimePoints( final Collection< TimePoint > timepoints )
 	{
-		final TimePoints< T > tps = new TimePoints< T >( Collections.unmodifiableList( timepoints ) );
-		tps.getHashMap().putAll( descriptionTags );
-		return tps;
+		final HashMap< Integer, TimePoint > map = new HashMap< Integer, TimePoint >();
+		for ( final TimePoint tp : timepoints )
+			map.put( tp.getId(), tp );
+		setTimePoints( map );
 	}
+
+	public Map< Integer, TimePoint > getTimePoints()
+	{
+		return timepoints;
+	}
+
+	public List< TimePoint > getTimePointsOrdered()
+	{
+		return timepointsOrdered;
+	}
+
+	public int size()
+	{
+		return timepointsOrdered.size();
+	}
+
+	protected void setTimePoints( final Collection< TimePoint > timepoints )
+	{
+		final HashMap< Integer, TimePoint > map = new HashMap< Integer, TimePoint >();
+		for ( final TimePoint tp : timepoints )
+			map.put( tp.getId(), tp );
+		this.timepoints = Collections.unmodifiableMap( map );
+		final ArrayList< TimePoint > tps = new ArrayList< TimePoint >( this.timepoints.values() );
+		this.timepointsOrdered = Collections.unmodifiableList( Entity.sortById( tps ) );
+	}
+
+	protected void setTimePoints( final Map< Integer, TimePoint > timepoints )
+	{
+		this.timepoints = Collections.unmodifiableMap( new HashMap< Integer, TimePoint >( timepoints ) );
+		final ArrayList< TimePoint > tps = new ArrayList< TimePoint >( this.timepoints.values() );
+		this.timepointsOrdered = Collections.unmodifiableList( Entity.sortById( tps ) );
+	}
+
+	protected TimePoints()
+	{}
 }

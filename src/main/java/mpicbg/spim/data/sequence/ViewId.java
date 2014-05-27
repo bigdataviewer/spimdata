@@ -1,6 +1,5 @@
 package mpicbg.spim.data.sequence;
 
-
 /**
  * Identifies a particular view as a combination of a {@link TimePoint} id and a
  * {@link ViewSetup} id.
@@ -10,12 +9,12 @@ package mpicbg.spim.data.sequence;
 public class ViewId implements Comparable< ViewId >
 {
 	/**
-	 * The timepoint id (index).
+	 * The timepoint id.
 	 */
 	protected final int timepoint;
 
 	/**
-	 * The setup id (index within the timepoint).
+	 * The setup id.
 	 */
 	protected final int setup;
 
@@ -26,7 +25,7 @@ public class ViewId implements Comparable< ViewId >
 	}
 
 	/**
-	 * Get the timepoint id (index).
+	 * Get the timepoint id.
 	 *
 	 * @return timepoint id
 	 */
@@ -36,7 +35,7 @@ public class ViewId implements Comparable< ViewId >
 	}
 
 	/**
-	 * Get the setup id (index within the timepoint).
+	 * Get the setup id.
 	 *
 	 * @return setup id
 	 */
@@ -45,6 +44,11 @@ public class ViewId implements Comparable< ViewId >
 		return setup;
 	}
 
+	/**
+	 * Two {@link ViewId} are equal if they have the same
+	 * {@link #getTimePointId() timepoint} and {@link #getViewSetupId() setup}
+	 * ids.
+	 */
 	@Override
 	public boolean equals( final Object o )
 	{
@@ -54,8 +58,8 @@ public class ViewId implements Comparable< ViewId >
 		}
 		else if ( o instanceof ViewId )
 		{
-			final ViewId i = (ViewId)o;
-			
+			final ViewId i = ( ViewId ) o;
+
 			if ( i.getTimePointId() == getTimePointId() && i.getViewSetupId() == getViewSetupId() )
 				return true;
 			else
@@ -66,7 +70,11 @@ public class ViewId implements Comparable< ViewId >
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Order by {@link #getTimePointId() timepoint} id, then
+	 * {@link #getViewSetupId() setup} id.
+	 */
 	@Override
 	public int compareTo( final ViewId o )
 	{
@@ -75,9 +83,9 @@ public class ViewId implements Comparable< ViewId >
 		else
 			return timepoint - o.timepoint;
 	}
-	
+
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		// some non-colliding hash assuming we have not more that 100000 viewsetups
 		return getViewSetupId() + getTimePointId() * 100000;

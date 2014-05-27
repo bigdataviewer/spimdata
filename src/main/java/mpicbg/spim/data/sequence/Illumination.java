@@ -1,62 +1,77 @@
 package mpicbg.spim.data.sequence;
 
+import mpicbg.spim.data.generic.base.NamedEntity;
+
 /**
- * Defines a illumination direction which is part of the ViewSetup
- * 
+ * Defines an illumination direction which is part of the ViewSetup.
+ *
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
+ * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
-public class Illumination implements Comparable< Illumination >
-{	
+public class Illumination extends NamedEntity implements Comparable< Illumination >
+{
 	/**
-	 * The name of this illumination direction, for example used to replace it in filenames when opening
-	 * individual 3d-stacks 
-	 * (e.g. SPIM_TL20_Angle45_illum2.tif or SPIM_TL5_left.czi)
+	 * Construct an illumination direction with the specified id and name.
+	 *
+	 * @param id
+	 * @param name
 	 */
-	protected String name;
-	
-	/**
-	 * The unique id of this illumination direction, defines for example the position in a file
-	 */
-	protected int id;
-	
 	public Illumination( final int id, final String name )
 	{
-		this.name = name;
-		this.id = id;
+		super( id, name );
 	}
 
+	/**
+	 * Construct an illumination direction with the specified id. The
+	 * {@link #getName() name} is set to the String representation of the id.
+	 *
+	 * @param id
+	 */
 	public Illumination( final int id )
 	{
 		this( id, Integer.toString( id ) );
 	}
-	
-	public void setName( final String name ) { this.name = name; }
-	public String getName() { return name; }
-	public int getId() { return id; }
 
+	/**
+	 * Get the unique id of this illumination direction.
+	 */
 	@Override
-	public int compareTo( final Illumination illumination ) { return getId() - illumination.getId(); }
-
-	@Override
-	public int hashCode() { return getId(); }
-	
-	@Override
-	public boolean equals( final Object o )
+	public int getId()
 	{
-		if ( o == null )
-		{
-			return false;
-		}
-		else if ( o instanceof Illumination )
-		{
-			if ( ((Illumination)o).getId() == getId() )
-				return true;
-			else
-				return false;
-		}
-		else
-		{
-			return false;
-		}
+		return super.getId();
 	}
+
+	/**
+	 * Get the name of this illumination direction.
+	 *
+	 * The name is used for example to replace it in filenames when opening
+	 * individual 3d-stacks (e.g. SPIM_TL20_Angle45_Illumination5.tif or
+	 * SPIM_TL5_GFP.czi)
+	 */
+	@Override
+	public String getName()
+	{
+		return super.getName();
+	}
+
+	/**
+	 * Set the name of this illumination direction.
+	 */
+	@Override
+	public void setName( final String name )
+	{
+		super.setName( name );
+	}
+
+	/**
+	 * Compares the {@link #getId() ids}.
+	 */
+	@Override
+	public int compareTo( final Illumination o )
+	{
+		return getId() - o.getId();
+	}
+
+	protected Illumination()
+	{}
 }

@@ -1,62 +1,77 @@
 package mpicbg.spim.data.sequence;
 
+import mpicbg.spim.data.generic.base.NamedEntity;
+
 /**
- * Defines a channel which is part of the ViewSetup
- * 
+ * Defines a channel which is part of the ViewSetup.
+ *
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
+ * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
-public class Channel implements Comparable< Channel > 
-{	
+public class Channel extends NamedEntity implements Comparable< Channel >
+{
 	/**
-	 * The name of this channel, for example used to replace it in filenames when opening
-	 * individual 3d-stacks 
-	 * (e.g. SPIM_TL20_Angle45_Channel5.tif or SPIM_TL5_GFP.czi)
+	 * Construct a channel with the specified id and name.
+	 *
+	 * @param id
+	 * @param name
 	 */
-	protected String name;
-	
-	/**
-	 * The unique id of this channel, defines for example the position in a file
-	 */
-	protected int id;
-	
 	public Channel( final int id, final String name )
 	{
-		this.name = name;
-		this.id = id;
+		super( id, name );
 	}
 
+	/**
+	 * Construct a Channel with the specified id. The {@link #getName() name} is
+	 * set to the String representation of the id.
+	 *
+	 * @param id
+	 */
 	public Channel( final int id )
 	{
 		this( id, Integer.toString( id ) );
 	}
-	
-	public void setName( final String name ) { this.name = name; }
-	public String getName() { return name; }
-	public int getId() { return id; }
 
+	/**
+	 * Get the unique id of this channel.
+	 */
 	@Override
-	public int compareTo( final Channel channel ) { return getId() - channel.getId(); }
-	
-	@Override
-	public int hashCode() { return getId(); }
-	
-	@Override
-	public boolean equals( final Object o )
+	public int getId()
 	{
-		if ( o == null )
-		{
-			return false;
-		}
-		else if ( o instanceof Channel )
-		{
-			if ( ((Channel)o).getId() == getId() )
-				return true;
-			else
-				return false;
-		}
-		else
-		{
-			return false;
-		}
+		return super.getId();
 	}
+
+	/**
+	 * Get the name of this channel.
+	 *
+	 * The name is used for example to replace it in filenames when opening
+	 * individual 3d-stacks (e.g. SPIM_TL20_Angle45_Channel5.tif or
+	 * SPIM_TL5_GFP.czi)
+	 */
+	@Override
+	public String getName()
+	{
+		return super.getName();
+	}
+
+	/**
+	 * Set the name of this channel.
+	 */
+	@Override
+	public void setName( final String name )
+	{
+		super.setName( name );
+	}
+
+	/**
+	 * Compares the {@link #getId() ids}.
+	 */
+	@Override
+	public int compareTo( final Channel o )
+	{
+		return getId() - o.getId();
+	}
+
+	protected Channel()
+	{}
 }

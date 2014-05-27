@@ -1,49 +1,16 @@
 package mpicbg.spim.data.sequence;
 
+import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
+import mpicbg.spim.data.generic.sequence.BasicViewDescription;
 
-/**
- * TODO
- *
- * @param <T>
- *            {@link TimePoint} type
- * @param <V>
- *            {@link ViewSetup} type
- *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
- */
-public class ViewDescription< T extends TimePoint, V extends ViewSetup > extends ViewId
+public class ViewDescription extends BasicViewDescription< ViewSetup >
 {
-	/**
-	 * TODO
-	 */
-	protected boolean present;
-
-	protected final SequenceDescription< ? extends T, ? extends V > sequenceDescription;
-
-	/**
-	 * TODO
-	 *
-	 * @return
-	 */
-	public boolean isPresent()
+	public ViewDescription(
+			final int timepointId,
+			final int setupId,
+			final boolean present,
+			final AbstractSequenceDescription< ? extends ViewSetup, ?, ? > sequenceDescription )
 	{
-		return present;
+		super( timepointId, setupId, present, sequenceDescription );
 	}
-
-	public T getTimePoint()
-	{
-		return sequenceDescription.getTimePoints().getTimePointList().get( timepoint );
-	}
-
-	public V getViewSetup()
-	{
-		return sequenceDescription.getViewSetups().get( setup );
-	}
-
-	public ViewDescription( final SequenceDescription< ? extends T, ? extends V > sequenceDescription, final boolean present, final int timepointId, final int setupId )
-	{
-		super( timepointId, setupId );
-		this.present = present;
-		this.sequenceDescription = sequenceDescription;
-	}	
 }

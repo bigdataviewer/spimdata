@@ -2,92 +2,80 @@
 <SpimData version="1.0">
 	<BasePath type="relative">.</BasePath>
 	<SequenceDescription>
-		<ImageLoader class="viewer.hdf5.Hdf5ImageLoader">
-			<hdf5 type="relative">everything2.h5</hdf5>
-			<partition>
-				<path type="relative">everything2-00-00.h5</path>
-				<timepointOffset>0</timepointOffset>
-				<timepointStart>0</timepointStart>
-				<timepointLength>3</timepointLength>
-				<setupOffset>0</setupOffset>
-				<setupStart>0</setupStart>
-				<setupLength>4</setupLength>
-			</partition>
-			<partition>
-				<path type="relative">everything2-01-00.h5</path>
-				<timepointOffset>0</timepointOffset>
-				<timepointStart>3</timepointStart>
-				<timepointLength>2</timepointLength>
-				<setupOffset>0</setupOffset>
-				<setupStart>0</setupStart>
-				<setupLength>4</setupLength>
-			</partition>
-		</ImageLoader>
 		<ViewSetups>
 			<ViewSetup>
 				<id>0</id>
-				<angleId>0</angleId>
-				<angleName>0</angleName>
-				<angleRotation>0</angleRotation>
-				<angleRotationAxis>1,0,0</angleRotationAxis>
-				<illuminationId>0</illuminationId>
-				<channelId>0</channelId>
-				<channelName>1</channelName>
-				<width>0</width>
-				<height>0</height>
-				<depth>0</depth>
-				<pixelWidth>0.0</pixelWidth>
-				<pixelHeight>0.0</pixelHeight>
-				<pixelDepth>0.0</pixelDepth>
+				<attributes>
+					<angle>0</angle>
+					<illumination>0</illumination>
+					<channel>0</channel>
+				</attributes>
 			</ViewSetup>
 			<ViewSetup>
 				<id>1</id>
-				<angleId>1</angleId>
-				<angleName>120</angleName>
-				<angleRotation>120</angleRotation>
-				<angleRotationAxis>1,0,0</angleRotationAxis>
-				<illuminationId>0</illuminationId>
-				<channelId>0</channelId>
-				<channelName>1</channelName>
-				<width>0</width>
-				<height>0</height>
-				<depth>0</depth>
-				<pixelWidth>0.0</pixelWidth>
-				<pixelHeight>0.0</pixelHeight>
-				<pixelDepth>0.0</pixelDepth>
+				<attributes>
+					<angle>1</angle>
+					<illumination>0</illumination>
+					<channel>0</channel>
+				</attributes>
 			</ViewSetup>
 			<ViewSetup>
 				<id>2</id>
-				<angleId>2</angleId>
-				<angleName>240</angleName>
-				<angleRotation>240</angleRotation>
-				<angleRotationAxis>1,0,0</angleRotationAxis>
-				<illuminationId>0</illuminationId>
-				<channelId>0</channelId>
-				<channelName>1</channelName>
-				<width>0</width>
-				<height>0</height>
-				<depth>0</depth>
-				<pixelWidth>0.0</pixelWidth>
-				<pixelHeight>0.0</pixelHeight>
-				<pixelDepth>0.0</pixelDepth>
+				<attributes>
+					<angle>2</angle>
+					<illumination>0</illumination>
+					<channel>0</channel>
+				</attributes>
 			</ViewSetup>
 			<ViewSetup>
 				<id>3</id>
-				<angleId>0</angleId>
-				<angleName>0</angleName>
-				<angleRotation>0</angleRotation>
-				<angleRotationAxis>1,0,0</angleRotationAxis>
-				<illuminationId>0</illuminationId>
-				<channelId>1</channelId>
-				<channelName>0</channelName>
-				<width>0</width>
-				<height>0</height>
-				<depth>387</depth>
-				<pixelWidth>1.0</pixelWidth>
-				<pixelHeight>1.0</pixelHeight>
-				<pixelDepth>1.0</pixelDepth>
+				<attributes>
+					<angle>0</angle>
+					<illumination>0</illumination>
+					<channel>1</channel>
+				</attributes>
+				<size>0 0 387</size>
+				<voxelSize>
+					<unit>px</unit>
+					<size>1.0 1.0 1.0</size>
+				</voxelSize>
 			</ViewSetup>
+			<Attributes name="channel">
+				<Channel>
+					<id>0</id>
+					<name>1</name>
+				</Channel>
+				<Channel>
+					<id>1</id>
+					<name>0</name>
+				</Channel>
+			</Attributes>
+			<Attributes name="angle">
+				<Angle>
+					<id>0</id>
+					<name>0</name>
+					<axis>1.0 0.0 0.0</axis>
+					<degrees>0</degrees>
+				</Angle>
+				<Angle>
+					<id>1</id>
+					<name>120</name>
+					<axis>1.0 0.0 0.0</axis>
+					<degrees>120.0</degrees>
+				</Angle>
+				<Angle>
+					<id>2</id>
+					<name>240</name>
+					<axis>1.0 0.0 0.0</axis>
+					<degrees>240.0</degrees>
+				</Angle>
+			</Attributes>
+			<Attributes name="illumination">
+				<Illumination>
+					<id>0</id>
+					<name>0</name>
+				</Illumination>
+			</Attributes>
 		</ViewSetups>
 		<Timepoints type="pattern">
 			<integerpattern>1,4-10,20-50:10,100</integerpattern>
@@ -98,7 +86,7 @@
 	</SequenceDescription>
 	<ViewRegistrations>
 		<ReferenceTimepoint>50</ReferenceTimepoint>
-		<ViewRegistration timepoint="0" setup="0" >
+		<ViewRegistration timepoint="0" setup="0">
 			<ViewTransform type="affine">
 				<Name>may have a name</Name>
 				<affine>0.999821662902832 0.001022040843963623 0.00501742959022522
@@ -108,7 +96,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="1" setup="0" >
+		<ViewRegistration timepoint="1" setup="0">
 			<ViewTransform type="affine">
 				<affine>0.9997981786727905 0.0010066628456115723 0.005043089389801025
 					-3.4342167377471924 -9.974809363484383E-4 0.9995599389076233
@@ -117,7 +105,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="2" setup="0" >
+		<ViewRegistration timepoint="2" setup="0">
 			<ViewTransform type="affine">
 				<affine>0.9998526573181152 7.255449891090393E-4 0.007503300905227661
 					-3.686215400695801 -8.680634200572968E-4 0.9995786547660828
@@ -126,7 +114,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="3" setup="0" >
+		<ViewRegistration timepoint="3" setup="0">
 			<ViewTransform type="affine">
 				<affine>0.9998241662979126 5.485862493515015E-4 0.0032556653022766113
 					-3.182929515838623 -5.050254985690117E-4 0.9996762871742249
@@ -135,7 +123,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="4" setup="0" >
+		<ViewRegistration timepoint="4" setup="0">
 			<ViewTransform type="affine">
 				<affine>0.9998246431350708 3.376118838787079E-4 0.005441755056381226
 					-2.9355766773223877 -3.4151365980505943E-4 0.9998696446418762
@@ -144,7 +132,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="0" setup="1" >
+		<ViewRegistration timepoint="0" setup="1">
 			<ViewTransform type="affine">
 				<affine>0.9997484683990479 -0.0036543607711791992
 					0.0019213557243347168 -5.094296932220459 0.001493997871875763
@@ -154,7 +142,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="1" setup="1" >
+		<ViewRegistration timepoint="1" setup="1">
 			<ViewTransform type="affine">
 				<affine>0.999729335308075 -0.003490537405014038 0.0033257603645324707
 					-5.321657180786133 0.0011223182082176208 -0.5037053823471069
@@ -163,7 +151,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="2" setup="1" >
+		<ViewRegistration timepoint="2" setup="1">
 			<ViewTransform type="affine">
 				<affine>0.9997634887695312 -0.0034777820110321045
 					0.0022455453872680664 -5.399645805358887 0.0017833486199378967
@@ -173,7 +161,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="3" setup="1" >
+		<ViewRegistration timepoint="3" setup="1">
 			<ViewTransform type="affine">
 				<affine>0.9997636079788208 -0.003083467483520508
 					0.0018324851989746094
@@ -183,7 +171,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="4" setup="1" >
+		<ViewRegistration timepoint="4" setup="1">
 			<ViewTransform type="affine">
 				<affine>0.9997862577438354 -0.0029499828815460205
 					4.481077194213867E-4
@@ -193,7 +181,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="0" setup="2" >
+		<ViewRegistration timepoint="0" setup="2">
 			<ViewTransform type="affine">
 			<affine>0.9998370409011841 -0.006631273776292801 0.01666603982448578
 				-5.9060258865356445 -0.0011100731790065765 -0.49260154366493225
@@ -202,7 +190,7 @@
 			</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="1" setup="2" >
+		<ViewRegistration timepoint="1" setup="2">
 			<ViewTransform type="affine">
 				<affine>0.9998970031738281 -0.006498921662569046 0.01645684987306595
 					-5.852316379547119 -9.906617924571037E-4 -0.49230632185935974
@@ -211,7 +199,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="2" setup="2" >
+		<ViewRegistration timepoint="2" setup="2">
 			<ViewTransform type="affine">
 				<affine>0.9998748302459717 -0.0065449997782707214
 					0.017468221485614777
@@ -221,7 +209,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="3" setup="2" >
+		<ViewRegistration timepoint="3" setup="2">
 			<ViewTransform type="affine">
 				<affine>0.999868631362915 -0.006556753069162369 0.01910638064146042
 					-5.767396926879883 -8.373484015464783E-4 -0.49263566732406616
@@ -230,7 +218,7 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="4" setup="2" >
+		<ViewRegistration timepoint="4" setup="2">
 			<ViewTransform type="affine">
 				<affine>0.99980229139328 -0.006600808352231979 0.020592927932739258
 					-5.177316665649414 -3.3759232610464096E-4 -0.49230149388313293
@@ -239,29 +227,29 @@
 				</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="0" setup="3" >
+		<ViewRegistration timepoint="0" setup="3">
 			<ViewTransform type="affine">
-			<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
+				<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="1" setup="3" >
+		<ViewRegistration timepoint="1" setup="3">
 			<ViewTransform type="affine">
-			<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
+				<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="2" setup="3" >
+		<ViewRegistration timepoint="2" setup="3">
 			<ViewTransform type="affine">
-			<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
+				<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="3" setup="3" >
+		<ViewRegistration timepoint="3" setup="3">
 			<ViewTransform type="affine">
-			<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
+				<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
 			</ViewTransform>
 		</ViewRegistration>
-		<ViewRegistration timepoint="4" setup="3" >
+		<ViewRegistration timepoint="4" setup="3">
 			<ViewTransform type="affine">
-			<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
+				<affine>1.0 0.0 0.0 53.0 0.0 1.0 0.0 4.0 0.0 0.0 1.0 6.0</affine>
 			</ViewTransform>
 		</ViewRegistration>
 	</ViewRegistrations>

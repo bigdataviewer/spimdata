@@ -1,215 +1,49 @@
 package mpicbg.spim.data.sequence;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
+import mpicbg.spim.data.generic.base.Entity;
+import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
 
-/**
- * A SPIM sequence consisting of a list of timepoints and a list of view setups.
- * Every (timepoint, setup) pair is a view (i.e., an image stack acquired at that time with that setup).
- *
- * @param <T>
- *            {@link TimePoint} type
- * @param <V>
- *            {@link ViewSetup} type
- *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
- */
-public class SequenceDescription< T extends TimePoint, V extends ViewSetup >
+public class SequenceDescription extends AbstractSequenceDescription< ViewSetup, ViewDescription, ImgLoader< ? > >
 {
-	/**
-	 * timepoint id for every timepoint index.
-	 */
-	final protected TimePoints< T > timepoints;
-
-	final private TimePoints< T > unmodifiableTimepoints;
-
-	/**
-	 * angle and illumination setup for every view-setup index.
-	 */
-	final protected ArrayList< V > setups;
-
-	final private List< V > unmodifiableSetups;
-
-	/**
-	 * TODO
-	 * may be null.
-	 */
-	final protected MissingViews missingViews;
-
-	/**
-	 * load images for every view. might be null.
-	 */
-	final protected ImgLoader imgLoader;
-
-	/**
-	 * links ViewId to the ViewDescriptions
-	 */
-	final protected HashMap< ViewId, ViewDescription< T, V > > viewDescriptions;
-
-	public SequenceDescription( final TimePoints< T > timepoints, final List< ? extends V > setups, final MissingViews missingViews, final ImgLoader imgLoader )
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups )
 	{
-		this.timepoints = timepoints;
-		this.unmodifiableTimepoints = timepoints.getUnmodifiableTimePoints();
-		this.setups = new ArrayList< V >( setups );
-		this.unmodifiableSetups = Collections.unmodifiableList( this.setups );
-		this.missingViews = missingViews;
-		this.imgLoader = imgLoader;
-		this.viewDescriptions = createViewDescriptions();
+		this( timepoints, setups, null, null );
 	}
 
-	protected HashMap< ViewId, ViewDescription< T, V > > createViewDescriptions()
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader< ? > imgLoader )
 	{
-		final HashMap< ViewId, ViewDescription< T, V > > descs = new HashMap< ViewId, ViewDescription< T, V > >();
-		for ( int ti = 0; ti < numTimePoints(); ++ti )
-			for ( int si = 0; si < numViewSetups(); ++si )
-			{
-				final ViewDescription< T, V > viewDescription = 
-						new ViewDescription< T, V >( this, true, this.timepoints.getTimePointList().get( ti ).getId(), this.setups.get( si ).getId() ); 
-				descs.put( viewDescription, viewDescription );
-			}
-		if ( missingViews != null )
-			return missingViews.markMissingViews( descs );
-		else
-			return descs;
+		this( timepoints, setups, imgLoader, null );
 	}
 
-	/**
-	 * Get number of timepoints in this sequence.
-	 *
-	 * @return number of timepoints
-	 */
-	final public int numTimePoints()
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader< ? > imgLoader, final MissingViews missingViews )
 	{
-		return timepoints.getTimePointList().size();
+		super( timepoints, setups, imgLoader, missingViews );
 	}
 
-	final public TimePoints< T > getTimePoints()
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups )
 	{
-		return unmodifiableTimepoints;
+		this( timepoints, Entity.idMap( setups ) );
 	}
 
-	public ImgLoader getImgLoader()
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader< ? > imgLoader )
 	{
-		return imgLoader;
+		this( timepoints, Entity.idMap( setups ), imgLoader );
 	}
 
-	/**
-	 * TODO
-	 * may be null.
-	 * @return
-	 */
-	public MissingViews getMissingViews()
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader< ? > imgLoader, final MissingViews missingViews )
 	{
-		return missingViews;
+		super( timepoints, Entity.idMap( setups ), imgLoader, missingViews );
 	}
 
-	/**
-	 * Get number of view setups in this sequence.
-	 *
-	 * @return number of view setups
-	 */
-	final public int numViewSetups()
+	@Override
+	protected ViewDescription createViewDescription( final int timepointId, final int setupId )
 	{
-		return setups.size();
+		return new ViewDescription( timepointId, setupId, true, this );
 	}
 
-	final public List< V > getViewSetups()
-	{
-		return unmodifiableSetups;
-	}
-	
-	/**
-	 * @return All {@link ViewDescription}s, the respective isPresent flag defines if it is available for the respective timepoint
-	 */
-	public HashMap< ViewId, ViewDescription< T, V > > getViewDescriptions() { return viewDescriptions; } 
-
-	/**
-	 * @return All {@link ViewDescription}s, the respective isPresent flag defines if it is available for the respective timepoint,
-	 * all {@link ViewDescription}s are sorted by ViewId
-	 */
-	public ArrayList< ViewDescription< T, V > > getOrderedViewDescriptions()
-	{
-		final ArrayList< ViewDescription< T, V > > list = new ArrayList< ViewDescription< T,V > >();
-		list.addAll( getViewDescriptions().values() );
-		Collections.sort( list );
-		return list;
-	}
-	
-	/**
-	 * @param timepointId
-	 * @param setupId
-	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 
-	 * its isPresent flag defines if it is available for this timepoint  
-	 */
-	public ViewDescription< T, V > getViewDescription( final int timepointId, final int setupId )
-	{
-		return getViewDescription( new ViewId( timepointId, setupId ) );
-	}
-
-	/**
-	 * @param ViewId
-	 * @return A specific {@link ViewDescription} for a certain combination of timepoint and setup, 
-	 * its isPresent flag defines if it is available for this timepoint  
-	 */
-	public ViewDescription< T, V > getViewDescription( final ViewId viewId )
-	{
-		return viewDescriptions.get( viewId );
-	}
-
-	/**
-	 * @return All {@link Channel}s that have a unique id and are part of the ViewSetups
-	 */
-	public ArrayList< Channel > getAllChannels()
-	{
-		final List< V > viewSetups = this.getViewSetups();
-		final HashMap< Integer, Channel > set = new HashMap< Integer, Channel >();
-		
-		for ( final ViewSetup v : viewSetups )
-			set.put( v.getChannel().getId(), v.getChannel() );
-
-		final ArrayList< Channel > channelList = new ArrayList< Channel >();
-		channelList.addAll( set.values() );
-		Collections.sort( channelList );
-		
-		return channelList;
-	}
-	
-	/**
-	 * @return All {@link Angle}s that have a unique id and are part of the ViewSetups
-	 */
-	public ArrayList< Angle > getAllAngles()
-	{
-		final List< V > viewSetups = this.getViewSetups();
-		final HashMap< Integer, Angle > set = new HashMap< Integer, Angle >();
-		
-		for ( final ViewSetup v : viewSetups )
-			set.put( v.getAngle().getId(), v.getAngle() );
-
-		final ArrayList< Angle > angleList = new ArrayList< Angle >();
-		angleList.addAll( set.values() );
-		Collections.sort( angleList );
-
-		return angleList;
-	}
-	
-	/**
-	 * @return All {@link Illumination}s that have a unique id and are part of the ViewSetups
-	 */
-	public ArrayList< Illumination > getAllIlluminations()
-	{
-		final List< V > viewSetups = this.getViewSetups();
-		final HashMap< Integer, Illumination > set = new HashMap< Integer, Illumination >();
-		
-		for ( final ViewSetup v : viewSetups )
-			set.put( v.getIllumination().getId(), v.getIllumination() );
-
-		final ArrayList< Illumination > illuminationList = new ArrayList< Illumination >();
-		illuminationList.addAll( set.values() );
-		Collections.sort( illuminationList );
-		
-		return illuminationList;
-	}	
+	protected SequenceDescription()
+	{}
 }

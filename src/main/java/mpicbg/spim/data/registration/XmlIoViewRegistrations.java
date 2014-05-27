@@ -1,38 +1,29 @@
 package mpicbg.spim.data.registration;
 
-import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATIONS_TAG;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TAG;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME;
-import static mpicbg.spim.data.registration.XmlKeys.VIEWTRANSFORM_TAG;
+import static mpicbg.spim.data.XmlKeys.VIEWREGISTRATIONS_TAG;
+import static mpicbg.spim.data.XmlKeys.VIEWREGISTRATION_TAG;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import mpicbg.spim.data.SpimDataException;
+import mpicbg.spim.data.XmlKeys;
+import mpicbg.spim.data.generic.base.XmlIoSingleton;
 import mpicbg.spim.data.sequence.ViewId;
 
 import org.jdom2.Element;
 
-public class XmlIoViewRegistrations
+public class XmlIoViewRegistrations extends XmlIoSingleton< ViewRegistrations >
 {
-	/**
-	 * TODO
-	 */
-	public String getTagName()
-	{
-		return VIEWREGISTRATIONS_TAG;
-	}
-
 	protected XmlIoViewTransform xmlViewTransform;
 
-	public XmlIoViewRegistrations( final XmlIoViewTransform xmlViewTransform )
-	{
-		this.xmlViewTransform = xmlViewTransform;
-	}
+	private final XmlIoViewRegistration xmlIoViewRegistration;
 
 	public XmlIoViewRegistrations()
 	{
-		this( new XmlIoViewTransform() );
+		super( VIEWREGISTRATIONS_TAG, ViewRegistrations.class );
+		this.xmlIoViewRegistration = new XmlIoViewRegistration();
+
+		handledTags.add( VIEWREGISTRATION_TAG );
 	}
 
 	/**
@@ -40,46 +31,31 @@ public class XmlIoViewRegistrations
 	 *
 	 * @param element
 	 *            a {@value XmlKeys#VIEWREGISTRATIONS_TAG} DOM element.
+	 * @throws SpimDataException
 	 */
-	public ViewRegistrations fromXml( final Element viewRegistrations )
+	@Override
+	public ViewRegistrations fromXml( final Element elem ) throws SpimDataException
 	{
+		final ViewRegistrations viewRegistrations = super.fromXml( elem );
+
 		final HashMap< ViewId, ViewRegistration > regs = new HashMap< ViewId, ViewRegistration >();
-		for ( final Element reg : viewRegistrations.getChildren( VIEWREGISTRATION_TAG ) )
+		for ( final Element c : elem.getChildren( xmlIoViewRegistration.getTag() ) )
 		{
-			final ViewRegistration vr = viewRegistrationFromXml( reg );
+			final ViewRegistration vr = xmlIoViewRegistration.fromXml( c );
 			regs.put( vr, vr );
 		}
-		return new ViewRegistrations( regs );
+		viewRegistrations.setViewRegistrations( regs );
+
+		return viewRegistrations;
 	}
 
 	public Element toXml( final ViewRegistrations viewRegistrations )
 	{
-		final Element elem = new Element( VIEWREGISTRATIONS_TAG );
-		for ( final ViewRegistration vr : viewRegistrations.getOrderedViewRegistrations() )
-			elem.addContent( viewRegistrationToXml( vr ) );
-		return elem;
-	}
+		final Element elem = super.toXml();
 
-	protected ViewRegistration viewRegistrationFromXml( final Element viewRegistration )
-	{
-		final int timepointId = Integer.parseInt( viewRegistration.getAttributeValue( VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME ) );
-		final int setupId = Integer.parseInt( viewRegistration.getAttributeValue( VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME ) );
-		final ArrayList< ViewTransform > transforms = new ArrayList< ViewTransform >();
-		for ( final Element t : viewRegistration.getChildren( VIEWTRANSFORM_TAG ) )
-			transforms.add( xmlViewTransform.fromXml( t ) );
-		return new ViewRegistration( timepointId, setupId, transforms );
-	}
+		for ( final ViewRegistration vr : viewRegistrations.getViewRegistrationsOrdered() )
+			elem.addContent( xmlIoViewRegistration.toXml( vr ) );
 
-	protected Element viewRegistrationToXml( final ViewRegistration viewRegistration )
-	{
-		final Element elem = new Element( VIEWREGISTRATION_TAG );
-		elem.setAttribute( VIEWREGISTRATION_TIMEPOINT_ATTRIBUTE_NAME, Integer.toString( viewRegistration.getTimePointId() ) );
-		elem.setAttribute( VIEWREGISTRATION_SETUP_ATTRIBUTE_NAME, Integer.toString( viewRegistration.getViewSetupId() ) );
-		final ArrayList< ViewTransform > transforms = new ArrayList< ViewTransform >( viewRegistration.getTransformList() );
-		if ( transforms.isEmpty() )
-			transforms.add( new ViewTransformAffine( null, viewRegistration.getModel() ) );
-		for ( final ViewTransform t : transforms )
-			elem.addContent( xmlViewTransform.toXml( t ) );
 		return elem;
 	}
 }

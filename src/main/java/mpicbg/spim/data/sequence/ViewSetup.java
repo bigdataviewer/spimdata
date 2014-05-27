@@ -1,158 +1,140 @@
 package mpicbg.spim.data.sequence;
 
+import mpicbg.spim.data.generic.base.ViewSetupAttributes;
+import mpicbg.spim.data.generic.sequence.BasicViewSetup;
+import net.imglib2.Dimensions;
+
 /**
- * A collection of parameters describing the setup for a particular view, e.g.
- * angle, illumination direction, etc.
+ * A collection of parameters describing the setup for a particular stack coming
+ * from a SPIM microscope (angle, illumination direction, etc). A
+ * {@link ViewSetup} is a {@link BasicViewSetup} that must have a channel,
+ * angle, and illumination direction.
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
-public class ViewSetup implements Comparable< ViewSetup >
+public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 {
-	/**
-	 * This unique id is the index of this {@link ViewSetup} in {@link SequenceDescription#setups}.
-	 */
-	private final int id;
-
-	/**
-	 * The {@link Angle} of this setup.
-	 */
-	private Angle angle;
-
-	/**
-	 * The {@link Illumination} direction of this setup.
-	 */
-	private Illumination illumination;
-
-	/**
-	 * The {@link Channel} of this setup
-	 */
 	private Channel channel;
 
-	/**
-	 * width of stack slice in pixels.
-	 */
-	private int width;
+	private Angle angle;
+
+	private Illumination illumination;
+
+	protected static String channelAttributeKey = ViewSetupAttributes.getNameForClass( Channel.class );
+
+	protected static String angleAttributeKey = ViewSetupAttributes.getNameForClass( Angle.class );
+
+	protected static String illuminationAttributeKey = ViewSetupAttributes.getNameForClass( Illumination.class );
 
 	/**
-	 * height of stack slice in pixels.
-	 */
-	private int height;
-
-	/**
-	 * number of slices.
-	 */
-	private int depth;
-
-	/**
-	 * Unit for pixel calibration
-	 */
-	private String unit;
-
-	/**
-	 * width of a pixel in {@link #unit}.
-	 */
-	private double pixelWidth;
-
-	/**
-	 * height of a pixel in {@link #unit}.
-	 */
-	private double pixelHeight;
-
-	/**
-	 * depth of a pixel in {@link #unit}.
-	 */
-	private double pixelDepth;
-
-	public ViewSetup(
-			final int id,
-			final Angle angle,
-			final Illumination illumination,
-			final Channel channel,
-			final int width,
-			final int height,
-			final int depth,
-			final String unit,
-			final double pixelWidth,
-			final double pixelHeight,
-			final double pixelDepth )
-	{
-		this.id = id;
-		this.angle = angle;
-		this.illumination = illumination;
-		this.channel = channel;
-		this.width = width;
-		this.height = height;
-		this.depth = depth;
-		this.unit = unit;
-		this.pixelWidth = pixelWidth;
-		this.pixelHeight = pixelHeight;
-		this.pixelDepth = pixelDepth;
-	}
-
-	public ViewSetup(
-			final int id,
-			final Angle angle,
-			final Illumination illumination,
-			final Channel channel )
-	{
-		this( id, angle, illumination, channel, -1, -1, -1, "", -1, -1, -1 );
-	}
-
-	/**
-	 * Get ViewSetup index.
+	 * TODO
 	 *
-	 * @return index.
+	 * @param id
+	 * @param name
+	 * @param size
+	 * @param voxelSize
+	 * @param channel
+	 * @param angle
+	 * @param illumination
 	 */
+	public ViewSetup(
+			final int id,
+			final String name,
+			final Dimensions size,
+			final VoxelDimensions voxelSize,
+			final Channel channel,
+			final Angle angle,
+			final Illumination illumination )
+	{
+		super( id, name, size, voxelSize );
+		setChannel( channel );
+		setAngle( angle );
+		setIllumination( illumination );
+	}
+
+	/**
+	 * Get the unique id of this {@link ViewSetup}.
+	 *
+	 * @return unique id.
+	 */
+	@Override
 	public int getId()
 	{
-		return id;
+		return super.getId();
 	}
 
 	/**
-	 * Get stage rotation {@link Angle}
+	 * Whether this setup has has a {@link #getName()}.
 	 *
-	 * @return The {@link Angle}
+	 * @return true, if this setup has a name.
 	 */
-	public Angle getAngle()
+	@Override
+	public boolean hasName()
 	{
-		return angle;
+		return super.hasName();
 	}
 
 	/**
-	 * Set stage rotation {@link Angle}
+	 * Get the name of this setup.
 	 *
-	 * @param The {@link Angle}
+	 * @return the name of this setup or null if it is not set.
 	 */
-	public void setAngle( final Angle angle )
+	@Override
+	public String getName()
 	{
-		this.angle = angle;
+		return super.getName();
 	}
 
 	/**
-	 * Get the {@link Illumination} direction.
+	 * Whether this setup has has a {@link #getSize()}.
 	 *
-	 * @return {@link Illumination} direction
+	 * @return true, if this setup has a size.
 	 */
-	public Illumination getIllumination()
+	@Override
+	public boolean hasSize()
 	{
-		return illumination;
+		return super.hasSize();
 	}
 
 	/**
-	 * Set {@link Illumination} direction.
+	 * Get the {@link Dimensions} of images from this setup.
 	 *
-	 * @param illumination
-	 *            {@link Illumination} direction
+	 * @return the {@link Dimensions} of images from this setup or null if it
+	 *         is not set.
 	 */
-	public void setIllumination( final Illumination illumination )
+	@Override
+	public Dimensions getSize()
 	{
-		this.illumination = illumination;
+		return super.getSize();
 	}
 
 	/**
-	 * Get the {@link Channel}
+	 * Whether this setup has has a {@link #getVoxelSize()}.
 	 *
-	 * @return {@link Channel}
+	 * @return true, if this setup has a voxel size.
+	 */
+	@Override
+	public boolean hasVoxelSize()
+	{
+		return super.hasVoxelSize();
+	}
+
+	/**
+	 * Get the {@link VoxelDimensions} of images from this setup.
+	 *
+	 * @return The {@link VoxelDimensions} of images from this setup or null if it is
+	 * not set.
+	 */
+	@Override
+	public VoxelDimensions getVoxelSize()
+	{
+		return super.getVoxelSize();
+	}
+
+	/**
+	 * Get the {@link Channel}.
+	 *
+	 * @return the channel
 	 */
 	public Channel getChannel()
 	{
@@ -160,184 +142,69 @@ public class ViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
-	 * Set the {@link Channel}
+	 * Set the {@link Channel}.
 	 *
 	 * @param channel
-	 *            {@link Channel}
+	 *            the channel
 	 */
-	public void setChannel( final Channel channel )
+	protected void setChannel( final Channel channel )
 	{
 		this.channel = channel;
+		getAttributes().put( channelAttributeKey, channel );
 	}
 
 	/**
-	 * Get width of stack slice in pixels.
-	 * A value of <em>-1</em> means that this property is undefined.
+	 * Get stage rotation {@link Angle}.
 	 *
-	 * @return width in pixels
+	 * @return the angle.
 	 */
-	public int getWidth()
+	public Angle getAngle()
 	{
-		return width;
+		return angle;
 	}
 
 	/**
-	 * Set width of stack slice in pixels.
-	 * A value of <em>-1</em> means that this property is undefined.
+	 * Set the rotation {@link Angle}
 	 *
-	 * @param width
-	 *            width in pixels
+	 * @param angle
+	 *            the angle.
 	 */
-	public void setWidth( final int width )
+	protected void setAngle( final Angle angle )
 	{
-		this.width = width;
+		this.angle = angle;
+		getAttributes().put( angleAttributeKey, angle );
 	}
 
 	/**
-	 * Get height of stack slice in pixels.
-	 * A value of <em>-1</em> means that this property is undefined.
+	 * Get the {@link Illumination} direction.
 	 *
-	 * @return height in pixels
+	 * @return the illumination direction
 	 */
-	public int getHeight()
+	public Illumination getIllumination()
 	{
-		return height;
+		return illumination;
 	}
 
 	/**
-	 * Set height of stack slice in pixels.
-	 * A value of <em>-1</em> means that this property is undefined.
+	 * Det the {@link Illumination} direction.
 	 *
-	 * @param height
-	 *            height in pixels
+	 * @param illumination the illumination direction
 	 */
-	public void setHeight( final int height )
+	protected void setIllumination( final Illumination illumination )
 	{
-		this.height = height;
+		this.illumination = illumination;
+		getAttributes().put( illuminationAttributeKey, illumination );
 	}
 
 	/**
-	 * Get number of slices.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @return number of slices
+	 * Compares the {@link #getId() ids}.
 	 */
-	public int getDepth()
-	{
-		return depth;
-	}
-
-	/**
-	 * Set number of slices.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @param depth
-	 *            number of slices
-	 */
-	public void setDepth( final int depth )
-	{
-		this.depth = depth;
-	}
-
-	/**
-	 * Get unit for pixel calibration.
-	 *
-	 * @return unit for pixel calibration.
-	 */
-	public String getPixelSizeUnit()
-	{
-		return unit;
-	}
-
-	/**
-	 * Set unit for pixel calibration.
-	 *
-	 * @param unit
-	 *            unit for pixel calibration.
-	 */
-	public void setPixelSizeUnit( final String unit )
-	{
-		this.unit = unit;
-	}
-
-	/**
-	 * Get width of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @return width of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public double getPixelWidth()
-	{
-		return pixelWidth;
-	}
-
-	/**
-	 * Set width of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @param pixelWidth
-	 *            width of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public void setPixelWidth( final double pixelWidth )
-	{
-		this.pixelWidth = pixelWidth;
-	}
-
-	/**
-	 * Get height of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @return height of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public double getPixelHeight()
-	{
-		return pixelHeight;
-	}
-
-	/**
-	 * Set height of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @param pixelHeight
-	 *            height of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public void setPixelHeight( final double pixelHeight )
-	{
-		this.pixelHeight = pixelHeight;
-	}
-
-	/**
-	 * Get depth of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @return depth of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public double getPixelDepth()
-	{
-		return pixelDepth;
-	}
-
-	/**
-	 * Set depth of a pixel in unit {@link #getPixelSizeUnit()}.
-	 * A value of <em>-1</em> means that this property is undefined.
-	 *
-	 * @param pixelDepth
-	 *            depth of a pixel in unit {@link #getPixelSizeUnit()}.
-	 */
-	public void setPixelDepth( final double pixelDepth )
-	{
-		this.pixelDepth = pixelDepth;
-	}
-
 	@Override
 	public int compareTo( final ViewSetup o )
 	{
-		return id - o.id;
+		return getId() - o.getId();
 	}
-	
-	@Override
-	public int hashCode() 
-	{
-		return getId();
-	}
+
+	ViewSetup()
+	{}
 }

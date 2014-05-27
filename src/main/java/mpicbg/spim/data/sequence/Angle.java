@@ -1,100 +1,126 @@
 package mpicbg.spim.data.sequence;
 
+import mpicbg.spim.data.generic.base.NamedEntity;
+
 /**
- * Defines an angle which is part of the ViewSetup
- * 
+ * Defines an angle which is part of the ViewSetup. An {@link Angle} is a
+ * {@link NamedEntity} that may have a rotation axis and angle.
+ *
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
+ * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
-public class Angle implements Comparable< Angle >
+public class Angle extends NamedEntity implements Comparable< Angle >
 {
 	/**
-	 * The approximate rotation axis from the microscope metadata (if available, otherwise null)
+	 * The approximate rotation axis from the microscope meta-data (if available,
+	 * otherwise null)
 	 */
-	protected double[] rotationAxis;
-	
-	/**
-	 * The approximate rotation angle from the microscope metadata  (if available, otherwise NaN)
-	 */
-	protected double rotationAngle;
-	
-	/**
-	 * The name of this angle, for example used to replace it in filenames when opening
-	 * individual 3d-stacks (e.g. SPIM_TL20_Angle45.tif)
-	 */
-	protected String name;
-	
-	/**
-	 * The unique id of this angle, defines for example the position in a file
-	 */
-	protected int id;
-	
-	public Angle( final int id, final String name, final double rotationAngle, final double[] rotationAxis )
-	{
-		this.name = name;
-		this.id = id;
-		this.rotationAngle = rotationAngle;
-		this.rotationAxis = rotationAxis;
-	}
+	private double[] rotationAxis;
 
-	public Angle( final int id, final String name, final double rotationAngle )
+	/**
+	 * The approximate rotation angle from the microscope meta-data (if
+	 * available, otherwise NaN)
+	 */
+	private double rotationAngle;
+
+	public Angle( final int id, final String name, final double rotationAngleDegrees, final double[] rotationAxis )
 	{
-		this( id, name, rotationAngle, null );
+		super( id, name );
+		this.rotationAngle = rotationAngleDegrees;
+		this.rotationAxis = rotationAxis;
 	}
 
 	public Angle( final int id, final String name )
 	{
-		this( id, name, Double.NaN );
-	}
-
-	public Angle( final int id, final double rotationAngle )
-	{
-		this( id, Integer.toString( id ), rotationAngle );
+		this( id, name, Double.NaN, null );
 	}
 
 	public Angle( final int id )
 	{
 		this( id, Integer.toString( id ) );
 	}
-	
-	public void setName( final String name ) { this.name = name; }
-	public void setRotationAxis( final double[] rotationAxis ) { this.rotationAxis = rotationAxis; }
-	public void setRotationAngle( final double rotationAngle ) { this.rotationAngle = rotationAngle; }
-	
-	/**
-	 * @return the approximate rotation axis as defined by the metadata (or null)
-	 */
-	public double[] getRotationAxis() { return rotationAxis; }
-	
-	/**
-	 * @return the approximate rotation angle from the microscope metadata (or NaN)
-	 */
-	public double getRotationAngle() { return rotationAngle; }
-	public String getName() { return name; }
-	public int getId() { return id; }
 
+	/**
+	 * Get the unique id of this angle.
+	 */
 	@Override
-	public int compareTo( final Angle angle ) { return getId() - angle.getId(); }
-	
-	@Override
-	public int hashCode() { return getId(); }
-	
-	@Override
-	public boolean equals( final Object o )
+	public int getId()
 	{
-		if ( o == null )
-		{
-			return false;
-		}
-		else if ( o instanceof Angle )
-		{
-			if ( ((Angle)o).getId() == getId() )
-				return true;
-			else
-				return false;
-		}
-		else
-		{
-			return false;
-		}
+		return super.getId();
 	}
+
+	/**
+	 * Get the name of this angle.
+	 *
+	 * The name is used for example to replace it in filenames when
+	 * opening individual 3d-stacks (e.g. SPIM_TL20_Angle45.tif)
+	 */
+	@Override
+	public String getName()
+	{
+		return super.getName();
+	}
+
+	/**
+	 * Set the name of this angle.
+	 */
+	@Override
+	public void setName( final String name )
+	{
+		super.setName( name );
+	}
+
+	/**
+	 * Is the approximate rotation defined?
+	 *
+	 * @return true, if the approximate rotation is defined.
+	 */
+	public boolean hasRotation()
+	{
+		return rotationAxis != null;
+	}
+
+	/**
+	 * Get the the approximate rotation axis (as defined by the microscope meta-data).
+	 *
+	 * @return the rotation axis or null if rotation is undefined.
+	 */
+	public double[] getRotationAxis()
+	{
+		return rotationAxis;
+	}
+
+	/**
+	 * Get the approximate rotation angle (as defined by the microscope meta-data).
+	 *
+	 * @return the rotation angle in degrees or {@link Double#NaN} if rotation is undefined.
+	 */
+	public double getRotationAngleDegrees()
+	{
+		return rotationAngle;
+	}
+
+	/**
+	 * Set the approximate rotation angle and axis (as defined by the microscope meta-data).
+	 * @param axis
+	 * @param degrees
+	 */
+	public void setRotation( final double[] axis, final double degrees )
+	{
+		final boolean isRotationDefined = degrees != Double.NaN && axis != null;
+		rotationAngle = isRotationDefined ? degrees : Double.NaN;
+		rotationAxis = isRotationDefined ? axis : null;
+	}
+
+	/**
+	 * Compares the {@link #getId() ids}.
+	 */
+	@Override
+	public int compareTo( final Angle o )
+	{
+		return getId() - o.getId();
+	}
+
+	protected Angle()
+	{}
 }

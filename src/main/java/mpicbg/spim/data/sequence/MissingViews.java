@@ -1,38 +1,36 @@
 package mpicbg.spim.data.sequence;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MissingViews
 {
 	/**
-	 * Ordered list of missing {@link ViewId}s.
+	 * Set of missing {@link ViewId}s.
 	 */
-	protected final List< ViewId > missingViews;
+	private Set< ViewId > missingViews;
 
-	public MissingViews( final List< ? extends ViewId > missingViews )
+	public MissingViews( final Collection< ? extends ViewId > missingViews )
 	{
-		this.missingViews = new ArrayList< ViewId >( missingViews );
-		Collections.sort( missingViews );
+		this.missingViews = Collections.unmodifiableSet( new HashSet< ViewId >( missingViews ) );
+	}
+
+	public Set< ViewId > getMissingViews()
+	{
+		return missingViews;
 	}
 
 	/**
-	 * @param viewDescriptions
-	 * @return ordered
+	 * @param missingViews
+	 *            ordered list of missing views
 	 */
-	public < T extends TimePoint, V extends ViewSetup > HashMap< ViewId, ViewDescription< T, V > > markMissingViews(
-			final HashMap< ViewId, ViewDescription< T, V > > viewDescriptions )
+	protected void setMissingViews( final Set< ViewId > missingViews )
 	{
-		for ( final ViewId viewId : missingViews )
-		{
-			final ViewDescription< T, V > viewDesc = viewDescriptions.get( viewId );
-			
-			if ( viewDesc != null )
-				viewDesc.present = false;
-		}
-		
-		return viewDescriptions;
+		this.missingViews = Collections.unmodifiableSet( missingViews );
 	}
+
+	protected MissingViews()
+	{}
 }

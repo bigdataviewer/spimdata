@@ -1,64 +1,58 @@
 package mpicbg.spim.data.sequence;
 
-import static mpicbg.spim.data.sequence.XmlKeys.MISSINGVIEWS_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.MISSINGVIEW_SETUP_ATTRIBUTE_NAME;
-import static mpicbg.spim.data.sequence.XmlKeys.MISSINGVIEW_TAG;
-import static mpicbg.spim.data.sequence.XmlKeys.MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.XmlKeys.MISSINGVIEWS_TAG;
+import static mpicbg.spim.data.XmlKeys.MISSINGVIEW_SETUP_ATTRIBUTE_NAME;
+import static mpicbg.spim.data.XmlKeys.MISSINGVIEW_TAG;
+import static mpicbg.spim.data.XmlKeys.MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+
+import mpicbg.spim.data.SpimDataException;
+import mpicbg.spim.data.generic.base.XmlIoSingleton;
 
 import org.jdom2.Element;
 
-/**
- * TODO
- *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
- */
-public class XmlIoMissingViews
+public class XmlIoMissingViews extends XmlIoSingleton< MissingViews >
 {
-	/**
-	 * TODO
-	 */
-	public String getTagName()
+	public XmlIoMissingViews()
 	{
-		return MISSINGVIEWS_TAG;
-	}
-
-	/**
-	 * Load {@link MissingViews} from the given DOM element.
-	 *
-	 * @param element
-	 *            a {@value XmlKeys#MISSINGVIEWS_TAG} DOM element.
-	 */
-	public MissingViews fromXml( final Element missingViews )
-	{
-		final ArrayList< ViewId > missing = new ArrayList< ViewId >();
-		for ( final Element elem : missingViews.getChildren( MISSINGVIEW_TAG ) )
-			missing.add( viewIdFromXml( elem ) );
-		final MissingViews mvs = new MissingViews( missing );
-		return mvs;
+		super( MISSINGVIEWS_TAG, MissingViews.class );
+		handledTags.add( MISSINGVIEW_TAG );
 	}
 
 	public Element toXml( final MissingViews missingViews )
 	{
-		final Element mvs = new Element( MISSINGVIEWS_TAG );
-		for ( final ViewId viewId : missingViews.missingViews )
-			mvs.addContent( viewIdToXml( viewId ) );
-		return mvs;
+		final Element elem = super.toXml();
+
+		final ArrayList< ViewId > list = new ArrayList< ViewId >( missingViews.getMissingViews() );
+		Collections.sort( list );
+		for ( final ViewId v : list )
+		{
+			final Element child = new Element( MISSINGVIEW_TAG );
+			child.setAttribute( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME, Integer.toString( v.getTimePointId() ) );
+			child.setAttribute( MISSINGVIEW_SETUP_ATTRIBUTE_NAME, Integer.toString( v.getViewSetupId() ) );
+			elem.addContent( child );
+		}
+
+		return elem;
 	}
 
-	protected Element viewIdToXml( final ViewId viewId )
+	@Override
+	public MissingViews fromXml( final Element elem ) throws SpimDataException
 	{
-		final Element mv = new Element( MISSINGVIEW_TAG );
-		mv.setAttribute( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME, Integer.toString( viewId.getTimePointId() ) );
-		mv.setAttribute( MISSINGVIEW_SETUP_ATTRIBUTE_NAME, Integer.toString( viewId.getViewSetupId() ) );
-		return mv;
-	}
+		final MissingViews missingViews = super.fromXml( elem );
 
-	protected ViewId viewIdFromXml( final Element missingView )
-	{
-		final int timepointId = Integer.parseInt( missingView.getAttributeValue( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME ) );
-		final int setupId = Integer.parseInt( missingView.getAttributeValue( MISSINGVIEW_SETUP_ATTRIBUTE_NAME ) );
-		return new ViewId( timepointId, setupId );
+		final HashSet< ViewId > views = new HashSet< ViewId >();
+		for ( final Element c : elem.getChildren( MISSINGVIEW_TAG ) )
+		{
+			final int t = Integer.parseInt( c.getAttributeValue( MISSINGVIEW_TIMEPOINT_ATTRIBUTE_NAME ) );
+			final int s = Integer.parseInt( c.getAttributeValue( MISSINGVIEW_SETUP_ATTRIBUTE_NAME ) );
+			views.add( new ViewId( t, s ) );
+		}
+		missingViews.setMissingViews( views );
+
+		return missingViews;
 	}
 }
