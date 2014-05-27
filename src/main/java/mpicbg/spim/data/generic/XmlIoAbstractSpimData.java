@@ -118,12 +118,12 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 
 		Element elem = root.getChild( xmlIoSequenceDescription.getTag() );
 		if ( elem == null )
-			throw new IllegalArgumentException( "no <" + xmlIoSequenceDescription.getTag() + "> element found." );
+			throw new SpimDataIOException( "no <" + xmlIoSequenceDescription.getTag() + "> element found." );
 		spimData.setSequenceDescription( xmlIoSequenceDescription.fromXml( elem, basePath ) );
 
 		elem = root.getChild( xmlIoViewRegistrations.getTag() );
 		if ( elem == null )
-			throw new IllegalArgumentException( "no <" + xmlIoViewRegistrations.getTag() + "> element found." );
+			throw new SpimDataIOException( "no <" + xmlIoViewRegistrations.getTag() + "> element found." );
 		spimData.setViewRegistrations( xmlIoViewRegistrations.fromXml( elem ) );
 
 		return spimData;
