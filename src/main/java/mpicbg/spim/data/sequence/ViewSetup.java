@@ -109,6 +109,15 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
+	 * Set the {@link Dimensions} of images from this setup.
+	 */
+	@Override
+	public void setSize( final Dimensions size )
+	{
+		super.setSize( size );
+	}
+
+	/**
 	 * Whether this setup has has a {@link #getVoxelSize()}.
 	 *
 	 * @return true, if this setup has a voxel size.
@@ -129,6 +138,15 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	public VoxelDimensions getVoxelSize()
 	{
 		return super.getVoxelSize();
+	}
+
+	/**
+	 * Set the {@link VoxelDimensions} of images from this setup.
+	 */
+	@Override
+	public void setVoxelSize( final VoxelDimensions voxelSize )
+	{
+		super.setVoxelSize( voxelSize );
 	}
 
 	/**
