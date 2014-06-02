@@ -22,7 +22,7 @@ public interface ImgLoader< T > extends BasicImgLoader< T >
 	/**
 	 * Get the size of an image. If possible, load only the meta-data for the
 	 * specified view. Note, that this should <em>not</em> get the meta-data from
-	 * the {@link SequenceDescription} but pull it from the image file
+	 * the {@link SequenceDescription} but pull it from the image file.
 	 *
 	 * @param view
 	 *            timepoint and setup for which to retrieve the image size.
@@ -31,12 +31,13 @@ public interface ImgLoader< T > extends BasicImgLoader< T >
 	public Dimensions getImageSize( ViewId view );
 
 	/**
-	 * Get the voxel size of an image. If possible, load only the meta-data for the
-	 * specified view.
+	 * Get the voxel size of an image. If possible, load only the meta-data for
+	 * the specified view. Note, that this should <em>not</em> get the meta-data
+	 * from the {@link SequenceDescription} but pull it from the image file.
 	 *
 	 * @param view
-	 *            timepoint and setup for which to retrieve the image size.
-	 * @return the image size, or null if it could not be determined.
+	 *            timepoint and setup for which to retrieve the voxel size.
+	 * @return the voxel size, or null if it could not be determined.
 	 */
 	public VoxelDimensions getVoxelSize( ViewId view );
 }
