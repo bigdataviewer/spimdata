@@ -43,7 +43,6 @@ public class SpimDataExample
 			}
 		}
 		
-		System.exit( 0 );
 		// save SpimData to xml file
 		io.save( spimData, "example_new.xml" );
 
