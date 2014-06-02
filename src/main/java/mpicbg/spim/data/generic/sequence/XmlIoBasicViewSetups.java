@@ -104,7 +104,15 @@ public class XmlIoBasicViewSetups< T extends BasicViewSetup > extends XmlIoEntit
 		}
 
 		xmlIoViewSetup.setAttributeMap( attributeMap );
-		return super.fromXml( elem );
+		
+		// TODO
+		// Attribute map is set but never used for anything ... therefore a calls to for example getSequenceDescription().getAllAngles() yields a nullpointerexception 
+		// not sure how it is supposed to be used though
+		// should it replace this call here somehow?? Or additionally??
+		final HashMap< Integer, T > m = super.fromXml( elem );
+		
+		
+		return m;
 	}
 
 	/**
