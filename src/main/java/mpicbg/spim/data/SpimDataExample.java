@@ -4,6 +4,10 @@ package mpicbg.spim.data;
 
 import java.io.File;
 
+import mpicbg.spim.data.sequence.TimePoint;
+import mpicbg.spim.data.sequence.TimePointsPattern;
+import mpicbg.spim.data.sequence.ViewSetup;
+
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -20,6 +24,26 @@ public class SpimDataExample
 		final XmlIoSpimData io = new XmlIoSpimData();
 		final SpimData spimData = io.load( xmlFilename );
 
+		System.out.println( "Num Timepoints: " + spimData.getSequenceDescription().getTimePoints().size() );
+		
+		if ( spimData.getSequenceDescription().getTimePoints() instanceof TimePointsPattern )
+			System.out.println( ( (TimePointsPattern)spimData.getSequenceDescription().getTimePoints() ).getPattern() );
+		
+		for ( final TimePoint t : spimData.getSequenceDescription().getTimePoints().getTimePointsOrdered() )
+		{
+			System.out.println( "\nTimepoint: " + t.getId() );
+			
+			for ( final ViewSetup setup : spimData.getSequenceDescription().getViewSetupsOrdered() )
+			{
+				System.out.println( "Setup: " + setup.getId() );
+				if ( setup.hasName() )
+					System.out.println( setup.getName() );
+				
+				System.out.println( spimData.getViewRegistrations().getViewRegistration( t.getId(), setup.getId() ).getModel() );
+			}
+		}
+		
+		System.exit( 0 );
 		// save SpimData to xml file
 		io.save( spimData, "example_new.xml" );
 
