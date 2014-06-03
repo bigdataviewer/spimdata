@@ -1,5 +1,8 @@
 package mpicbg.spim.data.sequence;
 
+import java.util.Map;
+
+import mpicbg.spim.data.generic.base.Entity;
 import mpicbg.spim.data.generic.base.ViewSetupAttributes;
 import mpicbg.spim.data.generic.sequence.BasicViewSetup;
 import net.imglib2.Dimensions;
@@ -204,7 +207,7 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
-	 * Det the {@link Illumination} direction.
+	 * Set the {@link Illumination} direction.
 	 *
 	 * @param illumination the illumination direction
 	 */
@@ -221,6 +224,19 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	public int compareTo( final ViewSetup o )
 	{
 		return getId() - o.getId();
+	}
+
+	/**
+	 * Set the attributes map. And set the individual angle, channel, and
+	 * illumination fields.
+	 */
+	@Override
+	protected void setAttributes( final Map< String, Entity > attributes )
+	{
+		super.setAttributes( attributes );
+		setChannel( ( Channel ) attributes.get( channelAttributeKey ) );
+		setAngle( ( Angle ) attributes.get( angleAttributeKey ) );
+		setIllumination( ( Illumination ) attributes.get( illuminationAttributeKey ) );
 	}
 
 	ViewSetup()
