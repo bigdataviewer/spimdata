@@ -1,7 +1,6 @@
 package mpicbg.spim.data.sequence;
 
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -28,15 +27,15 @@ public class TimePointsPattern extends TimePoints
 		if ( pattern == null || "".equals( pattern ) )
 		{
 			// set an empty list
-			setTimePoints( Collections.unmodifiableMap( map ) );
+			setTimePoints( map );
 			return;
 		}
-		
+
 	    for ( final int t : IntegerPattern.parseIntegerString( pattern ) )
 	    	map.put( t, new TimePoint( t ) );
-	    
+
 	    // set a full list (this copies the list)
-		setTimePoints( Collections.unmodifiableMap( map ) );
+		setTimePoints( map );
 	}
 
 	protected TimePointsPattern()
