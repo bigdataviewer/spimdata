@@ -31,10 +31,10 @@ public class TimePointsPattern extends TimePoints
 			return;
 		}
 
-	    for ( final int t : IntegerPattern.parseIntegerString( pattern ) )
-	    	map.put( t, new TimePoint( t ) );
+		for ( final int t : IntegerPattern.parseIntegerString( pattern ) )
+			map.put( t, new TimePoint( t ) );
 
-	    // set a full list (this copies the list)
+		// set a full list (this copies the list)
 		setTimePoints( map );
 	}
 
