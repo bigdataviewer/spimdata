@@ -26,15 +26,16 @@ public class TimePointsPattern extends TimePoints
 
 		if ( pattern == null || "".equals( pattern ) )
 		{
-			// set an empty list
-			setTimePoints( map );
-			return;
+			// this timeseries has just one timepoint
+			map.put( 0, new TimePoint( 0 ) );
+		}
+		else
+		{
+			// parse all timepoints
+			for ( final int t : IntegerPattern.parseIntegerString( pattern ) )
+				map.put( t, new TimePoint( t ) );
 		}
 
-		for ( final int t : IntegerPattern.parseIntegerString( pattern ) )
-			map.put( t, new TimePoint( t ) );
-
-		// set a full list (this copies the list)
 		setTimePoints( map );
 	}
 
