@@ -44,7 +44,7 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 		return viewRegistrations;
 	}
 
-	protected void setBasePath( final File basePath )
+	public void setBasePath( final File basePath )
 	{
 		this.basePath = basePath;
 	}
