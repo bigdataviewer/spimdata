@@ -43,7 +43,6 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		handledTags.add( BASEPATH_TAG );
 	}
 
-	// TODO: wrap exceptions... IllegalArgumentException? IOException?
 	public T load( final String xmlFilename ) throws SpimDataException
 	{
 		final SAXBuilder sax = new SAXBuilder();
@@ -154,5 +153,4 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		root.addContent( xmlIoViewRegistrations.toXml( spimData.getViewRegistrations() ) );
 		return root;
 	}
-
 }
