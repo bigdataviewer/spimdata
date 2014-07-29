@@ -58,7 +58,7 @@ public class SpimDataExample2
 
 		final Illumination i0 = new Illumination( 0 );
 
-		final Dimensions d0 = new FinalDimensions( 1000, 1000, 300 );
+		final Dimensions d0 = new FinalDimensions( 1000l, 1000l, 300l );
 		final VoxelDimensions vd0 = new FinalVoxelDimensions( "px", 1, 1, 1 );
 		setups.add( new ViewSetup( 0, "setup 0", d0, vd0, c0, a0, i0 ) );
 		setups.add( new ViewSetup( 1, "setup 1", d0, vd0, c0, a1, i0 ) );
