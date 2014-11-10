@@ -6,7 +6,7 @@ import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_CURRENT;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_NAME;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import mpicbg.spim.data.SpimDataException;
@@ -70,7 +70,7 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		final XMLOutputter xout = new XMLOutputter( Format.getPrettyFormat() );
 		try
 		{
-			xout.output( doc, new FileWriter( xmlFilename ) );
+			xout.output( doc, new FileOutputStream( xmlFilename ) );
 		}
 		catch ( final IOException e )
 		{
