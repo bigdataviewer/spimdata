@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>spim_data</artifactId>
-	<version>1.0.0-beta-3-SNAPSHOT</version>
+	<version>1.0.0-beta-4-SNAPSHOT</version>
 
 	<name>SPIM Data</name>
 	<description>representation of multi-angle, multi-channel, etc SPIM images and registration</description>
