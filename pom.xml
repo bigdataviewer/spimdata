@@ -74,4 +74,8 @@
 		<tag>HEAD</tag>
 		<url>https://github.com/tpietzsch/spimdata</url>
 	</scm>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/SpimData/</url>
+	</ciManagement>
 </project>
