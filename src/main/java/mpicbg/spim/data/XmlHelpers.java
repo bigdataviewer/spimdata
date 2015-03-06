@@ -82,11 +82,14 @@ public class XmlHelpers
 	public static Element doubleArrayElement( final String name, final double[] value )
 	{
 		final StringBuffer valueString = new StringBuffer();
-		valueString.append( value[ 0 ] );
-		for ( int i = 1; i < value.length; ++i )
+		if ( value.length > 0 )
 		{
-			valueString.append( " " );
-			valueString.append( value[ i ] );
+			valueString.append( value[ 0 ] );
+			for ( int i = 1; i < value.length; ++i )
+			{
+				valueString.append( " " );
+				valueString.append( value[ i ] );
+			}
 		}
 
 		return new Element( name ).addContent( valueString.toString() );
@@ -96,6 +99,8 @@ public class XmlHelpers
 	{
 		final String text = parent.getChildText( name );
 		final String[] entries = text.split( "\\s+" );
+		if ( entries.length == 1 && entries[ 0 ].isEmpty() )
+			return new double[ 0 ];
 		final double[] array = new double[ entries.length ];
 		for ( int i = 0; i < entries.length; ++i )
 			array[ i ] = Double.parseDouble( entries[ i ] );
@@ -110,11 +115,14 @@ public class XmlHelpers
 	public static Element intArrayElement( final String name, final int[] value )
 	{
 		final StringBuffer valueString = new StringBuffer();
-		valueString.append( value[ 0 ] );
-		for ( int i = 1; i < value.length; ++i )
+		if ( value.length > 0 )
 		{
-			valueString.append( " " );
-			valueString.append( value[ i ] );
+			valueString.append( value[ 0 ] );
+			for ( int i = 1; i < value.length; ++i )
+			{
+				valueString.append( " " );
+				valueString.append( value[ i ] );
+			}
 		}
 
 		return new Element( name ).addContent( valueString.toString() );
@@ -124,6 +132,8 @@ public class XmlHelpers
 	{
 		final String text = parent.getChildText( name );
 		final String[] entries = text.split( "\\s+" );
+		if ( entries.length == 1 && entries[ 0 ].isEmpty() )
+			return new int[ 0 ];
 		final int[] array = new int[ entries.length ];
 		for ( int i = 0; i < entries.length; ++i )
 			array[ i ] = Integer.parseInt( entries[ i ] );
@@ -138,11 +148,14 @@ public class XmlHelpers
 	public static Element longArrayElement( final String name, final long[] value )
 	{
 		final StringBuffer valueString = new StringBuffer();
-		valueString.append( value[ 0 ] );
-		for ( int i = 1; i < value.length; ++i )
+		if ( value.length > 0 )
 		{
-			valueString.append( " " );
-			valueString.append( value[ i ] );
+			valueString.append( value[ 0 ] );
+			for ( int i = 1; i < value.length; ++i )
+			{
+				valueString.append( " " );
+				valueString.append( value[ i ] );
+			}
 		}
 
 		return new Element( name ).addContent( valueString.toString() );
@@ -152,6 +165,8 @@ public class XmlHelpers
 	{
 		final String text = parent.getChildText( name );
 		final String[] entries = text.split( "\\s+" );
+		if ( entries.length == 1 && entries[ 0 ].isEmpty() )
+			return new long[ 0 ];
 		final long[] array = new long[ entries.length ];
 		for ( int i = 0; i < entries.length; ++i )
 			array[ i ] = Long.parseLong( entries[ i ] );
