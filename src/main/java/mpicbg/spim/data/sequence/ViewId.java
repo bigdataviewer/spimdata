@@ -11,12 +11,12 @@ public class ViewId implements Comparable< ViewId >
 	/**
 	 * The timepoint id.
 	 */
-	protected final int timepoint;
+	protected int timepoint;
 
 	/**
 	 * The setup id.
 	 */
-	protected final int setup;
+	protected int setup;
 
 	public ViewId( final int timepointId, final int setupId )
 	{
@@ -34,6 +34,11 @@ public class ViewId implements Comparable< ViewId >
 		return timepoint;
 	}
 
+	void setTimePointId( final int id )
+	{
+		timepoint = id;
+	}
+
 	/**
 	 * Get the setup id.
 	 *
@@ -42,6 +47,11 @@ public class ViewId implements Comparable< ViewId >
 	public int getViewSetupId()
 	{
 		return setup;
+	}
+
+	void setViewSetupId( final int id )
+	{
+		setup = id;
 	}
 
 	/**
