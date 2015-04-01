@@ -21,7 +21,7 @@ import mpicbg.spim.data.sequence.ViewId;
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
  */
-public abstract class AbstractSequenceDescription< V extends BasicViewSetup, D extends BasicViewDescription< V >, L extends BasicImgLoader< ? > >
+public abstract class AbstractSequenceDescription< V extends BasicViewSetup, D extends BasicViewDescription< V >, L extends BasicImgLoader >
 {
 	/**
 	 * Contains all time-points.

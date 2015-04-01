@@ -26,7 +26,7 @@ public @interface ImgLoaderIo
 	/**
 	 * The concrete class of the {@link BasicImgLoader} that is loaded by the annotated class.
 	 */
-	Class< ? extends BasicImgLoader< ? > > type();
+	Class< ? extends BasicImgLoader > type();
 
 	double priority() default Priority.NORMAL_PRIORITY;
 }

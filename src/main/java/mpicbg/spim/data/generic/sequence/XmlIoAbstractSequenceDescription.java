@@ -43,7 +43,7 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 	{
 		final Element elem = super.toXml();
 
-		final BasicImgLoader< ? > imgLoader = sequenceDescription.getImgLoader();
+		final BasicImgLoader imgLoader = sequenceDescription.getImgLoader();
 		if ( imgLoader != null )
 		{
 			final XmlIoBasicImgLoader< ? > imgLoaderIo = ImgLoaders.createXmlIoForImgLoaderClass( imgLoader.getClass() );
@@ -80,7 +80,7 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 		{
 			final String format = imgLoaderElem.getAttributeValue( IMGLOADER_FORMAT_ATTRIBUTE_NAME );
 			final XmlIoBasicImgLoader< ? > imgLoaderIo = ImgLoaders.createXmlIoForFormat( format );
-			final BasicImgLoader< ? > imgLoader = imgLoaderIo.fromXml( imgLoaderElem, basePath, sequenceDescription );
+			final BasicImgLoader imgLoader = imgLoaderIo.fromXml( imgLoaderElem, basePath, sequenceDescription );
 			setImgLoader( ( AbstractSequenceDescription ) sequenceDescription, imgLoader );
 		}
 		else
@@ -93,7 +93,7 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 	 * Casting madness.
 	 */
 	@SuppressWarnings( "unchecked" )
-	private static < L extends BasicImgLoader< ? > > Element createImgLoaderElement( final XmlIoBasicImgLoader< L > imgLoaderIo, final BasicImgLoader< ? > imgLoader, final File basePath )
+	private static < L extends BasicImgLoader > Element createImgLoaderElement( final XmlIoBasicImgLoader< L > imgLoaderIo, final BasicImgLoader imgLoader, final File basePath )
 	{
 		return imgLoaderIo.toXml( ( L ) imgLoader, basePath );
 	}
@@ -102,7 +102,7 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 	 * Casting madness.
 	 */
 	@SuppressWarnings( "unchecked" )
-	private static < L extends BasicImgLoader< ? >, T extends AbstractSequenceDescription< ?, ?, L > > void setImgLoader( final T sequenceDescription, final BasicImgLoader< ? > imgLoader )
+	private static < L extends BasicImgLoader, T extends AbstractSequenceDescription< ?, ?, L > > void setImgLoader( final T sequenceDescription, final BasicImgLoader imgLoader )
 	{
 		sequenceDescription.setImgLoader( ( L ) imgLoader );
 	}

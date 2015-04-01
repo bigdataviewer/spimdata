@@ -9,7 +9,7 @@ import org.scijava.annotations.IndexItem;
 
 public class ImgLoaders
 {
-	private static final HashMap< Class< ? extends BasicImgLoader< ? > >, String > imgLoaderClass_to_XmlIoClassName = new HashMap< Class< ? extends BasicImgLoader< ? > >, String >();
+	private static final HashMap< Class< ? extends BasicImgLoader >, String > imgLoaderClass_to_XmlIoClassName = new HashMap< Class< ? extends BasicImgLoader >, String >();
 
 	private static final HashMap< String, String > format_to_XmlIoClassName = new HashMap< String, String >();
 
@@ -54,7 +54,7 @@ public class ImgLoaders
 	}
 
 	@SuppressWarnings( "unchecked" )
-	public static < T extends BasicImgLoader< ? > >
+	public static < T extends BasicImgLoader >
 	XmlIoBasicImgLoader< T > createXmlIoForImgLoaderClass( final Class< T > klass ) throws SpimDataInstantiationException
 	{
 		if ( !buildWasCalled )
@@ -92,7 +92,7 @@ public class ImgLoaders
 		if ( annotation != null )
 		{
 			final String format = annotation.format();
-			final Class< ? extends BasicImgLoader< ? > > imgLoaderClass = annotation.type();
+			final Class< ? extends BasicImgLoader > imgLoaderClass = annotation.type();
 			imgLoaderClass_to_XmlIoClassName.put( imgLoaderClass, xmlIoClass.getName() );
 			format_to_XmlIoClassName.put( format, xmlIoClass.getName() );
 		}

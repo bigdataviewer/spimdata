@@ -9,19 +9,19 @@ import java.util.Map;
 import mpicbg.spim.data.generic.base.Entity;
 import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
 
-public class SequenceDescription extends AbstractSequenceDescription< ViewSetup, ViewDescription, ImgLoader< ? > >
+public class SequenceDescription extends AbstractSequenceDescription< ViewSetup, ViewDescription, ImgLoader >
 {
 	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups )
 	{
 		this( timepoints, setups, null, null );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader< ? > imgLoader )
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader imgLoader )
 	{
 		this( timepoints, setups, imgLoader, null );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader< ? > imgLoader, final MissingViews missingViews )
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader imgLoader, final MissingViews missingViews )
 	{
 		super( timepoints, setups, imgLoader, missingViews );
 	}
@@ -31,12 +31,12 @@ public class SequenceDescription extends AbstractSequenceDescription< ViewSetup,
 		this( timepoints, Entity.idMap( setups ) );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader< ? > imgLoader )
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader imgLoader )
 	{
 		this( timepoints, Entity.idMap( setups ), imgLoader );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader< ? > imgLoader, final MissingViews missingViews )
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader imgLoader, final MissingViews missingViews )
 	{
 		super( timepoints, Entity.idMap( setups ), imgLoader, missingViews );
 	}

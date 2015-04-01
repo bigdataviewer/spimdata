@@ -5,7 +5,7 @@ import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.real.FloatType;
 
-public interface ImgLoader< T > extends BasicImgLoader< T >
+public interface ImgLoader extends BasicImgLoader
 {
 	/**
 	 * Get {@link FloatType} image. If requested, the image is normalized to the
