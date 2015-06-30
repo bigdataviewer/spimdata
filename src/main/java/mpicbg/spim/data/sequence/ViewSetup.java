@@ -14,14 +14,19 @@ import net.imglib2.Dimensions;
  * angle, and illumination direction.
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Stephan Preibisch (stephan.preibisch@gmx.de)
  */
 public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 {
+	private Tile tile;
+
 	private Channel channel;
 
 	private Angle angle;
 
 	private Illumination illumination;
+
+	protected static String tileAttributeKey = ViewSetupAttributes.getNameForClass( Tile.class );
 
 	protected static String channelAttributeKey = ViewSetupAttributes.getNameForClass( Channel.class );
 
@@ -45,6 +50,7 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 			final String name,
 			final Dimensions size,
 			final VoxelDimensions voxelSize,
+			final Tile tile,
 			final Channel channel,
 			final Angle angle,
 			final Illumination illumination )
@@ -153,6 +159,28 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
+	 * Get the {@link Tile}.
+	 *
+	 * @return the tile
+	 */
+	public Tile getTile()
+	{
+		return tile;
+	}
+
+	/**
+	 * Set the {@link Tile}.
+	 *
+	 * @param tile
+	 *            the tile
+	 */
+	protected void setTile( final Tile tile )
+	{
+		this.tile = tile;
+		getAttributes().put( tileAttributeKey, tile );
+	}
+
+	/**
 	 * Get the {@link Channel}.
 	 *
 	 * @return the channel
@@ -234,6 +262,7 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	protected void setAttributes( final Map< String, Entity > attributes )
 	{
 		super.setAttributes( attributes );
+		setTile( ( Tile ) attributes.get( tileAttributeKey ) );
 		setChannel( ( Channel ) attributes.get( channelAttributeKey ) );
 		setAngle( ( Angle ) attributes.get( angleAttributeKey ) );
 		setIllumination( ( Illumination ) attributes.get( illuminationAttributeKey ) );

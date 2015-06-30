@@ -67,6 +67,33 @@ public class SequenceDescription extends AbstractSequenceDescription< ViewSetup,
 	}
 
 	/**
+	 * Get all {@link Tile}s occurring in any {@link #getViewSetups() setup}.
+	 *
+	 * @return a map from tile id to {@link Tile}
+	 */
+	public Map< Integer, Tile > getAllTiles()
+	{
+		final HashMap< Integer, Tile > tiles = new HashMap< Integer, Tile >();
+		for ( final ViewSetup setup : getViewSetups().values() )
+		{
+			final Tile t = setup.getTile();
+			tiles.put( t.getId(), t );
+		}
+		return tiles;
+	}
+
+	/**
+	 * Get all {@link Tile}s occurring in any {@link #getViewSetups() setup},
+	 * ordered by tile id.
+	 *
+	 * @return a list of {@link Tile}s, ordered by tile id.
+	 */
+	public List< Tile > getAllTilesOrdered()
+	{
+		return Entity.sortById( new ArrayList< Tile >( getAllTiles().values() ) );
+	}
+
+	/**
 	 * Get all {@link Channel}s occurring in any {@link #getViewSetups() setup}.
 	 *
 	 * @return a map from channel id to {@link Channel}

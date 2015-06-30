@@ -7,9 +7,23 @@ import java.util.HashMap;
  * Helper methods for dealing with {@link ViewSetup} collections.
  *
  * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Stephan Preibisch (stephan.preibisch@gmx.de)
  */
 public class ViewSetups
 {
+	public static HashMap< Integer, Tile > getAllTiles( final Collection< ? extends ViewSetup > setups )
+	{
+		final HashMap< Integer, Tile > tiles = new HashMap< Integer, Tile >();
+
+		for ( final ViewSetup setup : setups )
+		{
+			final Tile t = setup.getTile();
+			tiles.put( t.getId(), t );
+		}
+
+		return tiles;
+	}
+
 	public static HashMap< Integer, Channel > getAllChannels( final Collection< ? extends ViewSetup > setups )
 	{
 		final HashMap< Integer, Channel > channels = new HashMap< Integer, Channel >();
