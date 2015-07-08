@@ -17,6 +17,7 @@ public interface ImgLoader extends BasicImgLoader
 	 *            whether the image should be normalized to [0,1].
 	 * @return {@link FloatType} image
 	 */
+	// TODO: move to SetupImgLoader (needs to be created)
 	public RandomAccessibleInterval< FloatType > getFloatImage( ViewId view, boolean normalize );
 
 	/**
@@ -28,6 +29,7 @@ public interface ImgLoader extends BasicImgLoader
 	 *            timepoint and setup for which to retrieve the image size.
 	 * @return the image size, or null if it could not be determined.
 	 */
+	// TODO: move to SetupImgLoader (needs to be created)
 	public Dimensions getImageSize( ViewId view );
 
 	/**
@@ -39,5 +41,6 @@ public interface ImgLoader extends BasicImgLoader
 	 *            timepoint and setup for which to retrieve the voxel size.
 	 * @return the voxel size, or null if it could not be determined.
 	 */
+	// TODO: move to SetupImgLoader (needs to be created)
 	public VoxelDimensions getVoxelSize( ViewId view );
 }
