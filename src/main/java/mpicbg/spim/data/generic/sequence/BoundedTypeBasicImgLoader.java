@@ -1,8 +1,6 @@
 package mpicbg.spim.data.generic.sequence;
 
-import mpicbg.spim.data.generic.sequence.BasicImgLoader;
-import mpicbg.spim.data.generic.sequence.BasicSetupImgLoader;
-
+// TODO: remove until needed?
 public interface BoundedTypeBasicImgLoader< T > extends BasicImgLoader
 {
 	@Override
