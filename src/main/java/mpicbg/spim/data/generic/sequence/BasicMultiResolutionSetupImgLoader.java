@@ -29,7 +29,7 @@ public interface BasicMultiResolutionSetupImgLoader< T > extends BasicSetupImgLo
 	 *            optional hints regarding how to load the image.
 	 * @return image of type T.
 	 */
-	public RandomAccessibleInterval< T > getImage( final int timepointId, final int level, ImgLoaderHints... hints );
+	public RandomAccessibleInterval< T > getImage( final int timepointId, final int level, ImgLoaderHint... hints );
 
 	/**
 	 * Get the sub-sampling factors, indexed by resolution level and dimension.

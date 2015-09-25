@@ -26,7 +26,7 @@ public interface BasicSetupImgLoader< T >
 	 *            optional hints regarding how to load the image.
 	 * @return image of type T.
 	 */
-	public RandomAccessibleInterval< T > getImage( final int timepointId, ImgLoaderHints... hints );
+	public RandomAccessibleInterval< T > getImage( final int timepointId, ImgLoaderHint... hints );
 
 	public T getImageType();
 }

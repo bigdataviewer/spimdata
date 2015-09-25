@@ -1,7 +1,7 @@
 package mpicbg.spim.data.sequence;
 
 import mpicbg.spim.data.generic.sequence.BasicSetupImgLoader;
-import mpicbg.spim.data.generic.sequence.ImgLoaderHints;
+import mpicbg.spim.data.generic.sequence.ImgLoaderHint;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.real.FloatType;
@@ -30,7 +30,7 @@ public interface SetupImgLoader< T > extends BasicSetupImgLoader< T >
 	 *            optional hints regarding how to load the image.
 	 * @return {@link FloatType} image
 	 */
-	public RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, boolean normalize, ImgLoaderHints... hints );
+	public RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, boolean normalize, ImgLoaderHint... hints );
 
 	/**
 	 * Get the size of an image. If possible, load only the meta-data for the
