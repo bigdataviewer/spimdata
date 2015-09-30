@@ -3,7 +3,7 @@ package mpicbg.spim.data;
 /**
  * Definition of tag and attribute names.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class XmlKeys
 {

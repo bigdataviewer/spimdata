@@ -4,7 +4,7 @@ package mpicbg.spim.data.sequence;
 /**
  * An implementation of {@link VoxelDimensions}.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public final class FinalVoxelDimensions implements VoxelDimensions
 {

@@ -19,7 +19,7 @@ import mpicbg.spim.data.sequence.ViewId;
  * @param <V>
  *            ViewSetup type
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public abstract class AbstractSequenceDescription< V extends BasicViewSetup, D extends BasicViewDescription< V >, L extends BasicImgLoader >
 {

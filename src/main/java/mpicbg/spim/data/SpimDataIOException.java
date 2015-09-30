@@ -4,7 +4,7 @@ package mpicbg.spim.data;
  * This exception is thrown when an IO error occurs while reading or writing an
  * XML file.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class SpimDataIOException extends SpimDataException
 {

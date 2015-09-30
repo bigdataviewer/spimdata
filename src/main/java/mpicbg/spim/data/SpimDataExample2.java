@@ -42,7 +42,7 @@ import org.jdom2.output.XMLOutputter;
  * deserialized, and serialized again. The two serialized XML versions are
  * printed (and should be the same).
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class SpimDataExample2
 {

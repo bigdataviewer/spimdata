@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Helper methods for dealing with {@link ViewSetup} collections.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class ViewSetups
 {

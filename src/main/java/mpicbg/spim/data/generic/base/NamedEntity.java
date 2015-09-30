@@ -3,7 +3,7 @@ package mpicbg.spim.data.generic.base;
 /**
  * An {@link Entity} that has a name.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class NamedEntity extends Entity
 {

@@ -11,7 +11,7 @@ import org.scijava.annotations.Indexable;
  * Annotation for a class that creates a {@link BasicImgLoader} for a specific
  * format (the format is specified in the XML "ImageLoader" element).
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.TYPE )

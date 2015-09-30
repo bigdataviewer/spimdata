@@ -29,7 +29,7 @@ import org.jdom2.Element;
  * @param <T>
  *            the {@link BasicViewSetup} type
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class XmlIoBasicViewSetups< T extends BasicViewSetup > extends XmlIoEntityMap< T >
 {

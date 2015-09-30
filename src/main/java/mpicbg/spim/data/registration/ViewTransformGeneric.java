@@ -1,5 +1,7 @@
 package mpicbg.spim.data.registration;
 
+import mpicbg.spim.data.XmlKeys;
+
 import org.jdom2.Element;
 
 public interface ViewTransformGeneric extends ViewTransform

@@ -4,7 +4,7 @@ package mpicbg.spim.data;
  * This exception is thrown when SpimData entities cannot be constructed (while
  * loading).
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class SpimDataInstantiationException extends SpimDataException
 {

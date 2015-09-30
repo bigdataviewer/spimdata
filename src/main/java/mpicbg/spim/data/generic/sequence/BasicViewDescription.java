@@ -12,7 +12,7 @@ import mpicbg.spim.data.sequence.ViewId;
  * @param <V>
  *            ViewSetup type
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class BasicViewDescription< V extends BasicViewSetup > extends ViewId
 {
@@ -64,7 +64,6 @@ public class BasicViewDescription< V extends BasicViewSetup > extends ViewId
 
 	/**
 	 * @param viewDescriptions
-	 * @return ordered
 	 */
 	public static < V extends BasicViewSetup, D extends BasicViewDescription< V > > void markMissingViews( final Map< ViewId, D  > viewDescriptions, final MissingViews missingViews )
 	{

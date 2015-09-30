@@ -11,7 +11,7 @@ import net.imglib2.Dimensions;
 /**
  * An view setup is an {@link Entity} that may have a name, image size, and voxel size.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class BasicViewSetup extends Entity
 {

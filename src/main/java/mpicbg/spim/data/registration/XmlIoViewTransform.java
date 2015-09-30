@@ -29,7 +29,7 @@ public class XmlIoViewTransform
 	/**
 	 * Load a {@link ViewTransform} from the given DOM element.
 	 *
-	 * @param element
+	 * @param viewTransform
 	 *            a {@value XmlKeys#VIEWTRANSFORM_TAG} DOM element.
 	 * @throws SpimDataInstantiationException
 	 */

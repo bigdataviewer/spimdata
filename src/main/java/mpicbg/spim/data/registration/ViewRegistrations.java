@@ -13,8 +13,8 @@ import mpicbg.spim.data.sequence.ViewId;
  * Only contains a {@link Map} from {@link ViewId} to {@link ViewRegistration}
  * currently.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
- * @author Stephan Preibisch <stephan.preibisch@gmx.de>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
+ * @author Stephan Preibisch &lt;stephan.preibisch@gmx.de&gt;
  */
 public class ViewRegistrations
 {

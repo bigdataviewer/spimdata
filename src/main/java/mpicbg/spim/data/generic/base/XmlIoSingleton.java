@@ -23,7 +23,7 @@ import org.jdom2.Element;
  * @param <T>
  *            the entity type
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class XmlIoSingleton< T >
 {
@@ -88,7 +88,7 @@ public class XmlIoSingleton< T >
 	/**
 	 * Create an object from the given element. Unhandled children of the
 	 * element are stored and added to any XML element that is
-	 * {@link #toXml(Object) created}.
+	 * {@link #toXml() created}.
 	 *
 	 * Calling this method clears all unhandled content from previous
 	 * invocations.

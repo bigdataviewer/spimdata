@@ -6,7 +6,7 @@ import mpicbg.spim.data.generic.base.NamedEntity;
  * Defines a channel which is part of the ViewSetup.
  *
  * @author Stephan Preibisch (stephan.preibisch@gmx.de)
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class Channel extends NamedEntity implements Comparable< Channel >
 {

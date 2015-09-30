@@ -29,7 +29,7 @@ public class XmlIoViewRegistrations extends XmlIoSingleton< ViewRegistrations >
 	/**
 	 * Load {@link ViewRegistrations} from the given DOM element.
 	 *
-	 * @param element
+	 * @param elem
 	 *            a {@value XmlKeys#VIEWREGISTRATIONS_TAG} DOM element.
 	 * @throws SpimDataException
 	 */

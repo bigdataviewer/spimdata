@@ -4,7 +4,7 @@ package mpicbg.spim.data.sequence;
  * Identifies a particular view as a combination of a {@link TimePoint} id and a
  * {@link ViewSetup} id.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class ViewId implements Comparable< ViewId >
 {

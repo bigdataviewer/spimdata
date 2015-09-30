@@ -13,7 +13,7 @@ import net.imglib2.Dimensions;
  * {@link ViewSetup} is a {@link BasicViewSetup} that must have a channel,
  * angle, and illumination direction.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 {

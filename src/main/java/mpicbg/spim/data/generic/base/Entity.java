@@ -11,7 +11,7 @@ import java.util.Map;
  * Something that has a unique id. This class is meant to be derived. Unique id
  * means unique among all objects of the same concrete derived type.
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class Entity
 {

@@ -31,7 +31,7 @@ import org.jdom2.Element;
  * @param <T>
  *            the entity type
  *
- * @author Tobias Pietzsch <tobias.pietzsch@gmail.com>
+ * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
  */
 public class XmlIoEntity< T extends Entity >
 {
