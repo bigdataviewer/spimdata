@@ -12,7 +12,9 @@
 	<version>1.0.0-beta-8-SNAPSHOT</version>
 
 	<name>SPIM Data</name>
-	<description>representation of multi-angle, multi-channel, etc SPIM images and registration</description>
+	<description>representation of multi-angle, multi-channel (etc.) SPIM images and their registration</description>
+	<url>http://github.com/bigdataviewer/spimdata</url>
+	<inceptionYear>2013</inceptionYear>
 
 	<dependencies>
 		<dependency>
@@ -69,10 +71,10 @@
 	</repositories>
 
 	<scm>
-		<connection>scm:git:git://github.com/tpietzsch/spimdata</connection>
-		<developerConnection>scm:git:git@github.com:tpietzsch/spimdata</developerConnection>
+		<connection>scm:git:git://github.com/bigdataviewer/spimdata</connection>
+		<developerConnection>scm:git:git@github.com:bigdataviewer/spimdata</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/tpietzsch/spimdata</url>
+		<url>https://github.com/bigdataviewer/spimdata</url>
 	</scm>
 	<ciManagement>
 		<system>Jenkins</system>
