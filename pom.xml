@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>spim_data</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.1</version>
 
 	<name>SPIM Data</name>
 	<description>representation of multi-angle, multi-channel (etc.) SPIM images and their registration</description>
@@ -73,7 +73,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/bigdataviewer/spimdata</connection>
 		<developerConnection>scm:git:git@github.com:bigdataviewer/spimdata</developerConnection>
-		<tag>HEAD</tag>
+		<tag>spim_data-2.0.1</tag>
 		<url>https://github.com/bigdataviewer/spimdata</url>
 	</scm>
 	<ciManagement>
