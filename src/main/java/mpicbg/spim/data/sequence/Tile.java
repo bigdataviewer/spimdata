@@ -82,6 +82,15 @@ public class Tile extends NamedEntity implements Comparable< Tile >
 	}
 
 	/**
+	 * Is the locations defined?
+	 *
+	 * @return true, if the location is defined.
+	 */
+	public boolean hasLocation()
+	{
+		return location != null;
+	}
+	/**
 	 * Compares the {@link #getId() ids}.
 	 */
 	@Override

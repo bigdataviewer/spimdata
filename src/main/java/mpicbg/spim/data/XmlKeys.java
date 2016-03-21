@@ -60,6 +60,7 @@ public class XmlKeys
 
 	public static final String TILES_TAG = "Tiles";
 	public static final String TILE_TAG = "Tile";
+	public static final String TILE_LOCATION_TAG = "location";
 
 	public static final String CHANNELS_TAG1 = "Channels";
 	public static final String CHANNEL_TAG = "Channel";
