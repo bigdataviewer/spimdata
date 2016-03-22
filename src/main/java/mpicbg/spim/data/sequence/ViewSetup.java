@@ -91,6 +91,33 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	}
 
 	/**
+	 * TODO
+	 *
+	 * @param id
+	 * @param name
+	 * @param size
+	 * @param voxelSize
+	 * @param channel
+	 * @param angle
+	 * @param illumination
+	 */
+	public ViewSetup(
+			final int id,
+			final String name,
+			final Dimensions size,
+			final VoxelDimensions voxelSize,
+			final Channel channel,
+			final Angle angle,
+			final Illumination illumination )
+	{
+		super( id, name, size, voxelSize );
+		setChannel( channel );
+		setAngle( angle );
+		setIllumination( illumination );
+		setTile( new Tile( 0 ) );
+	}
+
+	/**
 	 * Get the unique id of this {@link ViewSetup}.
 	 *
 	 * @return unique id.
