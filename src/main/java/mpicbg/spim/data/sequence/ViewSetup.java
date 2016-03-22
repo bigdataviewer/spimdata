@@ -291,28 +291,23 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	protected void setAttributes( final Map< String, Entity > attributes )
 	{
 		super.setAttributes( attributes );
-		setTile( ( Tile ) attributes.get( tileAttributeKey ) );		
+		setTile( ( Tile ) attributes.get( tileAttributeKey ) );
 		setChannel( ( Channel ) attributes.get( channelAttributeKey ) );
 		setAngle( ( Angle ) attributes.get( angleAttributeKey ) );
 		setIllumination( ( Illumination ) attributes.get( illuminationAttributeKey ) );
 		
 		// if any attribute is not present, set it to a default
-		if (getTile() == null){
-			Tile defaultTile = new Tile(0);
-			setTile(defaultTile);
-		}
-		if (getChannel() == null){
-			Channel defaultChannel = new Channel(0);
-			setChannel(defaultChannel);
-		}
-		if (getAngle() == null){
-			Angle defaultAngle = new Angle(0);
-			setAngle(defaultAngle);
-		}
-		if (getIllumination() == null){
-			Illumination defaultIllumination = new Illumination(0);
-			setIllumination(defaultIllumination);
-		}		
+		if ( getTile() == null )
+			setTile( new Tile( 0 ) );
+
+		if ( getChannel() == null )
+			setChannel( new Channel( 0 ) );
+
+		if ( getAngle() == null )
+			setAngle( new Angle( 0 ) );
+
+		if ( getIllumination() == null )
+			setIllumination( new Illumination( 0 ) );
 	}
 
 	ViewSetup()
