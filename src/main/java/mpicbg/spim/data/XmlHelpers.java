@@ -104,6 +104,11 @@ public class XmlHelpers
 		return text == null ? defaultValue : Double.parseDouble( text );
 	}
 
+	public static double getDoubleAttribute( final Element parent, final String name )
+	{
+		return Double.parseDouble( parent.getAttributeValue( name ) );
+	}
+
 	/**
 	 * Append a double array as space-separated list of values
 	 */
@@ -138,6 +143,21 @@ public class XmlHelpers
 	public static double[] getDoubleArray( final Element parent, final String name, final double[] defaultValue )
 	{
 		return parent.getChild( name ) == null ? defaultValue : getDoubleArray( parent, name );
+	}
+
+	public static double[] getDoubleArrayAttribute( final Element parent, final String name )
+	{
+		final String text = parent.getAttributeValue( name );
+		final String[] entries = text.split( "\\s+" );
+		final double[] array = new double[ entries.length ];
+		for ( int i = 0; i < entries.length; ++i )
+			array[ i ] = Double.parseDouble( entries[ i ] );
+		return array;
+	}
+
+	public static int getIntAttribute( final Element parent, final String name )
+	{
+		return Integer.parseInt( parent.getAttributeValue( name ) );
 	}
 
 	public static Element intArrayElement( final String name, final int[] value )
