@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -36,21 +36,20 @@ import java.util.Map;
 
 import mpicbg.spim.data.generic.base.Entity;
 import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
-import mpicbg.spim.data.generic.sequence.BasicImgLoader;
 
-public class SequenceDescription extends AbstractSequenceDescription< ViewSetup, ViewDescription, BasicImgLoader >
+public class SequenceDescription extends AbstractSequenceDescription< ViewSetup, ViewDescription, ImgLoader >
 {
 	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups )
 	{
 		this( timepoints, setups, null, null );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final BasicImgLoader imgLoader )
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader imgLoader )
 	{
 		this( timepoints, setups, imgLoader, null );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final BasicImgLoader imgLoader, final MissingViews missingViews )
+	public SequenceDescription( final TimePoints timepoints, final Map< Integer, ViewSetup > setups, final ImgLoader imgLoader, final MissingViews missingViews )
 	{
 		super( timepoints, setups, imgLoader, missingViews );
 	}
@@ -60,12 +59,12 @@ public class SequenceDescription extends AbstractSequenceDescription< ViewSetup,
 		this( timepoints, Entity.idMap( setups ) );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final BasicImgLoader imgLoader )
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader imgLoader )
 	{
 		this( timepoints, Entity.idMap( setups ), imgLoader );
 	}
 
-	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final BasicImgLoader imgLoader, final MissingViews missingViews )
+	public SequenceDescription( final TimePoints timepoints, final Collection< ViewSetup > setups, final ImgLoader imgLoader, final MissingViews missingViews )
 	{
 		super( timepoints, Entity.idMap( setups ), imgLoader, missingViews );
 	}
