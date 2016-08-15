@@ -44,6 +44,7 @@ import mpicbg.spim.data.sequence.FinalVoxelDimensions;
 import mpicbg.spim.data.sequence.Illumination;
 import mpicbg.spim.data.sequence.MissingViews;
 import mpicbg.spim.data.sequence.SequenceDescription;
+import mpicbg.spim.data.sequence.Tile;
 import mpicbg.spim.data.sequence.TimePoint;
 import mpicbg.spim.data.sequence.TimePoints;
 import mpicbg.spim.data.sequence.TimePointsPattern;
@@ -86,11 +87,13 @@ public class SpimDataExample2
 
 		final Illumination i0 = new Illumination( 0 );
 
+		final Tile t0 = new Tile( 0, "Tile0", new double[]{ 0.0, 0.0, 0.0 } );
+
 		final Dimensions d0 = new FinalDimensions( 1000l, 1000l, 300l );
 		final VoxelDimensions vd0 = new FinalVoxelDimensions( "px", 1, 1, 1 );
-		setups.add( new ViewSetup( 0, "setup 0", d0, vd0, c0, a0, i0 ) );
-		setups.add( new ViewSetup( 1, "setup 1", d0, vd0, c0, a1, i0 ) );
-		setups.add( new ViewSetup( 2, "setup 2", null, null, c0, a2, i0 ) );
+		setups.add( new ViewSetup( 0, "setup 0", d0, vd0, t0, c0, a0, i0 ) );
+		setups.add( new ViewSetup( 1, "setup 1", d0, vd0, t0, c0, a1, i0 ) );
+		setups.add( new ViewSetup( 2, "setup 2", null, null, t0, c0, a2, i0 ) );
 
 		return setups;
 	}

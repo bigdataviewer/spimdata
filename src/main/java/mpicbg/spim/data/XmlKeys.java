@@ -32,6 +32,7 @@ package mpicbg.spim.data;
  * Definition of tag and attribute names.
  *
  * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
+ * @author Stephan Preibisch (stephan.preibisch@gmx.de)
  */
 public class XmlKeys
 {
@@ -57,7 +58,11 @@ public class XmlKeys
 	public static final String IMGLOADER_TAG = "ImageLoader";
 	public static final String IMGLOADER_FORMAT_ATTRIBUTE_NAME = "format";
 
-	public static final String CHANNELS_TAG = "Channels";
+	public static final String TILES_TAG = "Tiles";
+	public static final String TILE_TAG = "Tile";
+	public static final String TILE_LOCATION_TAG = "location";
+
+	public static final String CHANNELS_TAG1 = "Channels";
 	public static final String CHANNEL_TAG = "Channel";
 
 	public static final String ILLUMINATIONS_TAG = "Illuminations";
