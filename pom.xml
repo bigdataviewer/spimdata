@@ -77,8 +77,8 @@
 		<url>https://github.com/bigdataviewer/spimdata</url>
 	</scm>
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/SpimData/</url>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/bigdataviewer/spimdata</url>
 	</ciManagement>
 
 	<licenses>
