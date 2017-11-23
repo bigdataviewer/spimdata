@@ -77,7 +77,11 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		Document doc;
 		try
 		{
-			doc = sax.build( xmlFilename );
+			final File file = new File( xmlFilename );
+			if ( file.exists() )
+				doc = sax.build( file );
+			else
+				doc = sax.build( xmlFilename );
 		}
 		catch ( final Exception e )
 		{
