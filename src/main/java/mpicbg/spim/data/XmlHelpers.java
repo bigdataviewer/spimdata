@@ -294,7 +294,8 @@ public class XmlHelpers
 		if ( elem == null )
 			return null;
 		final String path = elem.getText();
-		final boolean isRelative = elem.getAttributeValue( "type" ).equals( "relative" );
+		final String pathType = elem.getAttributeValue( "type" );
+		final boolean isRelative = null != pathType && pathType.equals( "relative" );
 		if ( isRelative )
 		{
 			if ( basePath == null )
