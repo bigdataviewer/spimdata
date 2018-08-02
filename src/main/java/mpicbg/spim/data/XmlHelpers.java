@@ -312,13 +312,25 @@ public class XmlHelpers
 	public static Element pathElement( final String name, final File path, final File basePath )
 	{
 		final Element e = new Element( name );
-
 		if ( basePath == null )
+		{
+			e.setAttribute( "type", "absolute" );
 			e.setText( path.getAbsolutePath() );
+		}
 		else
 		{
-			e.setAttribute( "type", "relative" );
-			e.setText( getRelativePath( path, basePath ).getPath() );
+			// Try to build a relative path. If can't, make it absolute.
+			final File relativePath = getRelativePath( path, basePath );
+			if ( null == relativePath )
+			{
+				e.setAttribute( "type", "absolute" );
+				e.setText( path.getAbsolutePath() );
+			}
+			else
+			{
+				e.setAttribute( "type", "relative" );
+				e.setText( relativePath.getPath() );
+			}
 		}
 
 		return e;
