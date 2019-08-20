@@ -126,6 +126,8 @@
 		<license.copyrightOwners>BigDataViewer developers.</license.copyrightOwners>
 		<license.projectName>SPIM Data: registered, multi-angle, multi-channel etc. image sequences.</license.projectName>
 
+		<imglib2.version>5.8.0</imglib2.version>
+
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 	</properties>

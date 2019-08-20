@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,11 +28,19 @@
  */
 package mpicbg.spim.data.sequence;
 
-import mpicbg.spim.data.generic.sequence.BasicMultiResolutionSetupImgLoader;
-import mpicbg.spim.data.generic.sequence.ImgLoaderHint;
+import java.util.Arrays;
+
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.RealTypeConverters;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.util.Util;
+
+import mpicbg.spim.data.generic.sequence.BasicMultiResolutionSetupImgLoader;
+import mpicbg.spim.data.generic.sequence.ImgLoaderHint;
+import mpicbg.spim.data.generic.sequence.ImgLoaderHints;
 
 /**
  * A {@link SetupImgLoader} providing multiple resolutions of each image. By
@@ -41,10 +49,16 @@ import net.imglib2.type.numeric.real.FloatType;
  * @param <T>
  *            the pixel type of images provided.
  *
- * @author Tobias Pietzsch &lt;tobias.pietzsch@gmail.com&gt;
+ * @author Tobias Pietzsch
  */
 public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolutionSetupImgLoader< T >, SetupImgLoader< T >
 {
+	@Override
+	public default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final boolean normalize, final ImgLoaderHint... hints )
+	{
+		return getFloatImage( timepointId, 0, normalize, hints );
+	}
+
 	/**
 	 * Get image at the specified timepoint and resolution level, converted to
 	 * {@link FloatType}. If requested, the image is normalized to the range
@@ -60,7 +74,34 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 	 *            optional hints regarding how to load the image.
 	 * @return {@link FloatType} image
 	 */
-	public RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final int level, boolean normalize, ImgLoaderHint... hints );
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	public default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final int level, final boolean normalize, final ImgLoaderHint... hints )
+	{
+		final T type = getImageType();
+		if ( !( type instanceof RealType ) )
+			throw new IllegalArgumentException( "Don't know how to converter image of type " + type.getClass().getSimpleName() + " to FloatType" );
+
+		final RandomAccessibleInterval< T > img = getImage( timepointId, level, hints );
+
+		if ( Arrays.asList( hints ).contains( ImgLoaderHints.LOAD_COMPLETELY ) )
+		{
+			final Img< FloatType > floatImg = Util.getSuitableImgFactory( img, new FloatType() ).create( img );
+
+			// TODO: replace with multithreaded RealTypeConverters.copyFromTo( ushortImg, floatImg );
+			ConvertFloatUtils.copyFromToMultithreaded( ( RandomAccessibleInterval ) img, floatImg );
+
+			if ( normalize )
+				// normalize the image to 0...1
+				ConvertFloatUtils.normalize( floatImg );
+
+			return floatImg;
+		}
+		else
+		{
+			final RandomAccessibleInterval floatImg = RealTypeConverters.convert( ( RandomAccessibleInterval ) img, new FloatType() );
+			return normalize ? ConvertFloatUtils.convertNormalize( floatImg ) : floatImg;
+		}
+	}
 
 	/**
 	 * Get the size of an image. If possible, load only the meta-data for the
