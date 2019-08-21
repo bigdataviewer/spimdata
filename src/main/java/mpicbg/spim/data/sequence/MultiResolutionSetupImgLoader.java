@@ -103,6 +103,12 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 		}
 	}
 
+	@Override
+	public default Dimensions getImageSize( final int timepointId )
+	{
+		return getImageSize( timepointId, 0 );
+	}
+
 	/**
 	 * Get the size of an image. If possible, load only the meta-data for the
 	 * specified image. Note, that this should <em>not</em> get the meta-data
