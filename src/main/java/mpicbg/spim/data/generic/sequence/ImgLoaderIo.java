@@ -56,5 +56,5 @@ public @interface ImgLoaderIo
 	 */
 	Class< ? extends BasicImgLoader > type();
 
-	double priority() default Priority.NORMAL_PRIORITY;
+	double priority() default Priority.NORMAL;
 }
