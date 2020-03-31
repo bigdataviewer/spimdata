@@ -308,6 +308,20 @@ public class XmlHelpers
 	}
 
 	/**
+	 * @return {@code true} if the path under {@code parent/name} is stored relative, {@code false} if absolute.
+	 */
+	public static boolean isPathRelative( final Element parent, final String name )
+	{
+		final Element elem = parent.getChild( name );
+		if ( elem == null )
+			return false;
+		final String path = elem.getText();
+		final String pathType = elem.getAttributeValue( "type" );
+		final boolean isRelative = null != pathType && pathType.equals( "relative" );
+		return isRelative;
+	}
+
+	/**
 	 * @param basePath if null put the absolute path, otherwise relative to this
 	 */
 	public static Element pathElement( final String name, final File path, final File basePath )
