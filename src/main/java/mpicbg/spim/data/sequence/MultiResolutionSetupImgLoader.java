@@ -34,6 +34,8 @@ import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.RealTypeConverters;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Util;
@@ -85,7 +87,20 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 
 		if ( Arrays.asList( hints ).contains( ImgLoaderHints.LOAD_COMPLETELY ) )
 		{
-			final Img< FloatType > floatImg = Util.getSuitableImgFactory( img, new FloatType() ).create( img );
+			ImgFactory< FloatType > factory;
+
+			try
+			{
+				// can throw an UnsupportedOperationException (e.g. by VolatileCachedCellImg)
+				factory = Util.getSuitableImgFactory( img, new FloatType() );
+			}
+			catch ( UnsupportedOperationException e )
+			{
+				// then do the next best
+				factory = new CellImgFactory<>( new FloatType() );
+			}
+
+			final Img< FloatType > floatImg = factory.create( img );
 
 			// TODO: replace with multithreaded RealTypeConverters.copyFromTo( ushortImg, floatImg );
 			ConvertFloatUtils.copyFromToMultithreaded( ( RandomAccessibleInterval ) img, floatImg );
