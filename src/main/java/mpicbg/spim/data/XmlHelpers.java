@@ -179,13 +179,7 @@ public class XmlHelpers
 	public static int[] getIntArray( final Element parent, final String name )
 	{
 		final String text = parent.getChildText( name );
-		final String[] entries = text.split( "\\s+" );
-		if ( entries.length == 1 && entries[ 0 ].isEmpty() )
-			return new int[ 0 ];
-		final int[] array = new int[ entries.length ];
-		for ( int i = 0; i < entries.length; ++i )
-			array[ i ] = Integer.parseInt( entries[ i ] );
-		return array;
+		return FastIntArrayParser.toIntArray(text);
 	}
 
 	public static int[] getIntArray( final Element parent, final String name, final int[] defaultValue )
