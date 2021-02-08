@@ -41,6 +41,7 @@ public class ImgLoaders
 
 	private static final HashMap< String, String > format_to_XmlIoClassName = new HashMap< String, String >();
 
+	// TODO FIX. this is not thread-safe!
 	private static boolean buildWasCalled = false;
 
 	private static void build()
