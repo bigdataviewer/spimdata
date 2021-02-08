@@ -35,6 +35,7 @@ import mpicbg.spim.data.generic.base.Entity;
 import mpicbg.spim.data.generic.base.ViewSetupAttributes;
 import mpicbg.spim.data.sequence.VoxelDimensions;
 import net.imglib2.Dimensions;
+import net.imglib2.util.Intervals;
 
 /**
  * An view setup is an {@link Entity} that may have a name, image size, and voxel size.
@@ -155,6 +156,18 @@ public class BasicViewSetup extends Entity
 	public < T extends Entity > void setAttribute( final T attribute )
 	{
 		attributes.put( ViewSetupAttributes.getNameForClass( attribute.getClass() ), attribute );
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer( "BasicViewSetup{" );
+		sb.append( "name='" ).append( name ).append( '\'' );
+		sb.append( ", size=" ).append( Intervals.toString( size ) );
+		sb.append( ", voxelSize=" ).append( voxelSize );
+		sb.append( ", attributes=" ).append( attributes );
+		sb.append( '}' );
+		return sb.toString();
 	}
 
 	protected void setName( final String name )

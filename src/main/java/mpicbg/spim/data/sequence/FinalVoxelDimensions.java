@@ -28,6 +28,7 @@
  */
 package mpicbg.spim.data.sequence;
 
+import java.util.Arrays;
 
 /**
  * An implementation of {@link VoxelDimensions}.
@@ -69,5 +70,15 @@ public final class FinalVoxelDimensions implements VoxelDimensions
 	public double dimension( final int d )
 	{
 		return dimensions[ d ];
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer( "FinalVoxelDimensions{" );
+		sb.append( "unit='" ).append( unit ).append( '\'' );
+		sb.append( ", dimensions=" ).append( Arrays.toString( dimensions ) );
+		sb.append( '}' );
+		return sb.toString();
 	}
 }
