@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>27.0.1</version>
+		<version>30.0.0</version>
 		<relativePath />
 	</parent>
 
@@ -111,8 +111,6 @@
 		<license.licenseName>bsd_2</license.licenseName>
 		<license.copyrightOwners>BigDataViewer developers.</license.copyrightOwners>
 		<license.projectName>SPIM Data: registered, multi-angle, multi-channel etc. image sequences.</license.projectName>
-
-		<imglib2.version>5.8.0</imglib2.version>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
