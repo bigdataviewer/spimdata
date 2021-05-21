@@ -100,9 +100,9 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		final File xmlFileDirectory = new File( xmlFilename ).getParentFile();
 		final Document doc = new Document( toXml( spimData, xmlFileDirectory ) );
 		final XMLOutputter xout = new XMLOutputter( Format.getPrettyFormat() );
-		try
+		try ( FileOutputStream outputStream = new FileOutputStream( xmlFilename ) )
 		{
-			xout.output( doc, new FileOutputStream( xmlFilename ) );
+			xout.output( doc, outputStream );
 		}
 		catch ( final IOException e )
 		{
