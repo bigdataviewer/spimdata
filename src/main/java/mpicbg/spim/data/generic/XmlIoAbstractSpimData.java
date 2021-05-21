@@ -33,9 +33,7 @@ import static mpicbg.spim.data.XmlKeys.SPIMDATA_TAG;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_CURRENT;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_NAME;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 import mpicbg.spim.data.SpimDataException;
 import mpicbg.spim.data.SpimDataIOException;
@@ -100,9 +98,9 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		final File xmlFileDirectory = new File( xmlFilename ).getParentFile();
 		final Document doc = new Document( toXml( spimData, xmlFileDirectory ) );
 		final XMLOutputter xout = new XMLOutputter( Format.getPrettyFormat() );
-		try
+		try ( FileOutputStream outputStream = new FileOutputStream( xmlFilename ) )
 		{
-			xout.output( doc, new FileOutputStream( xmlFilename ) );
+			xout.output( doc, outputStream );
 		}
 		catch ( final IOException e )
 		{
