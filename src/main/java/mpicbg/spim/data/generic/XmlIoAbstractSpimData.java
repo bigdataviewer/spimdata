@@ -33,7 +33,9 @@ import static mpicbg.spim.data.XmlKeys.SPIMDATA_TAG;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_CURRENT;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_NAME;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import mpicbg.spim.data.SpimDataException;
 import mpicbg.spim.data.SpimDataIOException;
