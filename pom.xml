@@ -102,8 +102,8 @@
 		<url>https://github.com/bigdataviewer/spimdata/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/bigdataviewer/spimdata</url>
+		<system>GitHub Actions</system>
+		<url>https://github.com/bigdataviewer/spimdata/actions</url>
 	</ciManagement>
 
 	<properties>
@@ -113,7 +113,7 @@
 		<license.projectName>SPIM Data: registered, multi-angle, multi-channel etc. image sequences.</license.projectName>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
-		<releaseProfiles>deploy-to-scijava</releaseProfiles>
+		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
 	</properties>
 
 	<repositories>
