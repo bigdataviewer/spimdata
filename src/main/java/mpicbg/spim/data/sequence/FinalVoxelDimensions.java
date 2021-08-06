@@ -47,6 +47,13 @@ public final class FinalVoxelDimensions implements VoxelDimensions
 		this.dimensions = dimensions.clone();
 	}
 
+	public FinalVoxelDimensions( final VoxelDimensions voxelDimensions )
+	{
+		this.unit = voxelDimensions.unit();
+		dimensions = new double[ voxelDimensions.numDimensions() ];
+		Arrays.setAll( dimensions, d -> voxelDimensions.dimension( d ) );
+	}
+
 	@Override
 	public int numDimensions()
 	{
