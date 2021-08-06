@@ -142,5 +142,14 @@
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
