@@ -1,8 +1,8 @@
 /*
  * #%L
- * SPIM Data: representation of registered, multi-angle, multi-channel (etc.) image sequences
+ * SPIM Data: registered, multi-angle, multi-channel etc. image sequences.
  * %%
- * Copyright (C) 2013 - 2015 BigDataViewer authors
+ * Copyright (C) 2013 - 2021 BigDataViewer developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
