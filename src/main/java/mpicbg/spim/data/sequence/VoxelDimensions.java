@@ -42,12 +42,23 @@ public interface VoxelDimensions extends EuclideanSpace
 	 *
 	 * @param dimensions
 	 */
-	public void dimensions( double[] dimensions );
+	void dimensions( double[] dimensions );
 
 	/**
 	 * Get the size of a voxel in a given dimension <em>d</em>.
 	 *
 	 * @param d
 	 */
-	public double dimension( int d );
+	double dimension( int d );
+
+	/**
+	 * Get the size of a voxel in each dimension as a new {@code double[]}
+	 * array.
+	 */
+	default double[] dimensionsAsDoubleArray()
+	{
+		final double[] dims = new double[ numDimensions() ];
+		dimensions( dims );
+		return dims;
+	}
 }

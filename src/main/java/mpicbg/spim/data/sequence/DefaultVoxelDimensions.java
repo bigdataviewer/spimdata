@@ -1,5 +1,7 @@
 package mpicbg.spim.data.sequence;
 
+import java.util.Arrays;
+
 /**
  * A default implementation of {@link VoxelDimensions} with
  * spacing of one for all dimensions and units of "pixel"s.
@@ -46,5 +48,15 @@ public class DefaultVoxelDimensions implements VoxelDimensions
 	public double dimension(int d)
 	{
 		return 1;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer( this.getClass().getSimpleName() );
+		sb.append( "{unit='" ).append( unit() ).append( '\'' );
+		sb.append( ", dimensions=" ).append( Arrays.toString( dimensionsAsDoubleArray() ) );
+		sb.append( '}' );
+		return sb.toString();
 	}
 }
