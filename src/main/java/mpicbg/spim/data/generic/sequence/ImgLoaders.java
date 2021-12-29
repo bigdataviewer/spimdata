@@ -41,25 +41,22 @@ public class ImgLoaders
 
 	private static final HashMap< String, String > format_to_XmlIoClassName = new HashMap< String, String >();
 
-	// TODO FIX. this is not thread-safe!
 	private static boolean buildWasCalled = false;
 
-	private static void build()
+	private static synchronized void build()
 	{
-		buildWasCalled = true;
-		try
-		{
-			final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			final Index< ImgLoaderIo > annotationIndex = Index.load( ImgLoaderIo.class, classLoader );
-			for ( final IndexItem< ImgLoaderIo > item : annotationIndex )
-			{
-				format_to_XmlIoClassName.put( item.annotation().format(), item.className() );
-				imgLoaderClass_to_XmlIoClassName.put( item.annotation().type(), item.className() );
+		if (! buildWasCalled) {
+			try {
+				final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+				final Index<ImgLoaderIo> annotationIndex = Index.load(ImgLoaderIo.class, classLoader);
+				for (final IndexItem<ImgLoaderIo> item : annotationIndex) {
+					format_to_XmlIoClassName.put(item.annotation().format(), item.className());
+					imgLoaderClass_to_XmlIoClassName.put(item.annotation().type(), item.className());
+				}
+			} catch (final Exception e) {
+				throw new RuntimeException("problem accessing annotation index", e);
 			}
-		}
-		catch( final Exception e )
-		{
-			throw new RuntimeException( "problem accessing annotation index", e );
+			buildWasCalled = true;
 		}
 	}
 
