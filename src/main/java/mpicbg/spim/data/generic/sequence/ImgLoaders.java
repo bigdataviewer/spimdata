@@ -33,11 +33,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.scijava.annotations.Index;
 import org.scijava.annotations.IndexItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import mpicbg.spim.data.SpimDataInstantiationException;
 
 public class ImgLoaders
 {
+	private static final Logger LOG = LoggerFactory.getLogger( ImgLoaders.class );
+
 	private static final Map< Class< ? extends BasicImgLoader >, String > imgLoaderClass_to_XmlIoClassName = new ConcurrentHashMap<>();
 
 	private static final Map< String, String > format_to_XmlIoClassName = new ConcurrentHashMap<>();
@@ -46,6 +50,7 @@ public class ImgLoaders
 
 	private static synchronized void build()
 	{
+		LOG.info( "build: entry, buildWasCalled={}", buildWasCalled );
 		if ( !buildWasCalled )
 		{
 			try
@@ -54,6 +59,8 @@ public class ImgLoaders
 				final Index< ImgLoaderIo > annotationIndex = Index.load( ImgLoaderIo.class, classLoader );
 				for ( final IndexItem< ImgLoaderIo > item : annotationIndex )
 				{
+					LOG.info( "build: mapping format={}, className={}, type={}",
+							item.annotation().format(), item.className(), item.annotation().type() );
 					format_to_XmlIoClassName.put( item.annotation().format(), item.className() );
 					imgLoaderClass_to_XmlIoClassName.put( item.annotation().type(), item.className() );
 				}
@@ -64,10 +71,13 @@ public class ImgLoaders
 			}
 			buildWasCalled = true;
 		}
+		LOG.info( "build: exit" );
 	}
+
 
 	public static XmlIoBasicImgLoader< ? > createXmlIoForFormat( final String format ) throws SpimDataInstantiationException
 	{
+		LOG.info( "createXmlIoForFormat: entry, format={}, buildWasCalled={}", format, buildWasCalled );
 		if ( !buildWasCalled )
 			build();
 
@@ -77,6 +87,7 @@ public class ImgLoaders
 
 		try
 		{
+			LOG.info( "createXmlIoForFormat: exit" );
 			return ( XmlIoBasicImgLoader< ? > ) Class.forName( className ).newInstance();
 		}
 		catch ( final Exception e )
@@ -89,6 +100,7 @@ public class ImgLoaders
 	public static < T extends BasicImgLoader >
 	XmlIoBasicImgLoader< T > createXmlIoForImgLoaderClass( final Class< T > klass ) throws SpimDataInstantiationException
 	{
+		LOG.info( "createXmlIoForImgLoaderClass: entry, klass={}, buildWasCalled={}", klass.getName(), buildWasCalled );
 		if ( !buildWasCalled )
 			build();
 
@@ -98,6 +110,7 @@ public class ImgLoaders
 
 		try
 		{
+			LOG.info( "createXmlIoForImgLoaderClass: exit" );
 			return ( XmlIoBasicImgLoader< T > ) Class.forName( className ).newInstance();
 		}
 		catch ( final Exception e )
@@ -120,11 +133,14 @@ public class ImgLoaders
 	 */
 	public static void registerManually( final Class< ? extends XmlIoBasicImgLoader< ? > > xmlIoClass )
 	{
+		LOG.info( "registerManually: entry, xmlIoClass={}", xmlIoClass.getName() );
 		final ImgLoaderIo annotation = xmlIoClass.getAnnotation( ImgLoaderIo.class );
 		if ( annotation != null )
 		{
 			final String format = annotation.format();
 			final Class< ? extends BasicImgLoader > imgLoaderClass = annotation.type();
+			LOG.info( "registerManually: mapping format={}, className={}, type={}",
+					annotation.format(), xmlIoClass.getName(), annotation.type() );
 			imgLoaderClass_to_XmlIoClassName.put( imgLoaderClass, xmlIoClass.getName() );
 			format_to_XmlIoClassName.put( format, xmlIoClass.getName() );
 		}
