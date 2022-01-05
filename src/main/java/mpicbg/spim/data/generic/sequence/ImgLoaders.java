@@ -28,18 +28,19 @@
  */
 package mpicbg.spim.data.generic.sequence;
 
-import java.util.HashMap;
-
-import mpicbg.spim.data.SpimDataInstantiationException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.scijava.annotations.Index;
 import org.scijava.annotations.IndexItem;
 
+import mpicbg.spim.data.SpimDataInstantiationException;
+
 public class ImgLoaders
 {
-	private static final HashMap< Class< ? extends BasicImgLoader >, String > imgLoaderClass_to_XmlIoClassName = new HashMap< Class< ? extends BasicImgLoader >, String >();
+	private static final Map< Class< ? extends BasicImgLoader >, String > imgLoaderClass_to_XmlIoClassName = new ConcurrentHashMap<>();
 
-	private static final HashMap< String, String > format_to_XmlIoClassName = new HashMap< String, String >();
+	private static final Map< String, String > format_to_XmlIoClassName = new ConcurrentHashMap<>();
 
 	private static boolean buildWasCalled = false;
 
