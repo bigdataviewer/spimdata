@@ -114,7 +114,7 @@ public class XmlHelpers
 	 */
 	public static Element doubleArrayElement( final String name, final double[] value )
 	{
-		final StringBuffer valueString = new StringBuffer();
+		final StringBuilder valueString = new StringBuilder();
 		if ( value.length > 0 )
 		{
 			valueString.append( value[ 0 ] );
@@ -162,7 +162,7 @@ public class XmlHelpers
 
 	public static Element intArrayElement( final String name, final int[] value )
 	{
-		final StringBuffer valueString = new StringBuffer();
+		final StringBuilder valueString = new StringBuilder();
 		if ( value.length > 0 )
 		{
 			valueString.append( value[ 0 ] );
@@ -189,7 +189,7 @@ public class XmlHelpers
 
 	public static Element longArrayElement( final String name, final long[] value )
 	{
-		final StringBuffer valueString = new StringBuffer();
+		final StringBuilder valueString = new StringBuilder();
 		if ( value.length > 0 )
 		{
 			valueString.append( value[ 0 ] );

@@ -82,7 +82,7 @@ public final class FinalVoxelDimensions implements VoxelDimensions
 	@Override
 	public String toString()
 	{
-		final StringBuffer sb = new StringBuffer( this.getClass().getSimpleName() );
+		final StringBuilder sb = new StringBuilder( this.getClass().getSimpleName() );
 		sb.append( "{unit='" ).append( unit ).append( '\'' );
 		sb.append( ", dimensions=" ).append( Arrays.toString( dimensions ) );
 		sb.append( '}' );

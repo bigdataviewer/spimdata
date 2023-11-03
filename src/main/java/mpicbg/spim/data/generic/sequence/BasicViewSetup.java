@@ -161,7 +161,7 @@ public class BasicViewSetup extends Entity
 	@Override
 	public String toString()
 	{
-		final StringBuffer sb = new StringBuffer( "BasicViewSetup{" );
+		final StringBuilder sb = new StringBuilder( "BasicViewSetup{" );
 		sb.append( "name='" ).append( name ).append( '\'' );
 		sb.append( ", size=" ).append( Intervals.toString( size ) );
 		sb.append( ", voxelSize=" ).append( voxelSize );
