@@ -15,16 +15,16 @@
 
 	<name>SPIM Data</name>
 	<description>representation of multi-angle, multi-channel (etc.) SPIM images and their registration</description>
-	<url>http://github.com/bigdataviewer/spimdata</url>
+	<url>https://github.com/bigdataviewer/spimdata</url>
 	<inceptionYear>2013</inceptionYear>
 	<organization>
 		<name>BigDataViewer</name>
-		<url>https://imagej.net/BigDataViewer</url>
+		<url>https://imagej.net/plugins/bdv</url>
 	</organization>
 	<licenses>
 		<license>
 			<name>Simplified BSD License</name>
-			<url>http://opensource.org/licenses/BSD-2-Clause</url>
+			<url>https://opensource.org/licenses/BSD-2-Clause</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -33,7 +33,7 @@
 		<developer>
 			<id>tpietzsch</id>
 			<name>Tobias Pietzsch</name>
-			<url>https://imagej.net/User:Pietzsch</url>
+			<url>https://imagej.net/people/tpietzsch</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -47,7 +47,7 @@
 		<developer>
 			<id>StephanPreibisch</id>
 			<name>Stephan Preibisch</name>
-			<url>https://imagej.net/User:StephanP</url>
+			<url>https://imagej.net/people/StephanPreibisch</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -60,7 +60,7 @@
 		<developer>
 			<id>ctrueden</id>
 			<name>Curtis Rueden</name>
-			<url>https://imagej.net/User:Rueden</url>
+			<url>https://imagej.net/people/ctrueden</url>
 			<roles>
 				<role>maintainer</role>
 			</roles>
@@ -69,7 +69,7 @@
 	<contributors>
 		<contributor>
 			<name>Johannes Schindelin</name>
-			<url>https://imagej.net/User:Schindelin</url>
+			<url>https://imagej.net/people/dscho</url>
 			<properties><id>dscho</id></properties>
 			<roles><role>founder</role></roles>
 		</contributor>
@@ -79,7 +79,7 @@
 		</contributor>
 		<contributor>
 			<name>Stephan Saalfeld</name>
-			<url>https://imagej.net/User:Saalfeld</url>
+			<url>https://imagej.net/people/axtimwalde</url>
 			<properties><id>axtimwalde</id></properties>
 		</contributor>
 	</contributors>
@@ -146,6 +146,8 @@
 			<groupId>net.sf.trove4j</groupId>
 			<artifactId>trove4j</artifactId>
 		</dependency>
+
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
