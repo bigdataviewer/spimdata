@@ -29,6 +29,7 @@
 package mpicbg.spim.data.generic;
 
 import java.io.File;
+import java.net.URI;
 
 import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
 import mpicbg.spim.data.registration.ViewRegistrations;
@@ -38,7 +39,7 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 	/**
 	 * Relative paths in the XML should be interpreted with respect to this.
 	 */
-	private File basePath;
+	private URI basePathURI;
 
 	private S sequenceDescription;
 
@@ -46,7 +47,7 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 
 	public AbstractSpimData( final File basePath, final S sequenceDescription, final ViewRegistrations viewRegistrations )
 	{
-		this.basePath = basePath;
+		this.basePathURI = basePath == null ? null : basePath.toURI();
 		this.sequenceDescription = sequenceDescription;
 		this.viewRegistrations = viewRegistrations;
 	}
@@ -59,7 +60,12 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 	 */
 	public File getBasePath()
 	{
-		return basePath;
+		return new File( basePathURI );
+	}
+
+	public URI getBasePathURI()
+	{
+		return basePathURI;
 	}
 
 	public S getSequenceDescription()
@@ -74,7 +80,12 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 
 	public void setBasePath( final File basePath )
 	{
-		this.basePath = basePath;
+		this.basePathURI = basePath.toURI();
+	}
+
+	public void setBasePathURI( final URI basePathURI )
+	{
+		this.basePathURI = basePathURI;
 	}
 
 	protected void setSequenceDescription( final S sequenceDescription )
