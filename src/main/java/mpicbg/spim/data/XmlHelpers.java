@@ -30,6 +30,8 @@ package mpicbg.spim.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
@@ -270,7 +272,7 @@ public class XmlHelpers
 	{
 		final Element elem = parent.getChild( name );
 		final String path = ( elem == null ) ? defaultRelativePath : elem.getText();
-		final boolean isRelative = ( elem == null ) ? true : elem.getAttributeValue( "type" ).equals( "relative" );
+		final boolean isRelative = ( elem == null ) || elem.getAttributeValue( "type" ).equals( "relative" );
 		if ( isRelative )
 		{
 			if ( basePath == null )
@@ -280,6 +282,31 @@ public class XmlHelpers
 		}
 		else
 			return new File( path );
+	}
+
+	public static URI loadPathURI( final Element parent, final String name, final String defaultRelativePath, final URI basePath )
+	{
+		final Element elem = parent.getChild( name );
+		final String path = ( elem == null ) ? defaultRelativePath : elem.getText();
+		final boolean isRelative = ( elem == null ) || elem.getAttributeValue( "type" ).equals( "relative" );
+		if ( isRelative )
+		{
+			if ( basePath == null )
+				return null;
+			else
+				return basePath.resolve( path );
+		}
+		else
+		{
+			try
+			{
+				return new URI( path );
+			}
+			catch ( URISyntaxException e )
+			{
+				return null;
+			}
+		}
 	}
 
 	public static File loadPath( final Element parent, final String name, final File basePath )
