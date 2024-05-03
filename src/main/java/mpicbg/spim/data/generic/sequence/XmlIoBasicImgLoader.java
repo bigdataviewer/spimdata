@@ -29,12 +29,29 @@
 package mpicbg.spim.data.generic.sequence;
 
 import java.io.File;
+import java.net.URI;
 
 import org.jdom2.Element;
 
+import mpicbg.spim.data.SpimDataException;
+
 public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 {
-	public Element toXml( final T imgLoader, final File basePath );
+	Element toXml( final T imgLoader, final File basePath );
 
-	public T fromXml( final Element elem, final File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
+	T fromXml( final Element elem, final File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
+
+	default T fromXml( final Element elem, final URI basePathURI, AbstractSequenceDescription< ?, ?, ? > sequenceDescription )
+	{
+		final File basePath;
+		try
+		{
+			basePath = new File( basePathURI );
+		}
+		catch ( final IllegalArgumentException e )
+		{
+			throw new RuntimeException( "Could not convert base path \"" + basePathURI + "\" into File, and " + this.getClass().getName() + " does not handle base path URIs.", e );
+		}
+		return fromXml( elem, basePath, sequenceDescription );
+	}
 }

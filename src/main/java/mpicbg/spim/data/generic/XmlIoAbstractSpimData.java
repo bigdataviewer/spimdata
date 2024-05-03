@@ -33,9 +33,22 @@ import static mpicbg.spim.data.XmlKeys.SPIMDATA_TAG;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_CURRENT;
 import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_NAME;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.Objects;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import mpicbg.spim.data.SpimDataException;
 import mpicbg.spim.data.SpimDataIOException;
@@ -45,12 +58,6 @@ import mpicbg.spim.data.generic.base.XmlIoSingleton;
 import mpicbg.spim.data.generic.sequence.AbstractSequenceDescription;
 import mpicbg.spim.data.generic.sequence.XmlIoAbstractSequenceDescription;
 import mpicbg.spim.data.registration.XmlIoViewRegistrations;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 
 public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? >, T extends AbstractSpimData< S > > extends XmlIoSingleton< T >
 {
@@ -73,15 +80,25 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 
 	public T load( final String xmlFilename ) throws SpimDataException
 	{
+		try
+		{
+			final File file = new File( xmlFilename );
+			final BufferedReader reader = new BufferedReader( new FileReader( file ) );
+			return load( reader, file.toURI() );
+		}
+		catch ( final IOException e )
+		{
+			throw new SpimDataIOException( e );
+		}
+	}
+
+	public T load( final Reader xmlReader, final URI xmlURI ) throws SpimDataException
+	{
 		final SAXBuilder sax = new SAXBuilder();
 		Document doc;
 		try
 		{
-			final File file = new File( xmlFilename );
-			if ( file.exists() )
-				doc = sax.build( file );
-			else
-				doc = sax.build( xmlFilename );
+			doc = sax.build( xmlReader );
 		}
 		catch ( final Exception e )
 		{
@@ -89,11 +106,12 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		}
 		final Element root = doc.getRootElement();
 
-		if ( root.getName() != SPIMDATA_TAG )
+		if ( !Objects.equals( root.getName(), SPIMDATA_TAG ) )
 			throw new RuntimeException( "expected <" + SPIMDATA_TAG + "> root element. wrong file?" );
 
-		return fromXml( root, new File( xmlFilename ) );
+		return fromXml( root, xmlURI );
 	}
+
 
 	public void save( final T spimData, final String xmlFilename ) throws SpimDataException
 	{
@@ -140,17 +158,22 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 	 */
 	public T fromXml( final Element root, final File xmlFile ) throws SpimDataException
 	{
+		return fromXml(  root, xmlFile.toURI() );
+	}
+
+	public T fromXml( final Element root, final URI xmlURI ) throws SpimDataException
+	{
 		final T spimData = super.fromXml( root );
 
 //		String version = getVersion( root );
 
-		final File basePath = loadBasePath( root, xmlFile );
-		spimData.setBasePath( basePath );
+		final URI basePathURI = loadBasePathURI( root, xmlURI );
+		spimData.setBasePathURI( basePathURI );
 
 		Element elem = root.getChild( xmlIoSequenceDescription.getTag() );
 		if ( elem == null )
 			throw new SpimDataIOException( "no <" + xmlIoSequenceDescription.getTag() + "> element found." );
-		spimData.setSequenceDescription( xmlIoSequenceDescription.fromXml( elem, basePath ) );
+		spimData.setSequenceDescription( xmlIoSequenceDescription.fromXml( elem, basePathURI ) );
 
 		elem = root.getChild( xmlIoViewRegistrations.getTag() );
 		if ( elem == null )
@@ -160,12 +183,23 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		return spimData;
 	}
 
-	protected File loadBasePath( final Element root, final File xmlFile )
+	protected URI loadBasePathURI( final Element root, final URI xmlURI ) throws SpimDataIOException
 	{
-		File xmlFileParentDirectory = xmlFile.getParentFile();
-		if ( xmlFileParentDirectory == null )
-			xmlFileParentDirectory = new File( "." );
-		return XmlHelpers.loadPath( root, BASEPATH_TAG, ".", xmlFileParentDirectory );
+		final URI parent = getParent( xmlURI );
+		return XmlHelpers.loadPathURI( root, BASEPATH_TAG, ".", parent );
+	}
+
+	private static URI getParent( final URI uri ) throws SpimDataIOException
+	{
+		try
+		{
+			final String parent = Paths.get( uri.getPath() ).getParent().toString() + "/";
+			return new URI( uri.getScheme(), uri.getAuthority(), parent, uri.getQuery(), uri.getFragment() );
+		}
+		catch ( URISyntaxException e )
+		{
+			throw new SpimDataIOException( e );
+		}
 	}
 
 	/**
