@@ -29,6 +29,7 @@
 package mpicbg.spim.data;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,7 +176,7 @@ public class SpimDataExample2
 		final Document doc = new Document( io.toXml( sequence, null ) );
 		new XMLOutputter( Format.getPrettyFormat() ).output( doc, System.out );
 
-		final SequenceDescription fromXml = io.fromXml( doc.getRootElement(), null );
+		final SequenceDescription fromXml = io.fromXml( doc.getRootElement(), ( URI ) null );
 		new XMLOutputter( Format.getPrettyFormat() ).output( new Document( new XmlIoSequenceDescription().toXml( fromXml, null ) ), System.out );
 	}
 

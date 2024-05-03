@@ -33,6 +33,7 @@ import static mpicbg.spim.data.XmlKeys.IMGLOADER_TAG;
 import static mpicbg.spim.data.XmlKeys.SEQUENCEDESCRIPTION_TAG;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 
 import mpicbg.spim.data.SpimDataException;
@@ -88,8 +89,14 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 		return elem;
 	}
 
-	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	public T fromXml( final Element elem, final File basePath ) throws SpimDataException
+	{
+		System.out.println( "XmlIoAbstractSequenceDescription.fromXml with File" );
+		return fromXml( elem, basePath.toURI() );
+	}
+
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	public T fromXml( final Element elem, final URI basePathURI ) throws SpimDataException
 	{
 		final T sequenceDescription = super.fromXml( elem );
 
@@ -108,7 +115,7 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 		{
 			final String format = imgLoaderElem.getAttributeValue( IMGLOADER_FORMAT_ATTRIBUTE_NAME );
 			final XmlIoBasicImgLoader< ? > imgLoaderIo = ImgLoaders.createXmlIoForFormat( format );
-			final BasicImgLoader imgLoader = imgLoaderIo.fromXml( imgLoaderElem, basePath, sequenceDescription );
+			final BasicImgLoader imgLoader = imgLoaderIo.fromXml( imgLoaderElem, basePathURI, sequenceDescription );
 			setImgLoader( ( AbstractSequenceDescription ) sequenceDescription, imgLoader );
 		}
 		else
