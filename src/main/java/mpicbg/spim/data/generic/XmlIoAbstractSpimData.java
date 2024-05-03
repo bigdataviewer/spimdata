@@ -92,6 +92,11 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		}
 	}
 
+	/**
+	 * Load SpimData from the given {@code Reader} (that can read from a local
+	 * file, or S3 for example). The {@code xmlURI} is the URI that the {@code
+	 * xmlReader} reads from, and it is used to construct the base path URI.
+	 */
 	public T load( final Reader xmlReader, final URI xmlURI ) throws SpimDataException
 	{
 		final SAXBuilder sax = new SAXBuilder();

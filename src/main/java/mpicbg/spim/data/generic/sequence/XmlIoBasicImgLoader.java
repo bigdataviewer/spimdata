@@ -41,6 +41,13 @@ public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 
 	T fromXml( final Element elem, final File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
 
+	/**
+	 * Subclasses that construct ImgLoaders that are able to read from sources
+	 * other than local files should override this method. The default
+	 * implementation falls back to {@link #fromXml(Element, File,
+	 * AbstractSequenceDescription)}, but this will fail if the {@code
+	 * basePathURI} does not refer to a local file.
+	 */
 	default T fromXml( final Element elem, final URI basePathURI, AbstractSequenceDescription< ?, ?, ? > sequenceDescription )
 	{
 		final File basePath;
