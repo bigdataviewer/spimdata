@@ -33,11 +33,29 @@ import java.net.URI;
 
 import org.jdom2.Element;
 
-import mpicbg.spim.data.SpimDataException;
-
 public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 {
 	Element toXml( final T imgLoader, final File basePath );
+
+	/**
+	 * Subclasses that construct ImgLoaders that are able to read from sources
+	 * other than local files should override this method. The default
+	 * implementation falls back to {@link #toXml(BasicImgLoader, File)}, but
+	 * this will fail if the {@code basePathURI} does not refer to a local file.
+	 */
+	default Element toXml( final T imgLoader, final URI basePathURI )
+	{
+		final File basePath;
+		try
+		{
+			basePath = basePathURI == null ? null : new File( basePathURI );
+		}
+		catch ( final IllegalArgumentException e )
+		{
+			throw new RuntimeException( "Could not convert base path \"" + basePathURI + "\" into File, and " + this.getClass().getName() + " does not handle base path URIs.", e );
+		}
+		return toXml( imgLoader, basePath );
+	}
 
 	T fromXml( final Element elem, final File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
 
@@ -53,7 +71,7 @@ public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 		final File basePath;
 		try
 		{
-			basePath = new File( basePathURI );
+			basePath = basePathURI == null ? null : new File( basePathURI );
 		}
 		catch ( final IllegalArgumentException e )
 		{
