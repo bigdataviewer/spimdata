@@ -57,7 +57,7 @@ public interface BasicMultiResolutionSetupImgLoader< T > extends BasicSetupImgLo
 	 *            optional hints regarding how to load the image.
 	 * @return image of type T.
 	 */
-	public RandomAccessibleInterval< T > getImage( final int timepointId, final int level, ImgLoaderHint... hints );
+	RandomAccessibleInterval< T > getImage( int timepointId, final int level, ImgLoaderHint... hints );
 
 	/**
 	 * Get the sub-sampling factors, indexed by resolution level and dimension.
@@ -66,7 +66,7 @@ public interface BasicMultiResolutionSetupImgLoader< T > extends BasicSetupImgLo
 	 *
 	 * @return sub-sampling factors, indexed by resolution level and dimension.
 	 */
-	public double[][] getMipmapResolutions();
+	double[][] getMipmapResolutions();
 
 	/**
 	 * Get the transformation from coordinates of the sub-sampled image of a a
@@ -75,12 +75,12 @@ public interface BasicMultiResolutionSetupImgLoader< T > extends BasicSetupImgLo
 	 *
 	 * @return array with one transformation for each mipmap level.
 	 */
-	public AffineTransform3D[] getMipmapTransforms();
+	AffineTransform3D[] getMipmapTransforms();
 
 	/**
 	 * Get number of resolution levels.
 	 *
 	 * @return number of resolution levels.
 	 */
-	public int numMipmapLevels();
+	int numMipmapLevels();
 }

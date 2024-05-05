@@ -46,5 +46,5 @@ public interface BasicImgLoader
 	 *            view setup for which to get the {@link BasicSetupImgLoader}.
 	 * @return {@link BasicSetupImgLoader} for the specified view setup.
 	 */
-	public BasicSetupImgLoader< ? > getSetupImgLoader( final int setupId );
+	BasicSetupImgLoader< ? > getSetupImgLoader( int setupId );
 }

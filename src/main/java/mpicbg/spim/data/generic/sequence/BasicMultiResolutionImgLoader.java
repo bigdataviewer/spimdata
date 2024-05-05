@@ -47,5 +47,5 @@ public interface BasicMultiResolutionImgLoader extends BasicImgLoader
 	 *         setup.
 	 */
 	@Override
-	public BasicMultiResolutionSetupImgLoader< ? > getSetupImgLoader( final int setupId );
+	BasicMultiResolutionSetupImgLoader< ? > getSetupImgLoader( int setupId );
 }
