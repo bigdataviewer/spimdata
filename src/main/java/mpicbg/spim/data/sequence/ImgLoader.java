@@ -48,5 +48,5 @@ public interface ImgLoader extends BasicImgLoader
 	 * @return {@link SetupImgLoader} for the specified view setup.
 	 */
 	@Override
-	public SetupImgLoader< ? > getSetupImgLoader( final int setupId );
+	SetupImgLoader< ? > getSetupImgLoader( int setupId );
 }

@@ -38,7 +38,7 @@ public interface ViewTransform
 	 *
 	 * @return true, if this transform has a name.
 	 */
-	public boolean hasName();
+	boolean hasName();
 
 	/**
 	 * Get the name of this transform.
@@ -46,7 +46,7 @@ public interface ViewTransform
 	 *
 	 * @return the name of this transform or null if it is not set.
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * A representation of this {@link ViewTransform} as a 3D {@link AffineGet}.
@@ -54,5 +54,5 @@ public interface ViewTransform
 	 *
 	 * @return 3D affine representation of this transform.
 	 */
-	public AffineGet asAffine3D();
+	AffineGet asAffine3D();
 }

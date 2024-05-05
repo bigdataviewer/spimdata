@@ -58,7 +58,7 @@ public interface SetupImgLoader< T > extends BasicSetupImgLoader< T >
 	 *            optional hints regarding how to load the image.
 	 * @return {@link FloatType} image
 	 */
-	public RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, boolean normalize, ImgLoaderHint... hints );
+	RandomAccessibleInterval< FloatType > getFloatImage( int timepointId, boolean normalize, ImgLoaderHint... hints );
 
 	/**
 	 * Get the size of an image. If possible, load only the meta-data for the
@@ -69,7 +69,7 @@ public interface SetupImgLoader< T > extends BasicSetupImgLoader< T >
 	 *            timepoint for which to retrieve the image size.
 	 * @return the image size, or null if it could not be determined.
 	 */
-	public Dimensions getImageSize( final int timepointId );
+	Dimensions getImageSize( int timepointId );
 
 	/**
 	 * Get the voxel size of an image. If possible, load only the meta-data for
@@ -81,5 +81,5 @@ public interface SetupImgLoader< T > extends BasicSetupImgLoader< T >
 	 *            timepoint for which to retrieve the voxel size.
 	 * @return the voxel size, or null if it could not be determined.
 	 */
-	public VoxelDimensions getVoxelSize( final int timepointId );
+	VoxelDimensions getVoxelSize( int timepointId );
 }

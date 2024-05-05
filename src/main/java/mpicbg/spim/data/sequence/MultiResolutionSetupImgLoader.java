@@ -56,7 +56,7 @@ import mpicbg.spim.data.generic.sequence.ImgLoaderHints;
 public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolutionSetupImgLoader< T >, SetupImgLoader< T >
 {
 	@Override
-	public default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final boolean normalize, final ImgLoaderHint... hints )
+	default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final boolean normalize, final ImgLoaderHint... hints )
 	{
 		return getFloatImage( timepointId, 0, normalize, hints );
 	}
@@ -77,7 +77,7 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 	 * @return {@link FloatType} image
 	 */
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
-	public default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final int level, final boolean normalize, final ImgLoaderHint... hints )
+	default RandomAccessibleInterval< FloatType > getFloatImage( final int timepointId, final int level, final boolean normalize, final ImgLoaderHint... hints )
 	{
 		final T type = getImageType();
 		if ( !( type instanceof RealType ) )
@@ -119,7 +119,7 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 	}
 
 	@Override
-	public default Dimensions getImageSize( final int timepointId )
+	default Dimensions getImageSize( final int timepointId )
 	{
 		return getImageSize( timepointId, 0 );
 	}
@@ -135,5 +135,5 @@ public interface MultiResolutionSetupImgLoader< T > extends BasicMultiResolution
 	 *            resolution level for which to retrieve the image size.
 	 * @return the image size, or null if it could not be determined.
 	 */
-	public Dimensions getImageSize( final int timepointId, final int level );
+	Dimensions getImageSize( int timepointId, int level );
 }

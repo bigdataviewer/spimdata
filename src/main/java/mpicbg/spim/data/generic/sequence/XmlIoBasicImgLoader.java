@@ -35,7 +35,7 @@ import org.jdom2.Element;
 
 public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 {
-	Element toXml( final T imgLoader, final File basePath );
+	Element toXml( T imgLoader, File basePath );
 
 	/**
 	 * Subclasses that construct ImgLoaders that are able to read from sources
@@ -57,7 +57,7 @@ public interface XmlIoBasicImgLoader< T extends BasicImgLoader >
 		return toXml( imgLoader, basePath );
 	}
 
-	T fromXml( final Element elem, final File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
+	T fromXml( Element elem, File basePath, AbstractSequenceDescription< ?, ?, ? > sequenceDescription );
 
 	/**
 	 * Subclasses that construct ImgLoaders that are able to read from sources
