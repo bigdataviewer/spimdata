@@ -328,6 +328,35 @@ public class XmlHelpers
 			return new File( path );
 	}
 
+	public static URI loadPathURI( final Element parent, final String name, final URI basePath )
+	{
+		final Element elem = parent.getChild( name );
+		if ( elem == null )
+			return null;
+		final String path = elem.getText();
+		final String pathType = elem.getAttributeValue( "type" );
+		final boolean isRelative = null != pathType && pathType.equals( "relative" );
+		if ( isRelative )
+		{
+			if ( basePath == null )
+				return null;
+			else
+				return basePath.resolve( path );
+		}
+		else
+		{
+			try
+			{
+				return new URI( path );
+			}
+			catch ( URISyntaxException e )
+			{
+				return null;
+			}
+		}
+	}
+
+
 	/**
 	 * @return {@code true} if the path under {@code parent/name} is stored relative, {@code false} if absolute.
 	 */
@@ -383,6 +412,38 @@ public class XmlHelpers
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * @param basePath if null put the absolute path, otherwise relative to this
+	 */
+	public static Element pathElementURI( final String name, final URI path, final URI basePath )
+	{
+		final Element e = new Element( name );
+		if ( basePath == null )
+		{
+			e.setAttribute( "type", "absolute" );
+			e.setText( path.normalize().toString() );
+		}
+		else
+		{
+			// Try to build a relative path. If can't, make it absolute.
+			URI relativePath = basePath.relativize( path ).normalize();
+			if ( relativePath.equals( path ) )
+			{
+				e.setAttribute( "type", "absolute" );
+				e.setText( path.toString() );
+			}
+			else
+			{
+				if ( relativePath.toString().isEmpty() )
+					relativePath = URI.create( "." );
+				e.setAttribute( "type", "relative" );
+				e.setText( relativePath.toString() );
+			}
+		}
+
+		return e;
 	}
 
 	private static File getRelativePath( final File file, final File relativeToThis, final String relativeInitial )
