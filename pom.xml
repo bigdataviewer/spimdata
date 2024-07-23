@@ -11,7 +11,7 @@
 
 	<groupId>sc.fiji</groupId>
 	<artifactId>spim_data</artifactId>
-	<version>2.3.0-SNAPSHOT</version>
+	<version>2.3.0</version>
 
 	<name>SPIM Data</name>
 	<description>representation of multi-angle, multi-channel (etc.) SPIM images and their registration</description>
@@ -94,7 +94,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/bigdataviewer/spimdata</connection>
 		<developerConnection>scm:git:git@github.com:bigdataviewer/spimdata</developerConnection>
-		<tag>HEAD</tag>
+		<tag>spim_data-2.3.0</tag>
 		<url>https://github.com/bigdataviewer/spimdata</url>
 	</scm>
 	<issueManagement>
