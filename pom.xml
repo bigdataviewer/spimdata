@@ -116,6 +116,12 @@
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
+
+
+		<!-- WIP TODO TEMPORARY -->
+		<n5.version>3.3.0</n5.version>
+		<n5-zarr.version>1.3.5</n5-zarr.version>
+
 	</properties>
 
 	<repositories>
@@ -146,6 +152,18 @@
 			<groupId>net.sf.trove4j</groupId>
 			<artifactId>trove4j</artifactId>
 		</dependency>
+
+
+		<!-- WIP TODO TEMPORARY -->
+		<dependency>
+			<groupId>org.janelia.saalfeldlab</groupId>
+			<artifactId>n5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.janelia.saalfeldlab</groupId>
+			<artifactId>n5-zarr</artifactId>
+		</dependency>
+
 
 		<!-- Test dependencies -->
 		<dependency>
