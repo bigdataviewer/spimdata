@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,6 +29,7 @@
 package mpicbg.spim.data.sequence;
 
 import java.util.Map;
+import java.util.Optional;
 
 import mpicbg.spim.data.generic.base.Entity;
 import mpicbg.spim.data.generic.base.ViewSetupAttributes;
@@ -110,11 +111,18 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 			final Angle angle,
 			final Illumination illumination )
 	{
+		this( id, name, size, voxelSize, new Tile( 0 ), channel, angle, illumination );
+	}
+
+	public ViewSetup(
+			final int id,
+			final String name,
+			final Dimensions size,
+			final VoxelDimensions voxelSize,
+			final Map< String, Entity > attributes )
+	{
 		super( id, name, size, voxelSize );
-		setChannel( channel );
-		setAngle( angle );
-		setIllumination( illumination );
-		setTile( new Tile( 0 ) );
+		setAttributes( attributes );
 	}
 
 	/**
@@ -318,11 +326,12 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 	protected void setAttributes( final Map< String, Entity > attributes )
 	{
 		super.setAttributes( attributes );
-		setTile( ( Tile ) attributes.get( tileAttributeKey ) );
-		setChannel( ( Channel ) attributes.get( channelAttributeKey ) );
-		setAngle( ( Angle ) attributes.get( angleAttributeKey ) );
-		setIllumination( ( Illumination ) attributes.get( illuminationAttributeKey ) );
-		
+
+		tile = ( Tile ) attributes.get( tileAttributeKey );
+		channel = ( Channel ) attributes.get( channelAttributeKey );
+		angle = ( Angle ) attributes.get( angleAttributeKey );
+		illumination = ( Illumination ) attributes.get( illuminationAttributeKey );
+
 		// if any attribute is not present, set it to a default
 		if ( getTile() == null )
 			setTile( new Tile( 0 ) );
@@ -335,6 +344,21 @@ public class ViewSetup extends BasicViewSetup implements Comparable< ViewSetup >
 
 		if ( getIllumination() == null )
 			setIllumination( new Illumination( 0 ) );
+	}
+
+	@Override
+	public < T extends Entity > void setAttribute( final T attribute )
+	{
+		if ( attribute instanceof Tile )
+			setTile( tile );
+		else if ( attribute instanceof Channel )
+			setChannel( channel );
+		else if ( attribute instanceof Angle )
+			setAngle( angle );
+		else if ( attribute instanceof Illumination )
+			setIllumination( illumination );
+		else
+			super.setAttribute( attribute );
 	}
 
 	ViewSetup()
