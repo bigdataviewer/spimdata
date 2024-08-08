@@ -28,6 +28,8 @@
  */
 package mpicbg.spim.data.generic.base;
 
+import java.util.Objects;
+
 /**
  * An {@link Entity} that has a name.
  *
@@ -55,5 +57,24 @@ public class NamedEntity extends Entity
 	protected void setName( final String name )
 	{
 		this.name = name;
+	}
+
+	@Override
+	public boolean equals( final Object o )
+	{
+		if ( this == o )
+			return true;
+		if ( o == null || getClass() != o.getClass() )
+			return false;
+		if ( !super.equals( o ) )
+			return false;
+		final NamedEntity that = ( NamedEntity ) o;
+		return Objects.equals( name, that.name );
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash( super.hashCode(), name );
 	}
 }

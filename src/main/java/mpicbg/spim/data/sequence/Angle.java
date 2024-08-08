@@ -28,6 +28,9 @@
  */
 package mpicbg.spim.data.sequence;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import mpicbg.spim.data.generic.base.NamedEntity;
 
 /**
@@ -109,7 +112,7 @@ public class Angle extends NamedEntity implements Comparable< Angle >
 	}
 
 	/**
-	 * Get the the approximate rotation axis (as defined by the microscope meta-data).
+	 * Get the approximate rotation axis (as defined by the microscope meta-data).
 	 *
 	 * @return the rotation axis or null if rotation is undefined.
 	 */
@@ -151,4 +154,35 @@ public class Angle extends NamedEntity implements Comparable< Angle >
 
 	protected Angle()
 	{}
+
+	@Override
+	public boolean equals( final Object o )
+	{
+		if ( this == o )
+			return true;
+		if ( o == null || getClass() != o.getClass() )
+			return false;
+		if ( !super.equals( o ) )
+			return false;
+		final Angle angle = ( Angle ) o;
+		return Double.compare( rotationAngle, angle.rotationAngle ) == 0 && Objects.deepEquals( rotationAxis, angle.rotationAxis );
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash( super.hashCode(), Arrays.hashCode( rotationAxis ), rotationAngle );
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder sb = new StringBuilder( "Angle{" );
+		sb.append( "id=" ).append( getId() );
+		sb.append( "name=\"" ).append( getName() ).append( "\"" );
+		sb.append( "rotationAxis=" ).append( Arrays.toString( rotationAxis ) );
+		sb.append( ", rotationAngle=" ).append( rotationAngle );
+		sb.append( '}' );
+		return sb.toString();
+	}
 }

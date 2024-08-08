@@ -77,7 +77,7 @@ public class BasicViewSetup extends Entity
 		this.name = name;
 		this.size = size;
 		this.voxelSize = voxelSize;
-		this.attributes = new HashMap< String, Entity >();
+		this.attributes = new HashMap<>();
 	}
 
 	/**
