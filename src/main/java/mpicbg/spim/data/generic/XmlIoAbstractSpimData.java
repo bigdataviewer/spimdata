@@ -35,10 +35,11 @@ import static mpicbg.spim.data.XmlKeys.SPIMDATA_VERSION_ATTRIBUTE_NAME;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -117,15 +118,11 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		return fromXml( root, xmlURI );
 	}
 
-
 	public void save( final T spimData, final String xmlFilename ) throws SpimDataException
 	{
-		final File xmlFileDirectory = new File( xmlFilename ).getParentFile();
-		final Document doc = new Document( toXml( spimData, xmlFileDirectory ) );
-		final XMLOutputter xout = new XMLOutputter( Format.getPrettyFormat() );
-		try ( FileOutputStream outputStream = new FileOutputStream( xmlFilename ) )
+		try ( FileWriter writer = new FileWriter( xmlFilename ) )
 		{
-			xout.output( doc, outputStream );
+			save( spimData, writer, new File( xmlFilename ).toURI() );
 		}
 		catch ( final IOException e )
 		{
@@ -134,11 +131,26 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 	}
 
 	/**
-	 * TODO
-	 *
-	 * @param root
-	 * @return
+	 * Write {@code spimData} to the given {@code Writer} (that can write to a
+	 * local file, or S3 for example). The {@code xmlURI} is the URI that the
+	 * {@code xmlWriter} writes to, and it is used to construct the base path
+	 * URI.
 	 */
+	public void save( final T spimData, final Writer xmlWriter, final URI xmlURI ) throws SpimDataException
+	{
+		final URI basePathURI = getParent( xmlURI );
+		final Document doc = new Document( toXml( spimData, basePathURI ) );
+		final XMLOutputter xout = new XMLOutputter( Format.getPrettyFormat() );
+		try
+		{
+			xout.output( doc, xmlWriter );
+		}
+		catch ( final IOException e )
+		{
+			throw new SpimDataIOException( e );
+		}
+	}
+
 	public String getVersion( final Element root )
 	{
 		final String versionAttr = root.getAttributeValue( SPIMDATA_VERSION_ATTRIBUTE_NAME );
@@ -154,13 +166,6 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		return version;
 	}
 
-	/**
-	 * TODO
-	 *
-	 * @param root
-	 * @param xmlFile
-	 * @return
-	 */
 	public T fromXml( final Element root, final File xmlFile ) throws SpimDataException
 	{
 		return fromXml(  root, xmlFile.toURI() );
@@ -207,21 +212,19 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		}
 	}
 
-	/**
-	 * TODO
-	 *
-	 * @param spimData
-	 * @param xmlFileDirectory
-	 * @return
-	 * @throws SpimDataException
-	 */
 	public Element toXml( final T spimData, final File xmlFileDirectory ) throws SpimDataException
+	{
+		return toXml( spimData, xmlFileDirectory.toURI() );
+	}
+
+	public Element toXml( final T spimData, final URI xmlParentURI ) throws SpimDataException
 	{
 		final Element root = super.toXml();
 		root.setAttribute( SPIMDATA_VERSION_ATTRIBUTE_NAME, SPIMDATA_VERSION_ATTRIBUTE_CURRENT );
-		root.addContent( XmlHelpers.pathElement( "BasePath", spimData.getBasePath(), xmlFileDirectory ) );
+		root.addContent( XmlHelpers.pathElementURI( "BasePath", spimData.getBasePathURI(), xmlParentURI ) );
 		root.addContent( xmlIoSequenceDescription.toXml( spimData.getSequenceDescription(), spimData.getBasePath() ) );
 		root.addContent( xmlIoViewRegistrations.toXml( spimData.getViewRegistrations() ) );
 		return root;
 	}
+
 }
