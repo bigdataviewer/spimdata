@@ -47,7 +47,12 @@ public class AbstractSpimData< S extends AbstractSequenceDescription< ?, ?, ? > 
 
 	public AbstractSpimData( final File basePath, final S sequenceDescription, final ViewRegistrations viewRegistrations )
 	{
-		this.basePathURI = basePath == null ? null : basePath.toURI();
+		this( basePath == null ? null : basePath.toURI(), sequenceDescription, viewRegistrations );
+	}
+
+	public AbstractSpimData( final URI basePathURI, final S sequenceDescription, final ViewRegistrations viewRegistrations )
+	{
+		this.basePathURI = basePathURI;
 		this.sequenceDescription = sequenceDescription;
 		this.viewRegistrations = viewRegistrations;
 	}

@@ -29,6 +29,7 @@
 package mpicbg.spim.data;
 
 import java.io.File;
+import java.net.URI;
 
 import mpicbg.spim.data.generic.AbstractSpimData;
 import mpicbg.spim.data.registration.ViewRegistrations;
@@ -39,6 +40,11 @@ public class SpimData extends AbstractSpimData< SequenceDescription >
 	public SpimData( final File basePath, final SequenceDescription sequenceDescription, final ViewRegistrations viewRegistrations )
 	{
 		super( basePath, sequenceDescription, viewRegistrations );
+	}
+
+	public SpimData( final URI basePathURI, final SequenceDescription sequenceDescription, final ViewRegistrations viewRegistrations )
+	{
+		super( basePathURI, sequenceDescription, viewRegistrations );
 	}
 
 	protected SpimData()
