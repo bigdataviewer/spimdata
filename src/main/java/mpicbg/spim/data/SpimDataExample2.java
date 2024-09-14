@@ -173,11 +173,11 @@ public class SpimDataExample2
 	{
 		final XmlIoSequenceDescription io = new XmlIoSequenceDescription();
 		final SequenceDescription sequence = createSequenceDescription();
-		final Document doc = new Document( io.toXml( sequence, null ) );
+		final Document doc = new Document( io.toXml( sequence, ( URI ) null ) );
 		new XMLOutputter( Format.getPrettyFormat() ).output( doc, System.out );
 
 		final SequenceDescription fromXml = io.fromXml( doc.getRootElement(), ( URI ) null );
-		new XMLOutputter( Format.getPrettyFormat() ).output( new Document( new XmlIoSequenceDescription().toXml( fromXml, null ) ), System.out );
+		new XMLOutputter( Format.getPrettyFormat() ).output( new Document( new XmlIoSequenceDescription().toXml( fromXml, ( URI ) null ) ), System.out );
 	}
 
 	public static void exampleViewRegistrations() throws SpimDataException, IOException

@@ -222,7 +222,7 @@ public class XmlIoAbstractSpimData< S extends AbstractSequenceDescription< ?, ?,
 		final Element root = super.toXml();
 		root.setAttribute( SPIMDATA_VERSION_ATTRIBUTE_NAME, SPIMDATA_VERSION_ATTRIBUTE_CURRENT );
 		root.addContent( XmlHelpers.pathElementURI( "BasePath", spimData.getBasePathURI(), xmlParentURI ) );
-		root.addContent( xmlIoSequenceDescription.toXml( spimData.getSequenceDescription(), spimData.getBasePath() ) );
+		root.addContent( xmlIoSequenceDescription.toXml( spimData.getSequenceDescription(), spimData.getBasePathURI() ) );
 		root.addContent( xmlIoViewRegistrations.toXml( spimData.getViewRegistrations() ) );
 		return root;
 	}

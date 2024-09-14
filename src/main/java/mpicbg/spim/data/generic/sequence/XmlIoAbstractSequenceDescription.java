@@ -70,13 +70,18 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 
 	public Element toXml( final T sequenceDescription, final File basePath ) throws SpimDataException
 	{
+		return toXml( sequenceDescription, basePath.toURI() );
+	}
+
+	public Element toXml( final T sequenceDescription, final URI basePathURI ) throws SpimDataException
+	{
 		final Element elem = super.toXml();
 
 		final BasicImgLoader imgLoader = sequenceDescription.getImgLoader();
 		if ( imgLoader != null )
 		{
 			final XmlIoBasicImgLoader< ? > imgLoaderIo = ImgLoaders.createXmlIoForImgLoaderClass( imgLoader.getClass() );
-			elem.addContent( createImgLoaderElement( imgLoaderIo, imgLoader, basePath ) );
+			elem.addContent( createImgLoaderElement( imgLoaderIo, imgLoader, basePathURI ) );
 		}
 
 		elem.addContent( xmlIoViewSetups.toXml( sequenceDescription.getViewSetups() ) );
@@ -128,9 +133,9 @@ public class XmlIoAbstractSequenceDescription< V extends BasicViewSetup, T exten
 	 * Casting madness.
 	 */
 	@SuppressWarnings( "unchecked" )
-	private static < L extends BasicImgLoader > Element createImgLoaderElement( final XmlIoBasicImgLoader< L > imgLoaderIo, final BasicImgLoader imgLoader, final File basePath )
+	private static < L extends BasicImgLoader > Element createImgLoaderElement( final XmlIoBasicImgLoader< L > imgLoaderIo, final BasicImgLoader imgLoader, final URI basePathURI )
 	{
-		return imgLoaderIo.toXml( ( L ) imgLoader, basePath );
+		return imgLoaderIo.toXml( ( L ) imgLoader, basePathURI );
 	}
 
 	/**
