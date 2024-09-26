@@ -130,4 +130,13 @@ public class ViewId implements Comparable< ViewId >, Serializable
 		// some non-colliding hash assuming we have not more that 100000 viewsetups
 		return getViewSetupId() + getTimePointId() * 100000;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "ViewId{" +
+				"timepoint=" + timepoint +
+				", setup=" + setup +
+				'}';
+	}
 }
