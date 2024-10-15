@@ -415,10 +415,27 @@ public class XmlHelpers
 	}
 
 	/**
-	 * @param basePath if null put the absolute path, otherwise relative to this
+	 * Returns an {@code Element} with the given tag {@code name} containing a {@code String} representation of the given {@code path}.
+	 * The {@code Element} has an attribute "type" which can either be "absolute" or "relative".
+	 * If {@code basePath} is given try to relativize the {@code path}.
+	 *
+	 * @param name
+	 * 		tag name
+	 * @param path
+	 * 		path to store
+	 * @param basePath
+	 * 		if null put the absolute path, otherwise relative to this
+	 *
+	 * @return an {@code Element} with the given tag {@code name} containing a {@code String} representation of the given {@code path}
 	 */
 	public static Element pathElementURI( final String name, final URI path, final URI basePath )
 	{
+		if ( !path.isAbsolute() )
+			throw new IllegalArgumentException( "path must be an absolute URI (path=\"" + path + "\")" );
+
+		if ( basePath != null && !basePath.isAbsolute() )
+			throw new IllegalArgumentException( "basePath must be an absolute URI (basePath=\"" + basePath + "\")" );
+
 		final Element e = new Element( name );
 		if ( basePath == null )
 		{
@@ -429,18 +446,9 @@ public class XmlHelpers
 		{
 			// Try to build a relative path. If can't, make it absolute.
 			URI relativePath = basePath.relativize( path ).normalize();
-			if ( relativePath.equals( path ) )
-			{
-				e.setAttribute( "type", "absolute" );
-				e.setText( path.toString() );
-			}
-			else
-			{
-				if ( relativePath.toString().isEmpty() )
-					relativePath = URI.create( "." );
-				e.setAttribute( "type", "relative" );
-				e.setText( relativePath.toString() );
-			}
+			final String pathString = relativePath.toString();
+			e.setAttribute( "type", relativePath.isAbsolute() ? "absolute" : "relative" );
+			e.setText( pathString.isEmpty() ? "." : pathString );
 		}
 
 		return e;
