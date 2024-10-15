@@ -271,8 +271,20 @@ public class XmlHelpers
 	public static File loadPath( final Element parent, final String name, final String defaultRelativePath, final File basePath )
 	{
 		final Element elem = parent.getChild( name );
-		final String path = ( elem == null ) ? defaultRelativePath : elem.getText();
-		final boolean isRelative = ( elem == null ) || elem.getAttributeValue( "type" ).equals( "relative" );
+		final String path;
+		final boolean isRelative;
+		if ( elem == null )
+		{
+			if ( defaultRelativePath == null )
+				return null;
+			path = defaultRelativePath;
+			isRelative = true;
+		}
+		else
+		{
+			path = elem.getText();
+			isRelative = "relative".equals( elem.getAttributeValue( "type" ) );
+		}
 		if ( isRelative )
 		{
 			if ( basePath == null )
@@ -332,28 +344,13 @@ public class XmlHelpers
 
 	public static File loadPath( final Element parent, final String name, final File basePath )
 	{
-		final Element elem = parent.getChild( name );
-		if ( elem == null )
-			return null;
-		final String path = elem.getText();
-		final String pathType = elem.getAttributeValue( "type" );
-		final boolean isRelative = null != pathType && pathType.equals( "relative" );
-		if ( isRelative )
-		{
-			if ( basePath == null )
-				return null;
-			else
-				return new File( basePath + "/" + path );
-		}
-		else
-			return new File( path );
+		return loadPath( parent, name, null, basePath );
 	}
 
 	public static URI loadPathURI( final Element parent, final String name, final URI basePath )
 	{
 		return loadPathURI( parent, name, null, basePath );
 	}
-
 
 	/**
 	 * @return {@code true} if the path under {@code parent/name} is stored relative, {@code false} if absolute.
@@ -363,10 +360,7 @@ public class XmlHelpers
 		final Element elem = parent.getChild( name );
 		if ( elem == null )
 			return false;
-		final String path = elem.getText();
-		final String pathType = elem.getAttributeValue( "type" );
-		final boolean isRelative = null != pathType && pathType.equals( "relative" );
-		return isRelative;
+		return "relative".equals( elem.getAttributeValue( "type" ) );
 	}
 
 	/**
