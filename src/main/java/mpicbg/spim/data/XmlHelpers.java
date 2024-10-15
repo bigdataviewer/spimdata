@@ -287,8 +287,20 @@ public class XmlHelpers
 	public static URI loadPathURI( final Element parent, final String name, final String defaultRelativePath, final URI basePath )
 	{
 		final Element elem = parent.getChild( name );
-		final String path = ( elem == null ) ? defaultRelativePath : elem.getText();
-		final boolean isRelative = ( elem == null ) || elem.getAttributeValue( "type" ).equals( "relative" );
+		final String path;
+		final boolean isRelative;
+		if ( elem == null )
+		{
+			if ( defaultRelativePath == null )
+				return null;
+			path = defaultRelativePath;
+			isRelative = true;
+		}
+		else
+		{
+			path = elem.getText();
+			isRelative = "relative".equals( elem.getAttributeValue( "type" ) );
+		}
 		if ( isRelative )
 		{
 			if ( basePath == null )
@@ -300,7 +312,16 @@ public class XmlHelpers
 		{
 			try
 			{
-				return new URI( path );
+				// if path contains backslashes assume it's a windows path (no URI scheme)
+				if ( path.contains( "\\" ) )
+					return new URI( "file:///" + path.replace( "\\", "/" ) );
+
+				// if there is a scheme-like prefix assume it's a URI
+				if ( path.matches( "^[a-zA-Z][a-zA-Z0-9+-.]*:.*$" ) )
+					return new URI( path );
+
+				// Otherwise assume it's a local file path
+				return new File( path ).toURI();
 			}
 			catch ( URISyntaxException e )
 			{
@@ -330,30 +351,7 @@ public class XmlHelpers
 
 	public static URI loadPathURI( final Element parent, final String name, final URI basePath )
 	{
-		final Element elem = parent.getChild( name );
-		if ( elem == null )
-			return null;
-		final String path = elem.getText();
-		final String pathType = elem.getAttributeValue( "type" );
-		final boolean isRelative = null != pathType && pathType.equals( "relative" );
-		if ( isRelative )
-		{
-			if ( basePath == null )
-				return null;
-			else
-				return basePath.resolve( path );
-		}
-		else
-		{
-			try
-			{
-				return new URI( path );
-			}
-			catch ( URISyntaxException e )
-			{
-				return null;
-			}
-		}
+		return loadPathURI( parent, name, null, basePath );
 	}
 
 
